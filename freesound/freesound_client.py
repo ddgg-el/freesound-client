@@ -14,12 +14,12 @@ class FreeSoundClient():
 		self.user_id: str = user_id
 		self.api_key:str = api_key
 		try:
-			self.token_data: dict[str,str] = self.load_token_from_file()
+			token_data: dict[str,str] = self.load_token_from_file()
 		except:
 			print("No existing access token found. Authorizing...")
-			self.token_data = self.authorize_procedure()
+			token_data = self.authorize_procedure()
 
-		self.update_access_data()
+		self.update_access_data(token_data)
 		print("FreeSound Client Initialized")
 		separator()
 		
@@ -51,7 +51,7 @@ class FreeSoundClient():
 			print(e)
 			self.logout()
 		print("Authorization succeded!")
-		self.update_access_data()
+		self.update_access_data(access_data)
 		return access_data
 		# Go on to STEP 3
 	
@@ -59,15 +59,14 @@ class FreeSoundClient():
 		try:
 			refresh_response: Response = freesound_api.refresh_access_token(self.user_id, self.api_key, self.refresh_token)
 			token_data: dict[Any, Any] =self.parse_response(refresh_response)
-			self.token_data = token_data
-			print(token_data)
+			self.update_access_data(token_data)
 		except Exception as e:
 			print(e)
 			self.logout()
-		self.update_access_data()
 		caller(*args, **kwargs)
 	
-	def update_access_data(self) -> None:
+	def update_access_data(self, access_data) -> None:
+		self.token_data = access_data
 		access_token: str | None = self.token_data.get('access_token')
 		refresh_token: str | None = self.token_data.get('refresh_token')
 		if access_token is not None and refresh_token is not None:
