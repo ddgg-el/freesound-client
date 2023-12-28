@@ -1,0 +1,10 @@
+__pycache__
+.mypy_cache
+sound_lib/*
+venv/
+tests/
+access_token.json
+*.maxpat
+.vscode
+.pytest_cache/
+.benchmarks/
