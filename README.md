@@ -5,10 +5,17 @@ Un esempio di programma che permette di scaricare tracce audio da [Freesound](ht
 **DISCLAIMER**
 La libreria ufficiale che implementa le funzionalità di questa repository è [freesound-python](https://github.com/MTG/freesound-python). Questa implementazione è stata sviluppata a scopi didattici.
 
-*Questo software non dipende da nessuna libreria.*
-
 #### Guida
-Per utilizzare questo software è sufficiente modificare 2 informazioni all'interno del file `main.py`
+Questo software dipende dalla libreria `requests` che può essere installata globalmente o localmente (in un ambiente virtuale `venv`) con il seguente comando:
+
+```
+pip install -r requirements.txt
+```
+oppure
+```
+pip3 install -r requirements.txt
+```
+Prima di iniziare è sufficiente modificare 2 informazioni all'interno del file `main.py`
 
 ```py
 API_KEY = "R3Lr87TlcOtRKr6nF7Vn4mwrM7yweskqFAuP6XUV"

@@ -109,18 +109,20 @@ class FreeSoundClient():
 			self.logout()
 		return track_info
 	
-	def download_track(self, url:str, filename:str) -> BytesIO:
+	def download_track(self, url:str, filename:str) -> BytesIO | None:
+		print(f"Downloading {filename}")
 		try:
 			file_response: Response = freesound_api.download(url, self.access_token)
-			sound_file: dict[Any, Any] = self.parse_response(file_response)
-			binary_data = BytesIO(sound_file.content)
+			# TODO: the response should be checked somehow
+			# removed parse response
+			binary_data = BytesIO(file_response.content)
 			self.write_audio_file(binary_data, filename)
+			return binary_data
 		except KeyboardInterrupt as e:
 			self.logout()
-		except:
+		except Exception as e:
+			print(e)
 			self.logout()
-			# binary_data = BytesIO()
-		return binary_data
 	
 	def write_audio_file(self, data:BytesIO, file_name:str, folder:str="sound_lib/") -> None:
 		if not os.path.exists(folder):

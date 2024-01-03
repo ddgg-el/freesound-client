@@ -59,36 +59,36 @@ if  __name__ == "__main__":
 
 	separator()
 
-
 	for i in range(max_downloads):
 		sound = response_list['results'][i]
-
 		track_id = str(sound['id'])
 		file_name:str = sound['name'].replace(" ", "-")
+		# Richiedi informazioni relative alla traccia individuata
+		file_data: dict[Any, Any] = client.get_track_info(track_id, sound['name'], {"fields":"type,channels,bitdepth,samplerate,download"})
+		# Assicurati che ci siano tutte le informazioni necessarie
+		try:
+			file_type = get_file_info(file_data,"type")
+			num_channels = get_file_info(file_data,"channels")
+			sample_rate = get_file_info(file_data,"samplerate")
+			bit_depth = int(get_file_info(file_data,"bitdepth"))
+			sound_url = get_file_info(file_data,"download")
+			
+			sample_width = int(bit_depth/8)
+		except KeyError as e:
+			print(f"The file {file_name} does not have a {e} value")
+			print(f"Skipping")
+			continue
+		print(f"{file_name}, {num_channels}, {file_type},{sample_rate}, {bit_depth}, {sound_url}")
+
+		file_extension:str = file_name + "." + file_type
+		filepath: str = os.path.join(out_folder,file_extension)
 		# se il file audio non è già stato scaricato
-		if not os.path.exists(out_folder+file_name):
-			# Richiedi informazioni relative alla traccia individuata
-			file_data: dict[Any, Any] = client.get_track_info(track_id, sound['name'], {"fields":"type,channels,bitdepth,samplerate,download"})
-			print(f"Downloading {file_name}")
-			# Assicurati che ci siano tutte le informazioni necessarie
-			try:
-				file_type = get_file_info(file_data,"type")
-				num_channels = get_file_info(file_data,"channels")
-				sample_rate = get_file_info(file_data,"samplerate")
-				bit_depth = int(get_file_info(file_data,"bitdepth"))
-				sound_url = get_file_info(file_data,"download")
-				
-				sample_width = int(bit_depth/8)
-			except KeyError as e:
-				print(f"The file {file_name} does not have a {e} value")
-				print(f"Skipping")
-				continue
-			# print(f"{file_name}, {num_channels}, {file_type},{sample_rate}, {bit_depth}\n{sound_url}")
-			file_extension:str = file_name + "." + file_type
+		if not os.path.exists(filepath):
 			# Scarica la traccia nella cartella definita all'inizio del programma
-			binary_data: BytesIO = client.download_track(str(sound_url), file_extension)
+			binary_data: BytesIO| None = client.download_track(str(sound_url), file_extension)
 			
 		else:
-			print(f"Skipping {sound['name']}")
+			print(f"The file {file_name} has already been downloaded...Skipping")
+		separator()
 
-	separator()
+	client.logout()

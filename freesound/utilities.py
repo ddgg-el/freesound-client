@@ -11,8 +11,15 @@ class AuthorizationError(Exception):
 		super().__init__(message)
 
 def handle_response(response:Response) -> bool:
-	response_data = response.json()
-	code = response.status_code
+	code:int = 200
+	response_data:dict[Any,Any] = {}
+	try:
+		response_data = response.json()
+		code = response.status_code
+	except json.JSONDecodeError as e:
+		# TODO: check if response is a file
+		# if response is not a json object it is probably a file
+		pass
 	if code != 200:
 		if code == 401:
 			raise AuthorizationError(f"{code} -> The credentials you provided are invalid (probably expired) Refreshing...")
