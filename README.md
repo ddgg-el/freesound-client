@@ -3,10 +3,10 @@
 Un esempio di programma che permette di scaricare tracce audio da [Freesound](https://www.freesound.org) utlizzando delle parole chiavi di ricerca.
 
 **DISCLAIMER**
-La libreria ufficiale che implementa le funzionalità di questa repository è [freesound-python](https://github.com/MTG/freesound-python). Questa implementazione è stata sviluppata a scopi didattici.
+La libreria ufficiale che implementa le funzionalità di questa repository è [freesound-python](https://github.com/MTG/freesound-python). Questa implementazione è stata sviluppata per scopi didattici.
 
 #### Guida
-Questo software dipende dalla libreria `requests` che può essere installata globalmente o localmente (in un ambiente virtuale `venv`) con il seguente comando:
+Questo software dipende dalle librerie `requests` e `python-dotenv` che possono essere installate globalmente o localmente (in un ambiente virtuale `venv`) con il seguente comando:
 
 ```
 pip install -r requirements.txt
@@ -15,18 +15,19 @@ oppure
 ```
 pip3 install -r requirements.txt
 ```
-Prima di iniziare è sufficiente modificare 2 informazioni all'interno del file `main.py`
+Prima di iniziare aprite il file `.env`. Questo file potrebbe essere nascosto dal vostro sistema operativo per la presenza di un `.` davanti al nome. 
+Una volta aperto il file è sufficiente modificare 2 informazioni:
 
 ```py
-API_KEY = "R3Lr87TlcOtRKr6nF7Vn4mwrM7yweskqFAuP6XUV"
-USER_ID = "7P2hZ9y6CkbGhVYWrgFr"
+API_KEY=<your-api-key>
+USER_ID=<your-user-id>
 ```
 Entrambe queste informazioni posso essere copiate o generate da questa pagina: [https://freesound.org/apiv2/apply/](https://freesound.org/apiv2/apply/)
 Per applicare è necessario essere registrati al sito.
 
-È possibile inoltre modificare la cartella dove verrano scaricati i file audio individuati con la ricerca, modificando la variabile `out_folder` nel file `main.py`. Il valore di default è:
+È possibile inoltre modificare la cartella dove verrano scaricati i file audio individuati con la ricerca, modificando la variabile `OUT_FOLDER`. Il valore di default è:
 ```py
-out_folder = "sound_lib/"
+OUT_FOLDER=sound_lib/
 ```
 
 per usare il programma lanciare:

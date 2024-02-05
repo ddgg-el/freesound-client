@@ -8,36 +8,21 @@ from freesound.freesound_client import FreeSoundClient
 from typing import Any
 from freesound.utilities import separator, get_file_info
 import os
+from dotenv import load_dotenv
 from io import BytesIO
+from lib import *
 
-API_KEY = "R3Lr87TlcOtRKr6nF7Vn4mwrM7yweskqFAuP6XUV"
-USER_ID = "7P2hZ9y6CkbGhVYWrgFr"
-out_folder = "sound_lib/"
 
-def prompt_keywords()->str:
-	keywords: str = input("Enter your search keywords separated by a space [ex. piano detuned prepared ]: ")
-	keywords = keywords.strip().lower()
-	keywords = keywords.replace(" ", ",")
-	return keywords
+API_KEY, USER_ID, OUT_FOLDER = load_credentials()
 
-def prompt_downloads()->int:
-	while True:
-		try:
-			max_download_input: str = input("How many files do you want to download? ")
-			max_download = int(max_download_input)
-			break
-		except ValueError as e:
-			print("You must insert a number")
-			continue
-	return max_download
-
+	
 
 if  __name__ == "__main__":
 	# Inizializzo il client di connessione al servizio
 	client = FreeSoundClient(user_id=USER_ID,api_key=API_KEY)
 	try:
 		# chiedi le parole chiavi di ricerca
-		query: str = prompt_keywords()
+		query: str = 'piano' #prompt_keywords()
 	except KeyboardInterrupt as e:
 		exit()
 	# cerca nel database freesound
@@ -47,11 +32,12 @@ if  __name__ == "__main__":
 		exit()
 	else:
 		print(f"{response_list['count']} files found!")
+
 	separator()
 
 	try:
 		# quanti file si svolgiono scaricare?
-		max_downloads: int = prompt_downloads()
+		max_downloads: int = 99 #prompt_downloads()
 	except KeyboardInterrupt as e:
 		exit()
 
@@ -60,7 +46,13 @@ if  __name__ == "__main__":
 	separator()
 
 	for i in range(max_downloads):
-		sound = response_list['results'][i]
+		try:
+			sound = response_list['results'][i]
+		except IndexError as e:
+			print("Changing Page!")
+			new_list = client.get_next_page_result()
+			exit()
+
 		track_id = str(sound['id'])
 		file_name:str = sound['name'].replace(" ", "-")
 		# Richiedi informazioni relative alla traccia individuata
@@ -81,11 +73,12 @@ if  __name__ == "__main__":
 		print(f"{file_name}, {num_channels}, {file_type},{sample_rate}, {bit_depth}, {sound_url}")
 
 		file_extension:str = file_name + "." + file_type
-		filepath: str = os.path.join(out_folder,file_extension)
+		filepath: str = os.path.join(OUT_FOLDER,file_extension)
 		# se il file audio non è già stato scaricato
 		if not os.path.exists(filepath):
 			# Scarica la traccia nella cartella definita all'inizio del programma
-			binary_data: BytesIO| None = client.download_track(str(sound_url), file_extension)
+			print("Download")
+	#		binary_data: BytesIO| None = client.download_track(str(sound_url), file_extension)
 			
 		else:
 			print(f"The file {file_name} has already been downloaded...Skipping")

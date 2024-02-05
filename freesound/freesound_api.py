@@ -38,6 +38,10 @@ def get_track_info(track_id:str,params:dict[str,str], token:str) -> Response:
 	file_type_response: Response = make_get_request(url, header=headers, params=params)
 	return file_type_response
 	
+def get_next_page(url:str) -> Response:
+	print(url)
+	next_page:Response = make_get_request(url)
+	return next_page
 	
 def download(track_url:str, token:str)-> Response:
 	headers: dict[str, str] = {"Authorization": f"Bearer {token}"}

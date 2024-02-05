@@ -5,6 +5,7 @@ venv/
 tests/
 access_token.json
 *.maxpat
+*.bak
 .vscode
 .pytest_cache/
 .benchmarks/

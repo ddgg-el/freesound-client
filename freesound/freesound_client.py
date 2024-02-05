@@ -1,6 +1,6 @@
 from .utilities import separator, AuthorizationError,headline
 import freesound.freesound_api as freesound_api
-from requests import Response, ConnectionError
+from requests import Response, ConnectionError, ConnectTimeout
 import json 
 from typing import Any
 from io import BytesIO
@@ -13,6 +13,7 @@ class FreeSoundClient():
 	def __init__(self, user_id:str, api_key:str) -> None:
 		self.user_id: str = user_id
 		self.api_key:str = api_key
+		self.next_page_query:str | None = None
 		try:
 			token_data: dict[str,str] = self.load_token_from_file()
 		except:
@@ -86,10 +87,17 @@ class FreeSoundClient():
 		try:
 			response: Response = freesound_api.search(query, self.access_token)
 			search_data = self.parse_response(response)
+			print(search_data["next"])
+			if search_data["next"] != 'null':
+				self.set_next_page(search_data["next"])
+			
 		except AuthorizationError as e:
 			print(e)
 			self.refresh_access_token(self.search,query)
 		except KeyboardInterrupt as e:
+			self.logout()
+		except ConnectTimeout as e:
+			print('Connection to freesound.org timed out. Retry later')
 			self.logout()
 		except Exception as e:
 			print("Connection Error - Are you connected to the Internet?")
@@ -139,6 +147,14 @@ class FreeSoundClient():
 			print("There was an error parsing the Reponse")
 			self.logout()
 		return result
+	
+	def set_next_page(self, url:str):
+		self.next_page_query = url
+
+	def get_next_page_result(self):
+		if self.next_page_query is not None:
+			response:Response = freesound_api.get_next_page(self.next_page_query)
+			print(response)
 			
 	def logout(self) -> None:
 		print(headline("Logging out"))
