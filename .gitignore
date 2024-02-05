@@ -9,3 +9,4 @@ access_token.json
 .vscode
 .pytest_cache/
 .benchmarks/
+credentials
