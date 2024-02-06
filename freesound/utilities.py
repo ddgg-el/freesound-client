@@ -1,4 +1,4 @@
-from requests import Response, get, post
+from requests import Response, get, post # type:ignore
 import json
 from typing import Any
 
@@ -16,7 +16,7 @@ def handle_response(response:Response) -> bool:
 	try:
 		response_data = response.json()
 		code = response.status_code
-	except json.JSONDecodeError as e:
+	except json.JSONDecodeError:
 		# TODO: check if response is a file
 		# if response is not a json object it is probably a file
 		pass

@@ -1,4 +1,4 @@
-from requests import Response
+from requests import Response # type:ignore
 from .utilities import make_get_request, make_post_request
 
 # STEP 3
@@ -38,9 +38,9 @@ def get_track_info(track_id:str,params:dict[str,str], token:str) -> Response:
 	file_type_response: Response = make_get_request(url, header=headers, params=params)
 	return file_type_response
 	
-def get_next_page(url:str) -> Response:
-	print(url)
-	next_page:Response = make_get_request(url)
+def get_next_page(params:dict[str,str], token:str) -> Response:
+	headers: dict[str, str] = {"Authorization": f"Bearer {token}"}
+	next_page:Response = make_get_request("https://freesound.org/apiv2/search/text/", header=headers, params=params)
 	return next_page
 	
 def download(track_url:str, token:str)-> Response:

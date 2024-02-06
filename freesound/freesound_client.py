@@ -1,9 +1,11 @@
+from typing import Any, NoReturn, Callable
 from .utilities import separator, AuthorizationError,headline
+from .track import FreeSoundTrack
 import freesound.freesound_api as freesound_api
-from requests import Response, ConnectionError, ConnectTimeout
+from requests import Response, ConnectionError, ConnectTimeout # type: ignore
 import json 
-from typing import Any
 from io import BytesIO
+from urllib.parse import urlparse, parse_qsl
 import os
 import sys
 
@@ -13,7 +15,7 @@ class FreeSoundClient():
 	def __init__(self, user_id:str, api_key:str) -> None:
 		self.user_id: str = user_id
 		self.api_key:str = api_key
-		self.next_page_query:str | None = None
+		self.next_page_query:dict[str,str] | None = None
 		try:
 			token_data: dict[str,str] = self.load_token_from_file()
 		except:
@@ -23,15 +25,12 @@ class FreeSoundClient():
 		self.update_access_data(token_data)
 		print("FreeSound Client Initialized")
 		separator()
-		
-	
+
 	def load_token_from_file(self) -> dict[str,str]:
 		with open(token_file_path,"r") as file:
 			print("Loading token from file")
 			separator()
 			return json.load(file)
-			
-	
 	# STEP 1 -> STEP 2
 	def authorize_procedure(self) -> dict[str,str]:
 		# STEP 1
@@ -56,7 +55,7 @@ class FreeSoundClient():
 		return access_data
 		# Go on to STEP 3
 	
-	def refresh_access_token(self, caller, *args, **kwargs) -> None:
+	def refresh_access_token(self, caller:Callable[[str], str], *args:str, **kwargs:str) -> None:
 		try:
 			refresh_response: Response = freesound_api.refresh_access_token(self.user_id, self.api_key, self.refresh_token)
 			token_data: dict[Any, Any] =self.parse_response(refresh_response)
@@ -66,7 +65,7 @@ class FreeSoundClient():
 			self.logout()
 		caller(*args, **kwargs)
 	
-	def update_access_data(self, access_data) -> None:
+	def update_access_data(self, access_data:dict[Any,Any]) -> None:
 		self.token_data = access_data
 		access_token: str | None = self.token_data.get('access_token')
 		refresh_token: str | None = self.token_data.get('refresh_token')
@@ -82,18 +81,20 @@ class FreeSoundClient():
 		with open(token_file_path, "w") as file:
 			json.dump(self.token_data, file)
 
-	def search(self, query:str) -> dict[Any, Any]:
-		search_data: dict[Any, Any] = {}
+	def search(self, query:str) -> dict[Any, Any]|NoReturn:
+		# search_data: dict[Any, Any] = {}
 		try:
 			response: Response = freesound_api.search(query, self.access_token)
 			search_data = self.parse_response(response)
-			print(search_data["next"])
+			print(f"Next Page {search_data['next'] is not None}")
 			if search_data["next"] != 'null':
 				self.set_next_page(search_data["next"])
 			
 		except AuthorizationError as e:
 			print(e)
-			self.refresh_access_token(self.search,query)
+			self.logout()
+			# TODO: the access token should be refreshed somehow
+			#self.refresh_access_token(self.search,query)
 		except KeyboardInterrupt as e:
 			self.logout()
 		except ConnectTimeout as e:
@@ -104,18 +105,20 @@ class FreeSoundClient():
 			self.logout()
 		return search_data
 	
-	def get_track_info(self, track_id:Any, track_name:str, params:dict[str,str]) -> dict[Any, Any]:
+	def get_track_info(self, track_id:Any, track_name:str, params:dict[str,str]) -> FreeSoundTrack:
 		print(f"Getting {track_name} infos")
-		track_info:dict[Any,Any] = {}
 		try:
 			response: Response = freesound_api.get_track_info(str(track_id), params,self.access_token)
-			track_info= self.parse_response(response)
+			track_info: dict[Any, Any] = self.parse_response(response)
+			audio_track = FreeSoundTrack(track_name,track_info)
 		except KeyboardInterrupt as e:
 			self.logout()
+		except ConnectionError as e:
+			raise ConnectionError("SSL Error...skipping")
 		except Exception as e:
 			print(e)
 			self.logout()
-		return track_info
+		return audio_track
 	
 	def download_track(self, url:str, filename:str) -> BytesIO | None:
 		print(f"Downloading {filename}")
@@ -131,6 +134,23 @@ class FreeSoundClient():
 		except Exception as e:
 			print(e)
 			self.logout()
+
+	def get_next_page_result(self) -> dict[Any,Any]|NoReturn:
+		# page: dict[Any,Any] = {}
+		if self.next_page_query is not None:
+			try:
+				response:Response = freesound_api.get_next_page(self.next_page_query, self.access_token)
+				page:dict[Any,Any] = self.parse_response(response)
+				if page["next"] != 'null':
+					self.set_next_page(page["next"])
+
+			except Exception as e:
+				self.handle_exception(e)
+			return page
+		else:
+			# TODO: handle else case
+			self.logout()
+			# print("No page found")
 	
 	def write_audio_file(self, data:BytesIO, file_name:str, folder:str="sound_lib/") -> None:
 		if not os.path.exists(folder):
@@ -143,19 +163,20 @@ class FreeSoundClient():
 		result: dict[Any,Any] = {}
 		try:
 			result = response.json()
-		except json.JSONDecodeError as e:
+		except json.JSONDecodeError:
 			print("There was an error parsing the Reponse")
 			self.logout()
 		return result
-	
-	def set_next_page(self, url:str):
-		self.next_page_query = url
 
-	def get_next_page_result(self):
-		if self.next_page_query is not None:
-			response:Response = freesound_api.get_next_page(self.next_page_query)
-			print(response)
+	def set_next_page(self, url:str) -> None:
+		query: str = urlparse(url).query
+		query_dict = dict(parse_qsl(query))
+		self.next_page_query = query_dict
+
+	def handle_exception(self, e:Exception) -> NoReturn:
+		print(type(e))
+		self.logout()
 			
-	def logout(self) -> None:
+	def logout(self) -> NoReturn:
 		print(headline("Logging out"))
 		sys.exit(1)

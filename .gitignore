@@ -10,3 +10,4 @@ access_token.json
 .pytest_cache/
 .benchmarks/
 credentials
+.env
