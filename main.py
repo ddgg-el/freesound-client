@@ -4,11 +4,10 @@
 # as header
 # curl -H "Authorization: Token YOUR_API_KEY" "https://freesound.org/apiv2/search/text/?query=piano"
 # from authorize import authorize_procedure, 
-from freesound.freesound_client import FreeSoundClient, FreeSoundTrack
-from typing import Any
+from freesound.freesound_client import FreeSoundClient
 from freesound.utilities import separator
+from typing import Any
 import os
-from io import BytesIO
 from lib import *
 
 
@@ -16,63 +15,65 @@ from lib import *
 API_KEY, USER_ID, OUT_FOLDER = load_credentials()
 # Inizializzo il client di connessione al servizio
 client = FreeSoundClient(user_id=USER_ID,api_key=API_KEY)
+
+def get_info_and_download(soundlist:dict[Any,Any]) -> bool:
+	global count
+	for sound in soundlist:
+		if count <= max_downloads_user:
+			track_id = str(sound['id'])
+			# Richiedi informazioni relative alla traccia individuata
+			file_data = client.get_track_info(track_id, sound['name'], {"fields":"type,channels,bitdepth,samplerate,download"})
+			filepath = os.path.join(OUT_FOLDER,file_data.file_name)
+			# se il file audio non è già stato scaricato...
+			if not os.path.exists(filepath):
+				# ...scarica la traccia nella cartella definita all'inizio del programma...
+				client.download_track(str(file_data.sound_url), file_data.file_name)
+				count+= 1
+				info(f"Downloaded Files: {count}")
+			# ...altrimenti ignora il file
+			else:
+				warning(f"The file {file_data.file_name} has already been downloaded...Skipping")
+				pass
+			separator()
+			
+		else: 
+			return False
+	return True
+
+# Ctrl+C block
 try:
 	# chiedi le parole chiavi di ricerca
-	query: str = prompt_keywords()
-except KeyboardInterrupt as e:
-	exit()
-# cerca nel database freesound
-response_list: dict[Any, Any] = client.search(query);
-if response_list['count'] == 0:
-	print("No files found")
-	exit()
-else:
-	max_downloads = response_list['count']
-	print(f"{max_downloads} files found!")
+	query = prompt_keywords()
+	# cerca nel database freesound
+	response_list = client.search(query);
+	if response_list['count'] == 0:
+		warning("No files found")
+		exit()
+	else:
+		max_downloads = response_list['count']
+		print(f"{max_downloads} files found!")
 
-separator()
-
-
-try:
+	separator()
 	# quanti file si vogliono scaricare?
-	max_downloads_user: int = prompt_downloads(max_downloads)
-except KeyboardInterrupt as e:
-	exit()
+	max_downloads_user = prompt_downloads(max_downloads)
+	print(f"Downloading: {max_downloads_user} files")
 
-print(f"Downloading: {max_downloads_user} files")
+	separator()
 
-separator()
-try:
-	for i in range(max_downloads_user):
-		try:
-			sound = response_list['results'][i]
-			track_id = str(sound['id'])
-			print(track_id)
-		except IndexError as e:
-			if len(response_list['results']) < max_downloads:
-				print("Changing Page!")
-				response_list = client.get_next_page_result()
-				continue
-			break
-		
-		
-		# Richiedi informazioni relative alla traccia individuata
-		try:
-			file_data: FreeSoundTrack = client.get_track_info(track_id, sound['name'], {"fields":"type,channels,bitdepth,samplerate,download"})
-			filepath: str = os.path.join(OUT_FOLDER,file_data.file_name)
-			# se il file audio non è già stato scaricato
-			if not os.path.exists(filepath):
-				# Scarica la traccia nella cartella definita all'inizio del programma
-				print("Download")
-				binary_data: BytesIO| None = client.download_track(str(file_data.sound_url), file_data.file_name)
-			else:
-				print(f"The file {file_data.file_name} has already been downloaded...Skipping")
+	count = 0
+	while count < max_downloads_user:
+		if get_info_and_download(response_list['results']):
+			print(f"Downloaded {count} files")
+			print("Changing Page!")
 			separator()
-		except KeyError as e:
-			print(f"Skipping")
-			pass
+			response_list = client.get_next_page_result()
+		else:
+			info(f"Downloaded {count} files")
+			break
+			
+	print("Done")
 		
-except KeyboardInterrupt as e:
-	client.logout()
-	exit()	
+except KeyboardInterrupt:
+	pass
+
 client.logout()

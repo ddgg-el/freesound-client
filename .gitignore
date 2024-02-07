@@ -11,3 +11,4 @@ access_token.json
 .benchmarks/
 credentials
 .env
+test.py

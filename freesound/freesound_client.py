@@ -86,7 +86,6 @@ class FreeSoundClient():
 		try:
 			response: Response = freesound_api.search(query, self.access_token)
 			search_data = self.parse_response(response)
-			print(f"Next Page {search_data['next'] is not None}")
 			if search_data["next"] != 'null':
 				self.set_next_page(search_data["next"])
 			
