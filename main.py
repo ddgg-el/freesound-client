@@ -19,7 +19,7 @@ client = FreeSoundClient(user_id=USER_ID,api_key=API_KEY)
 def get_info_and_download(soundlist:dict[Any,Any]) -> bool:
 	global count
 	for sound in soundlist:
-		if count <= max_downloads_user:
+		if count < max_downloads_user:
 			track_id = str(sound['id'])
 			# Richiedi informazioni relative alla traccia individuata
 			file_data = client.get_track_info(track_id, sound['name'], {"fields":"type,channels,bitdepth,samplerate,download"})
@@ -46,9 +46,13 @@ try:
 	query = prompt_keywords()
 	# cerca nel database freesound
 	response_list = client.search(query);
+	if response_list is None:
+		error("response_list is None")
+		client.logout()
+
 	if response_list['count'] == 0:
 		warning("No files found")
-		exit()
+		client.logout()
 	else:
 		max_downloads = response_list['count']
 		print(f"{max_downloads} files found!")

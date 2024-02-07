@@ -1,8 +1,8 @@
 from typing import Any, NoReturn, Callable
-from .utilities import separator, AuthorizationError,headline
+from .utilities import separator, AuthorizationError,headline, ConnectionError
 from .track import FreeSoundTrack
 import freesound.freesound_api as freesound_api
-from requests import Response, ConnectionError, ConnectTimeout # type: ignore
+from requests import Response, ConnectTimeout # type: ignore
 import json 
 from io import BytesIO
 from urllib.parse import urlparse, parse_qsl
@@ -31,7 +31,7 @@ class FreeSoundClient():
 			print("Loading token from file")
 			separator()
 			return json.load(file)
-	# STEP 1 -> STEP 2
+		
 	def authorize_procedure(self) -> dict[str,str]:
 		# STEP 1
 		params: dict[str, str] = {"client_id":self.user_id, "response_type":"code", "state": "xyz"}
@@ -45,25 +45,26 @@ class FreeSoundClient():
 			authorization_code: str = input("Enter the authorization code from the redirect URL: ")
 			access_response: Response = freesound_api.get_access_token(self.user_id, self.api_key, authorization_code)
 			access_data = self.parse_response( access_response)
-		except KeyboardInterrupt as e:
-			self.logout()
 		except Exception as e:
-			print(e)
+			print(f"Error Authorizing: {e}")
 			self.logout()
 		print("Authorization succeded!")
 		self.update_access_data(access_data)
 		return access_data
-		# Go on to STEP 3
 	
-	def refresh_access_token(self, caller:Callable[[str], str], *args:str, **kwargs:str) -> None:
+	def refresh_access_token(self, caller:Callable[[], dict[Any,Any]|None]) -> None:
+		print('Refreshing Access Token')
+		print(self.user_id, self.api_key, self.refresh_token)
 		try:
 			refresh_response: Response = freesound_api.refresh_access_token(self.user_id, self.api_key, self.refresh_token)
 			token_data: dict[Any, Any] =self.parse_response(refresh_response)
 			self.update_access_data(token_data)
 		except Exception as e:
-			print(e)
+			print(f"Error Refreshing Access Token")
+			self.handle_exception(e)
 			self.logout()
-		caller(*args, **kwargs)
+		
+		caller()
 	
 	def update_access_data(self, access_data:dict[Any,Any]) -> None:
 		self.token_data = access_data
@@ -81,8 +82,8 @@ class FreeSoundClient():
 		with open(token_file_path, "w") as file:
 			json.dump(self.token_data, file)
 
-	def search(self, query:str) -> dict[Any, Any]|NoReturn:
-		# search_data: dict[Any, Any] = {}
+	def search(self, query:str) -> dict[Any, Any]|NoReturn|None:
+		print(f"Searching for {query}")
 		try:
 			response: Response = freesound_api.search(query, self.access_token)
 			search_data = self.parse_response(response)
@@ -90,17 +91,15 @@ class FreeSoundClient():
 				self.set_next_page(search_data["next"])
 			
 		except AuthorizationError as e:
-			print(e)
-			self.logout()
-			# TODO: the access token should be refreshed somehow
-			#self.refresh_access_token(self.search,query)
-		except KeyboardInterrupt as e:
-			self.logout()
-		except ConnectTimeout as e:
+			# TODO: does this work?
+			print(f"Authorization Error: {e}")
+			self.refresh_access_token(lambda: self.search(query))
+			return {'count': 0}
+		except ConnectTimeout:
 			print('Connection to freesound.org timed out. Retry later')
 			self.logout()
 		except Exception as e:
-			print("Connection Error - Are you connected to the Internet?")
+			print(f"Connection Error - {e}\nAre you connected to the Internet?")
 			self.logout()
 		return search_data
 	
@@ -110,9 +109,7 @@ class FreeSoundClient():
 			response: Response = freesound_api.get_track_info(str(track_id), params,self.access_token)
 			track_info: dict[Any, Any] = self.parse_response(response)
 			audio_track = FreeSoundTrack(track_name,track_info)
-		except KeyboardInterrupt as e:
-			self.logout()
-		except ConnectionError as e:
+		except ConnectionError:
 			raise ConnectionError("SSL Error...skipping")
 		except Exception as e:
 			print(e)
@@ -128,14 +125,11 @@ class FreeSoundClient():
 			binary_data = BytesIO(file_response.content)
 			self.write_audio_file(binary_data, filename, outfolder)
 			return binary_data
-		except KeyboardInterrupt as e:
-			self.logout()
 		except Exception as e:
 			print(e)
 			self.logout()
 
 	def get_next_page_result(self) -> dict[Any,Any]|NoReturn:
-		# page: dict[Any,Any] = {}
 		if self.next_page_query is not None:
 			try:
 				response:Response = freesound_api.get_next_page(self.next_page_query, self.access_token)
@@ -173,7 +167,8 @@ class FreeSoundClient():
 		self.next_page_query = query_dict
 
 	def handle_exception(self, e:Exception) -> NoReturn:
-		print(type(e))
+		if isinstance(e, ConnectionError):
+			print(f"Connection Error: Status {e}")
 		self.logout()
 			
 	def logout(self) -> NoReturn:

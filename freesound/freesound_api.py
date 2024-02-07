@@ -26,7 +26,6 @@ def refresh_access_token(user_id:str, api_key:str, refresh_token:str) -> Respons
 		return token_resp
 	
 def search(query:str, token:str) -> Response:
-	print(f"Searching for {query}")
 	headers: dict[str, str] = {"Authorization": f"Bearer {token}"}
 	params: dict[str, str] = {"query":query} # "filter": "tag:prepared"}
 	search_response: Response = make_get_request("https://freesound.org/apiv2/search/text/", header=headers, params=params)

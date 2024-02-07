@@ -22,7 +22,14 @@ def handle_response(response:Response) -> bool:
 		pass
 	if code != 200:
 		if code == 401:
-			raise AuthorizationError(f"{code} -> The credentials you provided are invalid (probably expired) Refreshing...")
+			raise AuthorizationError(f"{code} -> The credentials you provided are invalid (probably expired)")
+		elif code == 400:
+			detail = response_data.get('detail')
+			if detail is None:
+				msg = "Bad Request"
+			else:
+				msg = detail
+			raise ConnectionError(f"{code} -> {msg}")
 		else:	
 			detail = response_data.get('detail')
 			raise ConnectionError(f"{code} -> {detail!r}")
