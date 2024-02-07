@@ -119,14 +119,14 @@ class FreeSoundClient():
 			self.logout()
 		return audio_track
 	
-	def download_track(self, url:str, filename:str) -> BytesIO | None:
+	def download_track(self, url:str, filename:str, outfolder:str = "sound_lib/") -> BytesIO | None:
 		print(f"Downloading {filename}")
 		try:
 			file_response: Response = freesound_api.download(url, self.access_token)
 			# TODO: the response should be checked somehow
 			# removed parse response
 			binary_data = BytesIO(file_response.content)
-			self.write_audio_file(binary_data, filename)
+			self.write_audio_file(binary_data, filename, outfolder)
 			return binary_data
 		except KeyboardInterrupt as e:
 			self.logout()
@@ -151,7 +151,7 @@ class FreeSoundClient():
 			self.logout()
 			# print("No page found")
 	
-	def write_audio_file(self, data:BytesIO, file_name:str, folder:str="sound_lib/") -> None:
+	def write_audio_file(self, data:BytesIO, file_name:str, folder:str) -> None:
 		if not os.path.exists(folder):
 			os.makedirs(folder)
 

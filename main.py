@@ -27,7 +27,7 @@ def get_info_and_download(soundlist:dict[Any,Any]) -> bool:
 			# se il file audio non è già stato scaricato...
 			if not os.path.exists(filepath):
 				# ...scarica la traccia nella cartella definita all'inizio del programma...
-				client.download_track(str(file_data.sound_url), file_data.file_name)
+				client.download_track(str(file_data.sound_url), file_data.file_name, OUT_FOLDER)
 				count+= 1
 				info(f"Downloaded Files: {count}")
 			# ...altrimenti ignora il file
