@@ -37,38 +37,20 @@ def refresh_access_token(user_id:str, api_key:str, refresh_token:str) -> dict[An
 		token = parse_response(token_resp)
 		return token
 
-# @dispatch(str,str,list[str],str,str,int,int)	
-def search(query:str, token:str,fields:str,filters:str,sort_by:str='score',page_size:int=15,normalized:int=0) -> dict[Any,Any]:
-	'''_summary_
-
-	_extended_summary_
-
-	Parameters
-	----------
-	query : str
-		Space separated words (one string) ex. "piano detuned"
-	token : str
-		the user access token
-	fields : str
-		Coma separated keywords (one string) ex. "id,samplerate,download"
-	filters : str
-		Space separated keyword:value (one string) ex. "tag:class type:wav"
-	sort_by : str, optional
-		_description_, by default 'score'
-	page_size : int, optional
-		_description_, by default 15
-	normalized : int, optional
-		_description_, by default 0
-
-	Returns
-	-------
-	dict[Any,Any]
-		_description_
-	'''
+# query "piano detuned"
+# fields "id,samplerate,download"
+# filters "tag:class type:wav"
+def search(query:str, token:str,fields:str|None=None,filters:str|None=None,sort_by:str='score',page_size:int=15,normalized:int=0) -> dict[Any,Any]:
 	headers: dict[str, str] = {"Authorization": f"Bearer {token}"}
-	fields_list = 'id,name,' + fields
-	# fields_list = ','.join(fields_array)
-	params: dict[str, str] = {"query":query,"fields":fields_list,"filter":filters, "page_size":str(page_size), "sort":sort_by, "normalized":str(normalized)}
+	fields_list = 'id,name'
+	if fields is not None:
+		fields_list += ',' + fields
+
+	params: dict[str, str] = {"query":query,"fields":fields_list,"page_size":str(page_size), "sort":sort_by, "normalized":str(normalized)}
+	
+	if filters is not None and filters != '':
+		params['filter'] = filters
+		
 	
 	search_url = "https://freesound.org/apiv2/search/text/"
 	search_response: Response = make_get_request(search_url, header=headers, params=params)

@@ -1,7 +1,4 @@
-from freesound.freesound_client import FreeSoundClient
-from freesound.freesound_fields import FreeSoundFields, fields
-from freesound.freesound_filters import FreeSoundSort
-from freesound.freesound_filters import FreeSoundFilter
+from freesound import *
 
 API_KEY = "<your-api-key>"
 USER_ID = "<your-user-id>"
@@ -11,11 +8,12 @@ c = FreeSoundClient(USER_ID,API_KEY)
 
 try:
 # handwritten
-	result = c.search("piano",fields="download,type,tags,ac_analysis",filters="type:mp3",sort_by='score',page_size=3)
-	# c.dump_result(result)
-	c.download_results("sound_lib/",2)
-	c.write_download_list()
-	c.write_result_list()
+	result = c.search("piano detuned",fields="download,type,tags,ac_analysis",filters="type:mp3",sort_by='score',page_size=3)
+	c.dump_result(result)
+	# c.download_results("sound_lib/",2)
+	# c.write_download_list()
+	# c.write_result_list()
+	
 # with the help of the API 
 	field:str = FreeSoundFields([fields.DOWNLOAD, fields.TYPE, fields.TAGS]).params
 	filters:str = FreeSoundFilter(type="mp3").params
