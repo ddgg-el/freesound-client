@@ -1,74 +1,28 @@
-from freesound import FreeSoundClient
-from freesound.formatting import separator, info
-from typing import Any
-import os
-from lib import *
+from freesound.freesound_client import FreeSoundClient
+from freesound.freesound_fields import FreeSoundFields, fields
+from freesound.freesound_filters import FreeSoundSort
+from freesound.freesound_filters import FreeSoundFilter
 
+API_KEY = "<your-api-key>"
+USER_ID = "<your-user-id>"
+# or use load-credentials from lib.py
 
-# Recupera le credenziali da .env
-API_KEY, USER_ID, OUT_FOLDER = load_credentials()
-# Inizializzo il client di connessione al servizio
-client = FreeSoundClient(user_id=USER_ID,api_key=API_KEY)
+c = FreeSoundClient(USER_ID,API_KEY)
 
-def get_info_and_download(soundlist:dict[Any,Any]) -> bool:
-	global count
-	for sound in soundlist:
-		if count < max_downloads_user:
-			track_id = str(sound['id'])
-			# Richiedi informazioni relative alla traccia individuata
-			file_data = client.get_track_info(track_id, sound['name'])
-			filepath = os.path.join(OUT_FOLDER,file_data.file_name)
-			# se il file audio non è già stato scaricato...
-			if not os.path.exists(filepath):
-				# ...scarica la traccia nella cartella definita all'inizio del programma...
-				client.download_track(str(file_data.sound_url), file_data.file_name, OUT_FOLDER)
-				count+= 1
-				info(f"Downloaded Files: {count}")
-			# ...altrimenti ignora il file
-			else:
-				warning(f"The file {file_data.file_name} has already been downloaded...Skipping")
-				pass
-			separator()
-			
-		else: 
-			return False
-	return True
-
-# Ctrl+C block
 try:
-	# chiedi le parole chiavi di ricerca
-	query = prompt_keywords()
-	# cerca nel database freesound
-	response_list = client.search(query,fields=["type","channels","bitdepth","samplerate","download","tags"]);
+# handwritten
+	result = c.search("piano",fields="download,type,tags,ac_analysis",filters="type:mp3",sort_by='score',page_size=3)
+	# c.dump_result(result)
+	c.download_results("sound_lib/",2)
+	c.write_download_list()
+	c.write_result_list()
+# with the help of the API 
+	field:str = FreeSoundFields([fields.DOWNLOAD, fields.TYPE, fields.TAGS]).params
+	filters:str = FreeSoundFilter(type="mp3").params
+	sort_by:str = FreeSoundSort.SCORE
+	# second_result = c.search("piano",filters=filters, fields=field,sort_by=sort_by,page_size=1)
+	# c.dump_result(second_result)
 
-	if response_list['count'] == 0:
-		warning("No files found")
-		client.logout()
-	else:
-		max_downloads = response_list['count']
-		print(f"{max_downloads} files found!")
-
-	separator()
-	# quanti file si vogliono scaricare?
-	max_downloads_user = prompt_downloads(max_downloads)
-	print(f"Downloading: {max_downloads_user} files")
-
-	separator()
-
-	count = 0
-	while count < max_downloads_user:
-		if get_info_and_download(response_list['results']):
-			print(f"Downloaded {count} files")
-			print("Changing Page!")
-			separator()
-			response_list = client.get_next_page_result()
-		else:
-			info(f"Downloaded {count} files")
-			break
-			
-	print("Done")
-		
 except KeyboardInterrupt:
-	pass
-
-client.logout()
+	print("\nStop")
+	c.logout()

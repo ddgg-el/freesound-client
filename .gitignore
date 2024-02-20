@@ -12,3 +12,4 @@ access_token.json
 credentials
 .env
 test.py
+.env

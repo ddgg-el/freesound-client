@@ -88,7 +88,7 @@ def get_next_page(params:dict[str,str], token:str) -> dict[Any,Any]:
 	next_page = parse_response(next_page_response)
 	return next_page
 	
-def download(track_url:str, token:str) -> Response:
+def download_track(track_url:str, token:str) -> Response:
 	# TODO check the response and type
 	headers: dict[str, str] = {"Authorization": f"Bearer {token}"}
 	sound_file_response: Response = make_get_request(track_url, header=headers, params={})
@@ -96,8 +96,8 @@ def download(track_url:str, token:str) -> Response:
 	# if sound_file_response.status_code == 200:
 	return sound_file_response
 
-def parse_response(response:Response) -> dict[Any,Any]:
-	result:dict[Any,Any] = {}
+def parse_response(response:Response) -> dict[str,Any]:
+	result:dict[str,Any] = {}
 	try:
 		result = response.json()
 	except json.JSONDecodeError:

@@ -1,3 +1,6 @@
+from typing import Any
+
+
 def headline(text: str, centered: bool = False) -> str:
 	if not centered:
 		return f"{text}\n{'-' * len(text)}"
@@ -26,3 +29,6 @@ def error(text:str)->None:
 
 def info(text:str)->None:
 	print(colors.GREEN + text + colors.END)
+
+def log(key:Any,value:Any):
+	print(colors.GREEN + str(key) + colors.END + ":" + str(value))
