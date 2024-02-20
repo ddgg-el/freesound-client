@@ -1,5 +1,4 @@
 from typing import Any
-from .utilities import get_file_info
 
 class FreeSoundTrack():
 	def __init__(self, track_name:str, *args:dict[Any,Any]) -> None:
@@ -14,13 +13,18 @@ class FreeSoundTrack():
 	def parse_track_info(self, file_data:dict[Any,Any]) -> None:
 		# Assicurati che ci siano tutte le informazioni necessarie
 		try:
-			self.file_type = get_file_info(file_data,"type")
-			self.num_channels = get_file_info(file_data,"channels")
-			self.sample_rate = get_file_info(file_data,"samplerate")
-			self.bit_depth = int(get_file_info(file_data,"bitdepth"))
-			self.sound_url = get_file_info(file_data,"download")
+			self.file_type = self._get_file_info(file_data,"type")
+			self.num_channels = self._get_file_info(file_data,"channels")
+			self.sample_rate = self._get_file_info(file_data,"samplerate")
+			self.bit_depth = int(self._get_file_info(file_data,"bitdepth"))
+			self.sound_url = self._get_file_info(file_data,"download")
 			
 			self.sample_width = int(self.bit_depth/8)
 		except KeyError as e:
 			raise KeyError(f"The file {self.file_name} does not have a {e} value")
-		
+
+	def _get_file_info(self, set:dict[Any,Any], key:str) -> Any:
+		value = set.get(key)
+		if value is None:
+			raise KeyError(key)
+		return value 	

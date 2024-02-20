@@ -1,25 +1,6 @@
 import os
 from dotenv import load_dotenv
-
-class colors:
-    RED = '\033[91m'
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    BLUE = '\033[94m'
-    END = '\033[0m'
-
-def warning(text:str)->None:
-	print(colors.YELLOW + text + colors.END)
-
-def ask(text:str)->str:
-	return input(colors.BLUE + text + colors.END)
-
-def error(text:str)->None:
-	print(colors.RED + text + colors.END)
-
-def info(text:str)->None:
-	print(colors.GREEN + text + colors.END)
-
+from freesound.formatting import ask, warning, error
 
 def prompt_keywords()->str:
 	keywords: str = ask("Enter your search keywords separated by a space [ex. piano detuned prepared ]: ")

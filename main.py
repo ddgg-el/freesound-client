@@ -1,11 +1,5 @@
-# As url parameter
-# curl "https://freesound.org/apiv2/search/text/?query=piano&token=YOUR_API_KEY"
-
-# as header
-# curl -H "Authorization: Token YOUR_API_KEY" "https://freesound.org/apiv2/search/text/?query=piano"
-# from authorize import authorize_procedure, 
-from freesound.freesound_client import FreeSoundClient
-from freesound.utilities import separator
+from freesound import FreeSoundClient
+from freesound.formatting import separator, info
 from typing import Any
 import os
 from lib import *
@@ -22,7 +16,7 @@ def get_info_and_download(soundlist:dict[Any,Any]) -> bool:
 		if count < max_downloads_user:
 			track_id = str(sound['id'])
 			# Richiedi informazioni relative alla traccia individuata
-			file_data = client.get_track_info(track_id, sound['name'], {"fields":"type,channels,bitdepth,samplerate,download"})
+			file_data = client.get_track_info(track_id, sound['name'])
 			filepath = os.path.join(OUT_FOLDER,file_data.file_name)
 			# se il file audio non è già stato scaricato...
 			if not os.path.exists(filepath):
@@ -45,10 +39,7 @@ try:
 	# chiedi le parole chiavi di ricerca
 	query = prompt_keywords()
 	# cerca nel database freesound
-	response_list = client.search(query);
-	if response_list is None:
-		error("response_list is None")
-		client.logout()
+	response_list = client.search(query,fields=["type","channels","bitdepth","samplerate","download","tags"]);
 
 	if response_list['count'] == 0:
 		warning("No files found")
