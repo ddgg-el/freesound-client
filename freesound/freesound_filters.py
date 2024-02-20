@@ -38,8 +38,6 @@ from .freesound_errors import DataError
 #"filter": "tag:plucked tag:fret type:wav"
 class FreeSoundFilterBase:
 	'''Utility Class to create different filters for FreeSound searches
-
-	For more information visit: https://freesound.org/docs/api/resources_apiv2.html#text-search
 	'''
 	_parameters_list:dict[str,Any] = {}
 	def __init__(self, **kwargs:Any) -> None:
@@ -68,7 +66,7 @@ class FreeSoundFilterBase:
 		return ' '.join(self._filters)
 	
 class FreeSoundFilter(FreeSoundFilterBase):
-	'''Utility Class to create AudioCommons filters for FreeSound searches
+	'''Utility Class to create search filters for FreeSound searches
 
 	For more information visit: https://freesound.org/docs/api/resources_apiv2.html#text-search
 	'''
@@ -76,9 +74,8 @@ class FreeSoundFilter(FreeSoundFilterBase):
 	def __init__(self, **kwargs: Unpack[TypeFilter]) -> None:
 		super().__init__(**kwargs)
 
-
 class FreeSoundACFilter(FreeSoundFilterBase):
-	'''Utility Class to create AudioCommons filters for FreeSound searches
+	'''Utility Class to create search AudioCommons filters for FreeSound searches
 
 	For more information visit: https://freesound.org/docs/api/resources_apiv2.html#text-search
 	Check the audio common project at: http://www.audiocommons.org/
@@ -87,7 +84,6 @@ class FreeSoundACFilter(FreeSoundFilterBase):
 	def __init__(self, **kwargs: Unpack[TypeACFilter]) -> None:
 		super().__init__(**kwargs)
 
-# TODO create helper class
 class FreeSoundSort():
 	SCORE = "score"
 	DURATION_DESC = "duration_desc"
@@ -101,7 +97,6 @@ class FreeSoundSort():
 	
 	
 if __name__ == "__main__":
-	#"filter": "tag:plucked tag:fret type:wav"
 	try:
 		filter = FreeSoundFilter(tag=['fret','plucked'], type="wav", samplerate=44100)
 		ac_filter = FreeSoundACFilter(ac_hardness=30)
