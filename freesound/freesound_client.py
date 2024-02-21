@@ -28,7 +28,7 @@ class FreeSoundClient:
 
 		self._username = "" # read-only
 		self._page_size = 15 # read-only
-		self._result_page = {} # read-only
+		self._result_page:dict[str,Any] = {} # read-only
 		self._result_list:dict[str,list[dict[str,Any]]] = {'search-results':[]} # read-only
 
 		self._download_count = 15 # read-only
@@ -98,8 +98,8 @@ class FreeSoundClient:
 		access_token: str | None = access_data.get('access_token')
 		refresh_token: str | None = access_data.get('refresh_token')
 		if access_token is not None and refresh_token is not None:
-			self._access_token:str = access_token
-			self._refresh_token:str = refresh_token
+			self._access_token = access_token
+			self._refresh_token = refresh_token
 			self._save_access_token(access_data)
 		else:
 			print(f"The access data provided is not valid")
