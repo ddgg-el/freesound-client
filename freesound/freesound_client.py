@@ -35,7 +35,6 @@ class FreeSoundClient:
 		self._download_list:dict[str,list[dict[str,Any]]] = {'downloaded-files':[]} # read-only
 		self._download_folder = download_folder # read-write
 
-
 		try:
 			token_data = self._load_token_from_file()
 		except FileNotFoundError:
@@ -114,13 +113,13 @@ class FreeSoundClient:
 	---
 	"""	
 	# TODO check if it works with the descriptors
-	def search(self, query:str,filters:str='',fields:str='',sort_by:str='score',page_size:int=15, normalized:int=0) -> dict[str,Any]:
+	def search(self, query:str,filters:str='',fields:str='',descriptors:str='',sort_by:str='score',page_size:int=15, normalized:int=0) -> dict[str,Any]:
 		if page_size > 150: # see documentation https://freesound.org/docs/api/resources_apiv2.html#response-sound-list
 			warning(f"Page size {page_size} too big. Setting it to 150")
 		print(f"Searching for {query}")
 		self._page_size = min(page_size,150)
 		try:
-			search_data = freesound_api.search(query, self._access_token,fields,filters,sort_by,self._page_size,normalized)
+			search_data = freesound_api.search(query, self._access_token,fields,filters,descriptors,sort_by,self._page_size,normalized)
 			self._result_page = search_data
 			self._update_result_list(search_data)
 			if search_data["count"] == 0:
@@ -239,7 +238,7 @@ class FreeSoundClient:
 						sleep(0.1) # avoid throttling
 						pass
 					else:
-						self.download_track(parsed_sound.download,parsed_sound.name, self._download_folder)
+						self.download_track(parsed_sound.ensure_value('download'),parsed_sound.name, self._download_folder)
 						downloaded_count+=1
 						self._update_download_list(sound)
 						info(f"Downloaded Files: {downloaded_count} of {self._download_count}")

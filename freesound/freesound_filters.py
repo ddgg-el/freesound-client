@@ -33,11 +33,13 @@ filter=description:(piano AND note)
 
 from typing import Any, Unpack
 
+from freesound.freesound_list_maker import ListMaker
+
 from .filter_types import TypeFilter, TypeACFilter
 from .freesound_errors import DataError
 
 #"filter": "tag:plucked tag:fret type:wav"
-class FreeSoundFilterBase:
+class FreeSoundFilterBase(ListMaker):
 	'''Utility Class to create different filters for FreeSound searches
 	'''
 	_parameters_list:dict[str,Any] = {}
@@ -53,18 +55,15 @@ class FreeSoundFilterBase:
 			else:
 				raise DataError(f"'{key}' is not a valid filter. See the list of available filter at: https://freesound.org/docs/api/resources_apiv2.html#text-search")
 		
-		self._params = self._make_filter_list()
+		super().__init__(self._filters)
 		
+	@property
+	def aslist(self) -> str:
+		return self._make_list()
+	
 	@property
 	def filters(self) -> list[str]:
 		return self._filters
-	
-	@property
-	def params(self) -> str:
-		return self._params
-	
-	def _make_filter_list(self) -> str:
-		return ' '.join(self._filters)
 	
 class FreeSoundFilter(FreeSoundFilterBase):
 	'''Utility Class to create search filters for FreeSound searches

@@ -8,53 +8,72 @@ EXAMPLE
 https://freesound.org/apiv2/search/text/?query=guitar&fields=id%2Cname%2Cfilesize
 """
 
-from enum import Enum
+from dataclasses import dataclass
+from typing import Optional, Any
 
-class fields(Enum):
-	ID = "id"
-	URL = "url"
-	NAME = "name"
-	TAGS = "tags"
-	DESCRIPTION = "description"
-	GEOTAG = "geotag"
-	CREATED = "created"
-	LICENSE = "license"
-	TYPE = "type"
-	CHANNELS = "channels"
-	FILESIZE = "filesize"
-	BITRATE = "bitrate"
-	BITDEPTH = "bitdepth"
-	DURATION = "duration"
-	SAMPLERATE = "samplerate"
-	USERNAME = "username"
-	PACK = "pack"
-	DOWNLOAD = "download"
-	BOOKMARKS = "bookmarks"
-	PREVIEWS = "previews"
-	IMAGES = "images"
-	NUM_DOWNLOADS = "num_downloads"
-	AVG_RATING = "avg_rating"
-	NUM_RATINGS = "num_ratings"
-	RATE = "rate"
-	COMMENTS = "comments"
-	NUM_COMMENTS = "num_comments"
-	COMMENT = "comment"
-	SIMILAR_SOUNDS = "similar_sounds"
-	ANALYSIS = "analysis" # to use in combination with parameter 'descriptors'
-	ANALYSIS_STATS = "analysis_stats" # link for the analysis file
-	ANALYSIS_FRAMES = "analysis_frames" # link for full frame analysis report
-	AC_ANALYSIS = "ac_analysis" # for full ac analysis
+from freesound.freesound_list_maker import ListMaker
+
+@dataclass
+class FieldsBase():
+	id:int
+	name:str
+	url: Optional[str]
+	tags: Optional[str|list[str]] = None
+	description: Optional[str] = None
+	geotag: Optional[str] = None
+	created: Optional[str] = None
+	license: Optional[str] = None
+	type: Optional[str] = None
+	channels: Optional[int] = None
+	filesize: Optional[int] = None
+	bitrate: Optional[int] = None
+	bitdepth: Optional[int] = None
+	duration: Optional[float] = None
+	samplerate: Optional[int] = None
+	username: Optional[str] = None
+	pack: Optional[str] = None
+	download: Optional[str] = None
+	bookmarks: Optional[str] = None
+	previews: Optional[dict[str,Any]] = None
+	images: Optional[dict[str,Any]] = None
+	num_downloads: Optional[int] = None
+	avg_rating: Optional[float] = None
+	num_ratings: Optional[int] = None
+	rate: Optional[int] = None
+	comments: Optional[int] = None
+	num_comments: Optional[int] = None
+	comment: Optional[str] = None
+	similar_sounds: Optional[str] = None
+	analysis: Optional[dict[str,Any]] = None
+	analysis_stats: Optional[str] = None
+	analysis_frames: Optional[str] = None
+	ac_analysis: Optional[dict[str,Any]] = None
+
+	def _set_file_name(self,ext:str) -> None:
+		file_name = self.name.strip().replace(" ","-")
+		
+		if ext not in file_name:
+			file_name += "."+ext
+		self.name = file_name
+
+	
+class FieldsMeta(FieldsBase):
+	def __init__(self):
+		for attribute,_ in self.__annotations__.items():
+			setattr(self,attribute,str(attribute))
+
+Field = FieldsMeta()
 
 # Coma separated values
-class FreeSoundFields:
-	def __init__(self, fields:list[fields]):
-		param_array = [field.value for field in fields]
-		self._params = ",".join(param_array)
+class FreeSoundFields(ListMaker):
+	def __init__(self, fields:list[Any]):
+		super().__init__(fields)
 
 	@property
-	def params(self) -> str:
-		return self._params
+	def aslist(self) -> str:
+		return self._make_coma_separated()
+		
 
 if __name__ == "__main__":
-	a = FreeSoundFields([fields.BITDEPTH,fields.SAMPLERATE])
-	print(a.params)
+	a = FreeSoundFields([Field.tags,Field.samplerate])
+	print(a.aslist)

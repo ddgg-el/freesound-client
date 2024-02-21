@@ -40,7 +40,7 @@ def refresh_access_token(user_id:str, api_key:str, refresh_token:str) -> dict[An
 # query "piano detuned"
 # fields "id,samplerate,download"
 # filters "tag:class type:wav"
-def search(query:str, token:str,fields:str|None=None,filters:str|None=None,sort_by:str='score',page_size:int=15,normalized:int=0) -> dict[Any,Any]:
+def search(query:str, token:str,fields:str|None=None,filters:str|None=None,descriptors:str|None=None,sort_by:str='score',page_size:int=15,normalized:int=0) -> dict[Any,Any]:
 	headers: dict[str, str] = {"Authorization": f"Bearer {token}"}
 	fields_list = 'id,name'
 	if fields is not None:
@@ -50,7 +50,9 @@ def search(query:str, token:str,fields:str|None=None,filters:str|None=None,sort_
 	
 	if filters is not None and filters != '':
 		params['filter'] = filters
-		
+	
+	if descriptors is not None and descriptors != '':
+		params['descriptors'] = descriptors
 	
 	search_url = "https://freesound.org/apiv2/search/text/"
 	search_response: Response = make_get_request(search_url, header=headers, params=params)
