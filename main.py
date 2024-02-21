@@ -1,5 +1,6 @@
 from freesound import *
 
+# You need to set these only before the file access_token.json is created
 API_KEY = "<your-api-key>"
 USER_ID = "<your-user-id>"
 # or use load-credentials from lib.py

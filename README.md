@@ -25,11 +25,6 @@ USER_ID=<your-user-id>
 Entrambe queste informazioni posso essere copiate o generate da questa pagina: [https://freesound.org/apiv2/apply/](https://freesound.org/apiv2/apply/)
 Per applicare è necessario essere registrati al sito.
 
-È possibile inoltre modificare la cartella dove verrano scaricati i file audio individuati con la ricerca, modificando la variabile `OUT_FOLDER`. Il valore di default è:
-```py
-OUT_FOLDER=sound_lib/
-```
-
 per usare il programma lanciare:
 ```shell
 python main.py
@@ -38,5 +33,3 @@ oppure
 ```shell
 python3 main.py
 ```
-
-È possibile interrompere l'esecuzione del programma in qualsiasi momento con la combinazione di tasti `Ctrl+c` (comando valido sia per Windows che per MacOS)
