@@ -226,7 +226,7 @@ class FreeSoundClient:
 			for sound in self._result_page['results']:
 				if downloaded_count < self.download_count:
 					try:
-						parsed_sound = FreeSoundTrack(sound,check_for_field='download')
+						parsed_sound = FreeSoundTrack(sound)
 					except Exception as e:
 						self._handle_exception(e)
 						

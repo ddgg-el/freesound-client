@@ -7,7 +7,7 @@ class FreeSoundTrack(FieldsBase):
 	def __repr__(self):
 		return f"<freesound.freesound_track.FreeSoundTrack {self.name}>"
 	
-	def __init__(self, track_data:dict[Any,Any], check_for_field:str|list[str]|None=None) -> None:
+	def __init__(self, track_data:dict[Any,Any]) -> None:
 		valid_attributes = [member for member in FieldsBase.__annotations__]
 		if 'id' not in track_data or 'name' not in track_data:
 			raise AttributeError("No 'id' or 'name' provided")
@@ -27,6 +27,6 @@ class FreeSoundTrack(FieldsBase):
 		return value
 		
 if __name__ == "__main__":
-	t = FreeSoundTrack({'id': 524545, 'name': 'Piano12', 'tags': ['note', 'synthesizer', 'Piano'], 'type': 'mp3', 'download': 'https://freesound.org/apiv2/sounds/524545/download/'},check_for_field="ac_analysis")
+	t = FreeSoundTrack({'id': 524545, 'name': 'Piano12', 'tags': ['note', 'synthesizer', 'Piano'], 'type': 'mp3', 'download': 'https://freesound.org/apiv2/sounds/524545/download/'})
 	print(t.ac_analysis)
 	

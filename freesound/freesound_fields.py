@@ -49,12 +49,13 @@ class FieldsBase():
 	analysis_frames: Optional[str] = None
 	ac_analysis: Optional[dict[str,Any]] = None
 
-	def _set_file_name(self,ext:str) -> None:
+	def _set_file_name(self,ext:str) -> str:
 		file_name = self.name.strip().replace(" ","-")
 		
 		if ext not in file_name:
 			file_name += "."+ext
 		self.name = file_name
+		return file_name
 
 	
 class FieldsMeta(FieldsBase):
