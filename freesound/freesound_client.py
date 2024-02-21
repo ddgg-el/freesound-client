@@ -1,6 +1,6 @@
 from time import sleep
 import traceback
-from typing import Any, NoReturn
+from typing import Any, NoReturn, Union
 import json 
 from io import BytesIO
 from urllib.parse import urlparse, parse_qsl
@@ -20,7 +20,7 @@ class FreeSoundClient:
 	def __repr__(self) -> str:
 		return f"<freesound.freesound_client.FreeSounClient {self._username}>"
 	
-	def __init__(self, user_id:str, api_key:str, download_folder:str|None=None, token_file_path:str="access_token.json") -> None:
+	def __init__(self, user_id:str, api_key:str, download_folder:Union[str,None]=None, token_file_path:str="access_token.json") -> None:
 		self._user_id = user_id # private
 		self._api_key = api_key # private
 		self._access_token = "" # private
@@ -56,14 +56,14 @@ class FreeSoundClient:
 	AUTHORIZATION
 	-------------
 	"""	
-	def _load_token_from_file(self) -> dict[str,str]:
+	def _load_token_from_file(self) -> Dict[str,str]:
 		with open(self._token_file_path,"r") as file:
 			print("Loading token from file")
 			separator()
 
 			return json.load(file)
 		
-	def _authorize(self) -> dict[str,str]:
+	def _authorize(self) -> Dict[str,str]:
 		if self._user_id == "" and self._api_key == "":
 			separator()
 			print("You must provide a valid user id and API key")
@@ -93,9 +93,9 @@ class FreeSoundClient:
 		except Exception as e:
 			self._handle_exception(e)
 	
-	def _update_access_data(self, access_data:dict[str,Any]) -> None:
-		access_token: str | None = access_data.get('access_token')
-		refresh_token: str | None = access_data.get('refresh_token')
+	def _update_access_data(self, access_data:Dict[str,Any]) -> None:
+		access_token: Union[str,None] = access_data.get('access_token')
+		refresh_token: Union[str,None] = access_data.get('refresh_token')
 		if access_token is not None and refresh_token is not None:
 			self._access_token = access_token
 			self._refresh_token = refresh_token
@@ -104,7 +104,7 @@ class FreeSoundClient:
 			print(f"The access data provided is not valid")
 			self.logout()
 
-	def _save_access_token(self,access_data:dict[str,Any]) -> None:
+	def _save_access_token(self,access_data:Dict[str,Any]) -> None:
 		with open(self._token_file_path, "w") as file:
 			json.dump(access_data, file)
 
@@ -113,7 +113,7 @@ class FreeSoundClient:
 	---
 	"""	
 	# TODO check if it works with the descriptors
-	def search(self, query:str,filters:str='',fields:str='',descriptors:str='',sort_by:str='score',page_size:int=15, normalized:int=0) -> dict[str,Any]:
+	def search(self, query:str,filters:str='',fields:str='',descriptors:str='',sort_by:str='score',page_size:int=15, normalized:int=0) -> Dict[str,Any]:
 		if page_size > 150: # see documentation https://freesound.org/docs/api/resources_apiv2.html#response-sound-list
 			warning(f"Page size {page_size} too big. Setting it to 150")
 		print(f"Searching for {query}")
@@ -131,7 +131,7 @@ class FreeSoundClient:
 		
 		return search_data
 	
-	def get_track_info(self, track_id:Any, track_name:str, params:dict[str,str]) -> FreeSoundTrack:
+	def get_track_info(self, track_id:Any, track_name:str, params:Dict[str,str]) -> FreeSoundTrack:
 		print(f"Getting {track_name} infos")
 		try:
 			track_info = freesound_api.get_track_info(str(track_id), params,self._access_token)
@@ -140,7 +140,7 @@ class FreeSoundClient:
 			self._handle_exception(e)
 		return audio_track
 
-	def download_track(self, url:str, filename:str, outfolder:str) -> BytesIO | None:
+	def download_track(self, url:str, filename:str, outfolder:str) -> Union[BytesIO,None]:
 		print(f"Downloading {filename}")
 		try:
 			file_response: Response = freesound_api.download_track(url, self._access_token)
@@ -152,7 +152,7 @@ class FreeSoundClient:
 		except Exception as e:
 			self._handle_exception(e)
 
-	def get_next_page(self, query:dict[str,str]) -> dict[str,Any]:
+	def get_next_page(self, query:Dict[str,str]) -> Dict[str,Any]:
 		print("Getting next page")
 		separator()
 		try:
@@ -163,7 +163,7 @@ class FreeSoundClient:
 			self._handle_exception(e)
 		return page
 	
-	def _get_my_infos(self) -> dict[str, Any]:
+	def _get_my_infos(self) -> Dict[str, Any]:
 		print("Getting Client Info")
 		user_data = freesound_api.get_my_infos(self._access_token)
 		try:
@@ -185,7 +185,7 @@ class FreeSoundClient:
 		return self._page_size
 	
 	@property # read-only
-	def result_list(self) -> dict[str,Any]:
+	def result_list(self) -> Dict[str,Any]:
 		return self._result_list
 	
 	@property # read-only
@@ -197,7 +197,7 @@ class FreeSoundClient:
 		return self._download_list
 
 	@property
-	def download_folder(self) -> str|None:
+	def download_folder(self) -> Union[str,None]:
 		return self._download_folder
 
 	@download_folder.setter
@@ -208,7 +208,7 @@ class FreeSoundClient:
 	UTILITIES
 	---------
 	"""	
-	def download_results(self,output_folder_path:str|None=None,count:int|None=None) -> None:
+	def download_results(self,output_folder_path:Union[str,None]=None,count:Union[int,None]=None) -> None:
 		if count is None:
 			self._download_count = self._prompt_downloads(self._result_page['count'])
 		else:
@@ -248,13 +248,13 @@ class FreeSoundClient:
 			if downloaded_count < self.download_count:
 				self._set_next_page()
 
-	def write_download_list(self,filename:str="downloads.json", folder:str|None=None) -> None:
+	def write_download_list(self,filename:str="downloads.json", folder:Union[str,None]=None) -> None:
 		self._write_json(self._download_list,filename, folder)
 		
-	def write_result_list(self,filename:str='result_list.json', folder:str|None=None) -> None:
+	def write_result_list(self,filename:str='result_list.json', folder:Union[str,None]=None) -> None:
 		self._write_json(self._result_list,filename, folder)
 
-	def dump_result(self, result:dict[str,Any]):
+	def dump_result(self, result:Dict[str,Any]):
 		for key, values in result.items():
 			if isinstance(values, list):
 				for value in values: # type:ignore
@@ -295,13 +295,13 @@ class FreeSoundClient:
 		else:
 			return output_folder+"/"
 
-	def _update_result_list(self, list:dict[str,Any]):
+	def _update_result_list(self, list:Dict[str,Any]):
 		self._result_list['search-results'].extend(list['results'])
 
-	def _update_download_list(self, sound_obj:dict[str,Any]):
+	def _update_download_list(self, sound_obj:Dict[str,Any]):
 		self._download_list['downloaded-files'].append(sound_obj)
 
-	def _check_for_path(self,filename:str, folder:str|None):
+	def _check_for_path(self,filename:str, folder:Union[str,None]):
 		if folder is None:
 			if self._download_folder is None:
 				out_folder = self._prompt_output_folder()
@@ -330,7 +330,7 @@ class FreeSoundClient:
 		with open(folder+file_name,"wb") as file:
 			file.write(data.read())
 
-	def _write_json(self,data:dict[Any,Any], filename:str, folder:str|None):
+	def _write_json(self,data:Dict[Any,Any], filename:str, folder:Union[str,None]):
 		output_path = self._check_for_path(filename,folder)
 		with open(output_path, "w") as outfile:
 			json.dump(data, outfile, indent=4)
@@ -346,7 +346,7 @@ class FreeSoundClient:
 		else:
 			raise DataError("The field 'next' in the search result is empty")
 
-	def _parse_user_info(self,data:dict[str,Any]):
+	def _parse_user_info(self,data:Dict[str,Any]):
 		# we could set more user's information in this function
 		# check this page for more info: https://freesound.org/docs/api/resources_apiv2.html#user-instance
 		self._username = data['username']

@@ -9,7 +9,7 @@ https://freesound.org/apiv2/search/text/?query=guitar&fields=id%2Cname%2Cfilesiz
 """
 
 from dataclasses import dataclass
-from typing import Optional, Any
+from typing import Dict, List, Optional, Any, Union
 
 from freesound.freesound_list_maker import ListMaker
 
@@ -18,7 +18,7 @@ class FieldsBase():
 	id:int
 	name:str
 	url: Optional[str]
-	tags: Optional[str|list[str]] = None
+	tags: Optional[Union[str,List[str]]] = None
 	description: Optional[str] = None
 	geotag: Optional[str] = None
 	created: Optional[str] = None
@@ -34,8 +34,8 @@ class FieldsBase():
 	pack: Optional[str] = None
 	download: Optional[str] = None
 	bookmarks: Optional[str] = None
-	previews: Optional[dict[str,Any]] = None
-	images: Optional[dict[str,Any]] = None
+	previews: Optional[Dict[str,Any]] = None
+	images: Optional[Dict[str,Any]] = None
 	num_downloads: Optional[int] = None
 	avg_rating: Optional[float] = None
 	num_ratings: Optional[int] = None
@@ -44,10 +44,10 @@ class FieldsBase():
 	num_comments: Optional[int] = None
 	comment: Optional[str] = None
 	similar_sounds: Optional[str] = None
-	analysis: Optional[dict[str,Any]] = None
+	analysis: Optional[Dict[str,Any]] = None
 	analysis_stats: Optional[str] = None
 	analysis_frames: Optional[str] = None
-	ac_analysis: Optional[dict[str,Any]] = None
+	ac_analysis: Optional[Dict[str,Any]] = None
 
 	def _set_file_name(self,ext:str) -> str:
 		file_name = self.name.strip().replace(" ","-")
@@ -67,7 +67,7 @@ Field = FieldsMeta()
 
 # Coma separated values
 class FreeSoundFields(ListMaker):
-	def __init__(self, fields:list[Any]):
+	def __init__(self, fields:List[Any]):
 		super().__init__(fields)
 
 	@property

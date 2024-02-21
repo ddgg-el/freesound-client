@@ -1,3 +1,4 @@
+from typing import Dict
 from requests import Response, get, post, exceptions # type:ignore
 from .freesound_errors import AuthorizationError, FreesoundError
 
@@ -28,7 +29,7 @@ def handle_response(res:Response) -> None:
 			else:
 				raise FreesoundError(f"Server error: contact the Freesound mailing list")
 
-def make_get_request(url:str, header:dict[str,str] = {},params:dict[str,str]={}) -> Response:
+def make_get_request(url:str, header:Dict[str,str] = {},params:Dict[str,str]={}) -> Response:
 	try:
 		response:Response = get(url, headers=header, params=params, timeout=5)
 		handle_response(response)
@@ -37,7 +38,7 @@ def make_get_request(url:str, header:dict[str,str] = {},params:dict[str,str]={})
 		print("There are problems connecting to freesound.org")
 		exit(0)
 
-def make_post_request(url:str, data:dict[str,str]) -> Response:
+def make_post_request(url:str, data:Dict[str,str]) -> Response:
 	try:
 		response:Response = post(url,data, timeout=5)
 		handle_response(response)

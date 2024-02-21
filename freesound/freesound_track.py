@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict
 
 from .freesound_errors import DataError, FieldError
 from .freesound_fields import FieldsBase
@@ -7,7 +7,7 @@ class FreeSoundTrack(FieldsBase):
 	def __repr__(self):
 		return f"<freesound.freesound_track.FreeSoundTrack {self.name}>"
 	
-	def __init__(self, track_data:dict[Any,Any]) -> None:
+	def __init__(self, track_data:Dict[Any,Any]) -> None:
 		valid_attributes = [member for member in FieldsBase.__annotations__]
 		if 'id' not in track_data or 'name' not in track_data:
 			raise AttributeError("No 'id' or 'name' provided")

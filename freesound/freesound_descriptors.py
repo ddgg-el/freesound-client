@@ -9,7 +9,7 @@ https://freesound.org/apiv2/search/text/?query=guitar&fields=id%2Cname%2Canalysi
 """
 
 from enum import Enum
-from typing import Any
+from typing import Any, List
 
 from .freesound_list_maker import ListMaker
 
@@ -115,7 +115,7 @@ class Descriptor(Enum):
 
 
 class FreeSoundDescriptors(ListMaker):
-	def __init__(self, fields:list[Any]):
+	def __init__(self, fields:List[Any]):
 		param_array = [field.value for field in fields]
 		super().__init__(param_array)
 		

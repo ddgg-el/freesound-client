@@ -31,7 +31,7 @@ filter=description:(piano AND note)
 
 # TODO geotagging
 
-from typing import Any, Unpack
+from typing import Any, Dict, List, Union
 
 from freesound.freesound_list_maker import ListMaker
 
@@ -42,7 +42,7 @@ from .freesound_errors import DataError
 class FreeSoundFilterBase(ListMaker):
 	'''Utility Class to create different filters for FreeSound searches
 	'''
-	_parameters_list:dict[str,Any] = {}
+	_parameters_list:Dict[str,Any] = {}
 	def __init__(self, **kwargs:Any) -> None:
 		self._filters:list[str] = []
 		for key,values in kwargs.items():
@@ -62,7 +62,7 @@ class FreeSoundFilterBase(ListMaker):
 		return self._make_list()
 	
 	@property
-	def filters(self) -> list[str]:
+	def filters(self) -> List[str]:
 		return self._filters
 	
 class FreeSoundFilter(FreeSoundFilterBase):
@@ -70,8 +70,8 @@ class FreeSoundFilter(FreeSoundFilterBase):
 
 	For more information visit: https://freesound.org/docs/api/resources_apiv2.html#text-search
 	'''
-	_parameters_list:dict[str,Any] = TypeFilter.__annotations__
-	def __init__(self, **kwargs: Unpack[TypeFilter]) -> None:
+	_parameters_list:Dict[str,Any] = TypeFilter.__annotations__
+	def __init__(self, **kwargs:Union[int,str,List[str]]) -> None:
 		super().__init__(**kwargs)
 
 class FreeSoundACFilter(FreeSoundFilterBase):
@@ -80,8 +80,8 @@ class FreeSoundACFilter(FreeSoundFilterBase):
 	For more information visit: https://freesound.org/docs/api/resources_apiv2.html#text-search
 	Check the audio common project at: http://www.audiocommons.org/
 	'''
-	_parameters_list:dict[str,Any] = TypeACFilter.__annotations__
-	def __init__(self, **kwargs: Unpack[TypeACFilter]) -> None:
+	_parameters_list:Dict[str,Any] = TypeACFilter.__annotations__
+	def __init__(self, **kwargs: Union[int,str,List[str]]) -> None:
 		super().__init__(**kwargs)
 
 class FreeSoundSort():
