@@ -13,3 +13,5 @@ credentials
 .env
 test.py
 .env
+docs/
+*.yml

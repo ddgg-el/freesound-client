@@ -26,7 +26,7 @@ def handle_response(res:Response) -> None:
 			elif err_code == 429:
 				raise FreesoundError("Too many requests. Read https://freesound.org/docs/api/overview.html#throttling for more information")
 			else:
-				raise FreesoundError(f"Server error: contact the Freesound mailing list")
+				raise FreesoundError("Server error: contact the Freesound mailing list")
 
 def make_get_request(url:str, header:dict[str,str] = {},params:dict[str,str]={}) -> Response:
 	try:

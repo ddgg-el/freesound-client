@@ -3,16 +3,14 @@ import traceback
 from typing import Any, NoReturn
 import json 
 from io import BytesIO
-from urllib.parse import urlparse, parse_qsl
 import os
 import sys
 from requests import Response # type: ignore
 
 import freesound.freesound_api as freesound_api
-from .freesound_errors import FieldError, FreesoundError
+from .freesound_errors import FieldError, FreesoundError, DataError
 from .freesound_requests import AuthorizationError
-from .freesound_track import FreeSoundTrack
-from .freesound_filters import *
+from .freesound_sound import FreeSoundSoundInstance
 from .formatting import headline, separator,ask, warning,error,info,log
 
 
@@ -101,7 +99,7 @@ class FreeSoundClient:
 			self._refresh_token = refresh_token
 			self._save_access_token(access_data)
 		else:
-			print(f"The access data provided is not valid")
+			print("The access data provided is not valid")
 			self.logout()
 
 	def _save_access_token(self,access_data:dict[str,Any]) -> None:
@@ -131,11 +129,11 @@ class FreeSoundClient:
 		
 		return search_data
 	
-	def get_track_info(self, track_id:Any, track_name:str, params:dict[str,str]) -> FreeSoundTrack:
+	def get_track_info(self, track_id:Any, track_name:str, fields:str|None=None,descriptors:str|None=None) -> FreeSoundSoundInstance:
 		print(f"Getting {track_name} infos")
 		try:
-			track_info = freesound_api.get_track_info(str(track_id), params,self._access_token)
-			audio_track = FreeSoundTrack(track_info)
+			track_info = freesound_api.get_track_info(str(track_id),self._access_token,fields,descriptors)
+			audio_track = FreeSoundSoundInstance(track_info)
 		except Exception as e:
 			self._handle_exception(e)
 		return audio_track
@@ -152,11 +150,11 @@ class FreeSoundClient:
 		except Exception as e:
 			self._handle_exception(e)
 
-	def get_next_page(self, query:dict[str,str]) -> dict[str,Any]:
+	def get_next_page(self, url:str) -> dict[str,Any]:
 		print("Getting next page")
 		separator()
 		try:
-			page = freesound_api.get_next_page(query, self._access_token)
+			page = freesound_api.get_next_page(url, self._access_token)
 			self._result_page = page
 			self._update_result_list(page)
 		except Exception as e:
@@ -226,7 +224,7 @@ class FreeSoundClient:
 			for sound in self._result_page['results']:
 				if downloaded_count < self.download_count:
 					try:
-						parsed_sound = FreeSoundTrack(sound)
+						parsed_sound = FreeSoundSoundInstance(sound)
 					except Exception as e:
 						self._handle_exception(e)
 						
@@ -339,9 +337,7 @@ class FreeSoundClient:
 	def _set_next_page(self) -> bool:
 		url:str = self._result_page["next"]
 		if url != 'null':
-			query: str = urlparse(url).query
-			query_dict = dict(parse_qsl(query))
-			self.get_next_page(query_dict)
+			self.get_next_page(url)
 			return True
 		else:
 			raise DataError("The field 'next' in the search result is empty")

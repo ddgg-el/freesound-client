@@ -59,7 +59,7 @@ class FieldsBase():
 
 	
 class FieldsMeta(FieldsBase):
-	def __init__(self):
+	def __init__(self) -> None:
 		for attribute,_ in self.__annotations__.items():
 			setattr(self,attribute,str(attribute))
 
@@ -67,7 +67,7 @@ Field = FieldsMeta()
 
 # Coma separated values
 class FreeSoundFields(ListMaker):
-	def __init__(self, fields:list[Any]):
+	def __init__(self, fields:list[Any]) -> None:
 		super().__init__(fields)
 
 	@property

@@ -3,7 +3,7 @@ from typing import Any
 from .freesound_errors import DataError, FieldError
 from .freesound_fields import FieldsBase
 
-class FreeSoundTrack(FieldsBase):
+class FreeSoundSoundInstance(FieldsBase):
 	def __repr__(self):
 		return f"<freesound.freesound_track.FreeSoundTrack {self.name}>"
 	
@@ -27,6 +27,6 @@ class FreeSoundTrack(FieldsBase):
 		return value
 		
 if __name__ == "__main__":
-	t = FreeSoundTrack({'id': 524545, 'name': 'Piano12', 'tags': ['note', 'synthesizer', 'Piano'], 'type': 'mp3', 'download': 'https://freesound.org/apiv2/sounds/524545/download/'})
+	t = FreeSoundSoundInstance({'id': 524545, 'name': 'Piano12', 'tags': ['note', 'synthesizer', 'Piano'], 'type': 'mp3', 'download': 'https://freesound.org/apiv2/sounds/524545/download/'})
 	print(t.ac_analysis)
 	
