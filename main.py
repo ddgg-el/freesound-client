@@ -15,7 +15,7 @@ try:
 	result = c.search("piano detuned",fields="download",filters="type:wav",sort_by='score',page_size=3)
 	# result = c.search("piano detuned",fields="download,type,tags,analysis",filters="type:mp3",descriptors="lowlevel.spectral_complexity,lowlevel.spectral_entropy",sort_by='score',page_size=3)
 	# c.dump_result(result)
-	# c.download_results("sound_lib/",2)
+	c.download_results("sound_lib/",2)
 	# c.write_download_list()
 	# c.write_result_list()
 # 	print("=======================================")

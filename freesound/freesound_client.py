@@ -362,7 +362,7 @@ class FreeSoundClient:
 
 		Should not normally need to be called explicitly
 
-		Calls sys.exit(0)
+		Calls `sys.exit(0)`
 		"""
 		print(headline("Logging out"))
 		sys.exit(0)

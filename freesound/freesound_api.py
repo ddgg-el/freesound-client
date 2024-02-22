@@ -1,6 +1,6 @@
 """The Freesound API
 
-This modules containts the basic functions that the `FreeSoundClient` uses to make GET and POST requests to freesound.org
+This modules containts the basic functions that the `FreeSoundClient` uses to make GET and POST requests to <freesound.org>
 
 It is anyway possible to use them directly providing the appropriate parameters
 
@@ -8,7 +8,7 @@ All requests require an OAuth2 access token
 Examples:
 	>>> from freesound.freesound_api import *
 	>>> get_my_infos(access_token)
-	{username: ...,about:}
+	{username: ...,about:...}
 The module contains the following functions:
 - `get_access_token` - see https://freesound.org/docs/api/authentication.html#token-authentication
 - `refresh_access_token` - see https://freesound.org/docs/api/authentication.html#once-you-have-your-access-token
@@ -30,22 +30,20 @@ import json
 
 
 def get_access_token(user_id:str, api_key:str, authorization_code:str) -> dict[str,Any]:
-	"""A utlity function for the Authorization process
+	"""A utlity function which covers Step 3 of the OAuth2 Authentication process 
+		see: <https://freesound.org/docs/api/authentication.html#step-3>
 
-	Covers the Step 3 of the OAuth2 Authentication process 
-
-	see: https://freesound.org/docs/api/authentication.html#step-3
-
-	You can apply for API credentials here: https://freesound.org/apiv2/apply/
+	You can apply for API credentials here: <https://freesound.org/apiv2/apply/>
 
 	You can save the response data in a file for future connections
+
 	Args:
 		user_id (str): the User id
 		api_key (str): the API key
-		authorization_code (str): the authorization code copied from the browser see: https://freesound.org/docs/api/authentication.html#step-2
+		authorization_code (str): the authorization code copied from the browser see: <https://freesound.org/docs/api/authentication.html#step-2>
 
 	Returns:
-		dict[str,Any]: a `dict` containing the following keys: "access_token", "expires_in", "token_type", "scope", "refresh_token"
+		dict[str,Any]: a `dict` containing the following keys: `"access_token"`, `"expires_in"`, `"token_type"`, `"scope"`, `"refresh_token"`
 	"""
 	token_url = "https://freesound.org/apiv2/oauth2/access_token/"
 	token_params: dict[str, str] = {
@@ -61,15 +59,15 @@ def get_access_token(user_id:str, api_key:str, authorization_code:str) -> dict[s
 def refresh_access_token(user_id:str, api_key:str, refresh_token:str) -> dict[str,Any]:
 	"""Refresh the User "access token" when expired
 
-	see: https://freesound.org/docs/api/authentication.html#once-you-have-your-access-token
+	see: <https://freesound.org/docs/api/authentication.html#once-you-have-your-access-token>
 	
 	Args:
 		user_id (str): your the User id
 		api_key (str): the API key
-		refresh_token (str): the "refresh_token" saved from the `get_access_token` Response
+		refresh_token (str): the "refresh_token" saved from the [`get_access_token()`][freesound.freesound_api.get_access_token] Response
 
 	Returns:
-		dict[str,Any]: a `dict` containing the following keys: "access_token", "expires_in", "token_type", "scope", "refresh_token"
+		dict[str,Any]: a `dict` containing the following keys: `"access_token"`, `"expires_in"`, `"token_type"`, `"scope"`, `"refresh_token"`
 	"""
 	token_url = "https://freesound.org/apiv2/oauth2/access_token/"
 	token_params: dict[str, str] = {
@@ -89,7 +87,7 @@ def get_my_infos(token:str) -> dict[str,Any]:
 		token (str): a valid OAuth2 access token
 
 	Returns:
-		dict[Any,Any]: a `dict` containing data listed here: https://freesound.org/docs/api/resources_apiv2.html#user-instance
+		dict[Any,Any]: a `dict` containing data listed here: <https://freesound.org/docs/api/resources_apiv2.html#user-instance>
 	"""
 	#TODO implement the User class
 	header = {"Authorization": f"Bearer {token}"}
@@ -101,20 +99,20 @@ def get_my_infos(token:str) -> dict[str,Any]:
 def search(query:str, token:str,fields:str|None=None,filters:str|None=None,descriptors:str|None=None,sort_by:str='score',page_size:int=15,normalized:int=0) -> dict[str,Any]:
 	"""Search in the FreeSound Database
 
-	For a full documentation see: https://freesound.org/docs/api/resources_apiv2.html#search-resources
+	For a full documentation see: <https://freesound.org/docs/api/resources_apiv2.html#search-resources>
 
 	Args:
 		query (str): a space-separatad string of words to search in the FreeSound Database
 		token (str): a valid OAuth2 access token
-		fields (str | None, optional): a coma-separated string of fields of a SoundInstance. Defaults to None.
-		filters (str | None, optional): a space-separated string of valid filter:value. Defaults to None.
-		descriptors (str | None, optional): a coma-separated string of valid sound analysis descriptors. Defaults to None.
-		sort_by (str, optional): a valid sort paramter. Defaults to 'score'.
-		page_size (int, optional): the max number of items inside the result array of the response. Defaults to 15.
-		normalized (int, optional): wheteher the analysis values are normalized or not either 0-1. Defaults to 0.
+		fields (str | None, optional): a coma-separated string of fields of a SoundInstance. Defaults to `None`.
+		filters (str | None, optional): a space-separated string of valid filter:value. Defaults to `None`.
+		descriptors (str | None, optional): a coma-separated string of valid sound analysis descriptors. Defaults to `None`.
+		sort_by (str, optional): a valid sort paramter. Defaults to `'score'`.
+		page_size (int, optional): the max number of items inside the result array of the response. Defaults to `15`.
+		normalized (int, optional): wheteher the analysis values are normalized or not either 0-1. Defaults to `0`.
 
 	Returns:
-		dict[str,Any]: a sound list. See: https://freesound.org/docs/api/resources_apiv2.html#response-sound-list
+		dict[str,Any]: a sound list. See: <https://freesound.org/docs/api/resources_apiv2.html#response-sound-list>
 	"""
 	headers: dict[str, str] = {"Authorization": f"Bearer {token}"}
 	fields_list = 'id,name'
@@ -137,16 +135,16 @@ def search(query:str, token:str,fields:str|None=None,filters:str|None=None,descr
 def get_track_info(track_id:str,token:str,fields:str|None=None,descriptors:str|None=None) -> dict[str,Any]:
 	"""Requests infos of a SoundInstance
 
-	see: https://freesound.org/docs/api/resources_apiv2.html#sound-instance
+	see: <https://freesound.org/docs/api/resources_apiv2.html#sound-instance>
 
 	Args:
 		track_id (str): a valid id of a sound in the freesound database
 		token (str): a valid OAuth2 access token
-		fields (str | None, optional): a coma-separated string of fields of a SoundInstance. Defaults to None.
-		descriptors (str | None, optional): a coma-separated string of valid sound analysis descriptors. Defaults to None.
+		fields (str | None, optional): a coma-separated string of fields of a SoundInstance. Defaults to `None`.
+		descriptors (str | None, optional): a coma-separated string of valid sound analysis descriptors. Defaults to `None`.
 
 	Returns:
-		dict[str,Any]: a dict containing all the info of a SoundInstance. see https://freesound.org/docs/api/resources_apiv2.html#sound-resources
+		dict[str,Any]: a dict containing all the info of a SoundInstance. see <https://freesound.org/docs/api/resources_apiv2.html#sound-resources>
 	"""
 	headers: dict[str, str] = {"Authorization": f"Bearer {token}"}
 	track_info_url:str = f"https://freesound.org/apiv2/sounds/{track_id}/"
@@ -165,7 +163,7 @@ def get_track_info(track_id:str,token:str,fields:str|None=None,descriptors:str|N
 def get_next_page(url:str, token:str) -> dict[str,Any]:
 	"""A utility function to handle pagination in sound results
 
-	It performs a search form the a url parsed from the 'next' field of a search result
+	It performs a search form the a url parsed from the `'next'` field of a search result
 	
 	Args:
 		url str: a url retrieved from a previous 'search' request
@@ -182,14 +180,14 @@ def get_next_page(url:str, token:str) -> dict[str,Any]:
 	return next_page
 	
 def download_track(track_url:str, token:str) -> Response:
-	"""Download a track
+	"""Download a track from a url
 
 	Args:
 		track_url (str): a valid download url retrieved from a SoundInstance
 		token (str): a valid OAuth2 access token
 
 	Returns:
-		Response: a requests.Response whose `content` can be loaded in a `ByteIO`
+		Response: a `requests.Response` whose `content` can be loaded in a `ByteIO`
 	"""
 	headers: dict[str, str] = {"Authorization": f"Bearer {token}"}
 	sound_file_response: Response = make_get_request(track_url, header=headers, params={})
