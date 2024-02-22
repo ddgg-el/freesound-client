@@ -191,12 +191,12 @@ def download_track(track_url:str, token:str) -> Response:
 	Returns:
 		Response: a requests.Response whose `content` can be loaded in a `ByteIO`
 	"""
-	# TODO check the response and type
 	headers: dict[str, str] = {"Authorization": f"Bearer {token}"}
 	sound_file_response: Response = make_get_request(track_url, header=headers, params={})
-	# print(sound_file_response)
-	# if sound_file_response.status_code == 200:
-	return sound_file_response
+	if sound_file_response.ok:
+		return sound_file_response
+	else:
+		raise DataError(f"Could not Download File. Broken Data")
 
 def _parse_response(response:Response) -> dict[str,Any]:
 	result:dict[str,Any] = {}

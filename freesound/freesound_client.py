@@ -5,7 +5,7 @@ import json
 from io import BytesIO
 import os
 import sys
-from requests import Response # type: ignore
+from requests import ReadTimeout, Response # type: ignore
 
 import freesound.freesound_api as freesound_api
 from .freesound_errors import FieldError, FreesoundError, DataError
@@ -110,7 +110,6 @@ class FreeSoundClient:
 	API
 	---
 	"""	
-	# TODO check if it works with the descriptors
 	def search(self, query:str,filters:str='',fields:str='',descriptors:str='',sort_by:str='score',page_size:int=15, normalized:int=0) -> dict[str,Any]:
 		if page_size > 150: # see documentation https://freesound.org/docs/api/resources_apiv2.html#response-sound-list
 			warning(f"Page size {page_size} too big. Setting it to 150")
@@ -138,15 +137,12 @@ class FreeSoundClient:
 			self._handle_exception(e)
 		return audio_track
 
-	def download_track(self, url:str, filename:str, outfolder:str) -> BytesIO | None:
+	def download_track(self, url:str, filename:str, outfolder:str) -> None:
 		print(f"Downloading {filename}")
 		try:
 			file_response: Response = freesound_api.download_track(url, self._access_token)
-			# FIXME the response should be checked somehow
 			binary_data = BytesIO(file_response.content)
 			self._write_audio_file(binary_data, filename, outfolder)
-			return binary_data
-		# TODO handle Error
 		except Exception as e:
 			self._handle_exception(e)
 
@@ -299,7 +295,7 @@ class FreeSoundClient:
 	def _update_download_list(self, sound_obj:dict[str,Any]):
 		self._download_list['downloaded-files'].append(sound_obj)
 
-	def _check_for_path(self,filename:str, folder:str|None):
+	def _check_for_path(self,filename:str, folder:str|None) -> str:
 		if folder is None:
 			if self._download_folder is None:
 				out_folder = self._prompt_output_folder()
@@ -323,9 +319,8 @@ class FreeSoundClient:
 		return output_path
 
 	def _write_audio_file(self, data:BytesIO, file_name:str, folder:str) -> None:
-		if not os.path.exists(folder):
-			os.makedirs(folder)
-		with open(folder+file_name,"wb") as file:
+		output_path = self._check_for_path(file_name,folder)
+		with open(output_path,"wb") as file:
 			file.write(data.read())
 
 	def _write_json(self,data:dict[Any,Any], filename:str, folder:str|None):
@@ -355,10 +350,19 @@ class FreeSoundClient:
 		elif isinstance(e, FieldError):
 			error(e.args[0])
 		else:
-			print("Caught a generic Exception. Inform the developers")
-			print(traceback.format_exc())
+			if isinstance(e, ReadTimeout):
+				error("Connection Timeout!")
+			else:
+				print("Caught a generic Exception. Copy the printed infos and inform the developers")
+				print(traceback.format_exc())
 		self.logout()
 
 	def logout(self) -> NoReturn:
+		"""Closes the program
+
+		Should not normally need to be called explicitly
+
+		Calls sys.exit(0)
+		"""
 		print(headline("Logging out"))
-		sys.exit(1)
+		sys.exit(0)

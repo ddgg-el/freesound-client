@@ -36,6 +36,9 @@ def make_get_request(url:str, header:dict[str,str] = {},params:dict[str,str]={})
 	except exceptions.ConnectionError:
 		print("There are problems connecting to freesound.org")
 		exit(0)
+	except exceptions.ReadTimeout:
+		print("Connection to Freesound.org timed out after 5 seconds")
+		exit(0)
 
 def make_post_request(url:str, data:dict[str,str]) -> Response:
 	try:
