@@ -66,6 +66,10 @@ class FieldsBase():
 	analysis_stats: Optional[str] = None
 	analysis_frames: Optional[str] = None
 	ac_analysis: Optional[dict[str,Any]] = None
+	
+	def _set_file_name(self,name:str) :
+		file_name = name.strip().replace(" ","-")
+		return file_name
 
 	
 class FieldMeta(FieldsBase):

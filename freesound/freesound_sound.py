@@ -45,6 +45,7 @@ class FreeSoundSoundInstance(FieldsBase):
 			Piano12
 			```
 	"""
+	# FIXME not setting filename!
 	def __init__(self, track_data:dict[str,Any]) -> None:
 		valid_attributes = [member for member in FieldsBase.__annotations__]
 		if 'id' not in track_data or 'name' not in track_data:
@@ -53,8 +54,10 @@ class FreeSoundSoundInstance(FieldsBase):
 		for field,value in track_data.items():
 			if field not in valid_attributes:
 				raise DataError(f"Could not create a FreeSoundTrack {field} is not a valid field")
+			if field == 'name':
+				value = self._set_file_name(str(value))
 			if field == 'type':
-				value = self._set_file_name(value)
+				value = self._set_file_ext(str(value))
 			setattr(self,field,value)
 		
 	def ensure_value(self,field:str)-> str:
@@ -83,18 +86,19 @@ class FreeSoundSoundInstance(FieldsBase):
 			raise FieldError(f"Attribute '{field}' not found! Please include the '{field}' keyword in your fields' search list and retry")
 		return value
 	
-	def _set_file_name(self,ext:str) -> str:
-		file_name = self.name.strip().replace(" ","-")
+	
+		# return file_name
+	
+	def _set_file_ext(self,ext:str) -> None:
+		print("setting file ext")
+		if ext not in self.name:
+			self.name += "."+ext
+		# self.name = file_name
 		
-		if ext not in file_name:
-			file_name += "."+ext
-		self.name = file_name
-		return file_name
-		
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return f"<freesound.freesound_track.FreeSoundTrack {self.name}>"
 	
 if __name__ == "__main__":
 	t = FreeSoundSoundInstance({'id': 524545, 'name': 'Piano12 B Flat', 'tags': ['note', 'synthesizer', 'Piano'], 'type': 'mp3', 'download': 'https://freesound.org/apiv2/sounds/524545/download/'})
-	print(t.name)
+	print(t)
 	

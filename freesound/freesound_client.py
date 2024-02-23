@@ -202,11 +202,11 @@ class FreeSoundClient:
 	UTILITIES
 	---------
 	"""	
-	def download_results(self,output_folder_path:str|None=None,count:int|None=None) -> None:
-		if count is None:
+	def download_results(self,output_folder_path:str|None=None,files_count:int|None=None) -> None:
+		if files_count is None:
 			self._download_count = self._prompt_downloads(self._result_page['count'])
 		else:
-			self._download_count = count
+			self._download_count = files_count
 		if output_folder_path is not None:
 			self._download_folder = output_folder_path
 		else:
@@ -223,7 +223,8 @@ class FreeSoundClient:
 						parsed_sound = FreeSoundSoundInstance(sound)
 					except Exception as e:
 						self._handle_exception(e)
-						
+					
+					print(parsed_sound.name)
 					filepath = os.path.join(self._download_folder,parsed_sound.name)
 					
 					if os.path.exists(filepath):
@@ -302,8 +303,14 @@ class FreeSoundClient:
 			else:
 				out_folder = self._download_folder
 		else:
-			out_folder="./"
+			if folder == "":
+				out_folder = "."
+			else:
+				out_folder=folder
+			self._download_folder = folder
 
+		if not os.path.exists(out_folder):
+			os.mkdir(out_folder)
 		output_path = os.path.join(out_folder,filename)
 		while os.path.exists(output_path):
 			warning(f"The File {output_path} already exists")
@@ -313,9 +320,6 @@ class FreeSoundClient:
 				break
 			else:
 				output_path = os.path.join(out_folder,new_filename)
-		
-		if ".json" not in output_path:
-			filename += ".json"
 		return output_path
 
 	def _write_audio_file(self, data:BytesIO, file_name:str, folder:str) -> None:
@@ -325,6 +329,8 @@ class FreeSoundClient:
 
 	def _write_json(self,data:dict[Any,Any], filename:str, folder:str|None):
 		output_path = self._check_for_path(filename,folder)
+		if ".json" not in output_path:
+			filename += ".json"
 		with open(output_path, "w") as outfile:
 			json.dump(data, outfile, indent=4)
 		info(f"File: {output_path} written!")
