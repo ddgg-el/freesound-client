@@ -42,7 +42,7 @@ class FreeSoundSoundInstance(FieldsBase):
 			```
 			>>> t = FreeSoundSoundInstance({'id': 524545, 'name': 'Piano12', 'tags': ['note', 'synthesizer', 'Piano'], 'type': 'mp3', 'download': 'https://freesound.org/apiv2/sounds/524545/download/'})
 			>>> print(t.name)
-			Piano12
+			Piano12.mp3
 			```
 	"""
 	# FIXME not setting filename!
@@ -100,5 +100,5 @@ class FreeSoundSoundInstance(FieldsBase):
 	
 if __name__ == "__main__":
 	t = FreeSoundSoundInstance({'id': 524545, 'name': 'Piano12 B Flat', 'tags': ['note', 'synthesizer', 'Piano'], 'type': 'mp3', 'download': 'https://freesound.org/apiv2/sounds/524545/download/'})
-	print(t)
+	print(t.name)
 	

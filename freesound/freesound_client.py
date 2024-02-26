@@ -1,3 +1,6 @@
+"""
+The module contains the definition of the FreeSoundClient, the core of the library	
+"""
 from time import sleep
 import traceback
 from typing import Any, NoReturn
@@ -15,9 +18,25 @@ from .formatting import headline, separator,ask, warning,error,info,log
 
 
 class FreeSoundClient:
-	def __repr__(self) -> str:
-		return f"<freesound.freesound_client.FreeSounClient {self._username}>"
-	
+	"""The core class of the library
+
+	The `FreeSoundClient` is a wrapper around the [`freeesound_api`](api-fs-api.md).
+	It facilitates the formulation of queries to make requests to the [Freesound Database](https://www.freesound.org).
+	It handles bulk files download and can write `json` files from the queries.
+
+	Check the [Tutorial](../tutorial.md) and [How-To](../how-to-guide.md) sections of this documentation for a detailed explanation of its usage.
+
+	Args:
+		user_id (str): the User id
+		api_key (str): the API key
+		download_folder (str | None, optional): the path where sound files should be downloaded.
+		token_file_path (str, optional): the Path to a `json` file containing the user's access token.
+
+	Usage:
+		```
+		>>> c = FreesoundClient('<your-user-id>','<your-api-key>', 'sound_lib', 'access_token.json')
+		```
+	"""
 	def __init__(self, user_id:str, api_key:str, download_folder:str|None=None, token_file_path:str="access_token.json") -> None:
 		self._user_id = user_id # private
 		self._api_key = api_key # private
@@ -111,6 +130,22 @@ class FreeSoundClient:
 	---
 	"""	
 	def search(self, query:str,filters:str='',fields:str='',descriptors:str='',sort_by:str='score',page_size:int=15, normalized:int=0) -> dict[str,Any]:
+		"""wrapper around the [`search()`][freesound.freesound_api.search] function 
+
+		see: <https://freesound.org/docs/api/resources_apiv2.html#search-resources> for details
+
+		Args:
+			query (str): a string of space-separated word to search into the [Freesound Database](https://www.freesound.org)
+			filters (str, optional): a string of valid filter:value string (see: [`FreeSoundFilters`][freesound.freesound_filters.FreeSoundFilters] for help)
+			fields (str, optional): a coma-separated string of valid `fields` (see: [`FreeSoundFields`][freesound.freesound_fields.FreeSoundFields] for help)
+			descriptors (str, optional): a coma-separated string of valid `descriptors` (see: [`FreeSoundDescriptors`][freesound.freesound_descriptors.FreeSoundDescriptors] for help). This attribute must be used in combination with the field `analysis`
+			sort_by (str, optional): a string defining how the search results should be organised (see: [`FreeSoundFilters`][freesound.freesound_filters.FreeSoundSort] for help)
+			page_size (int, optional): the maximum count of items that should be returned by the search result
+			normalized (int, optional): whether the sound `descriptors` values should be normalized or not
+
+		Returns:
+			a json object representing the Response from the freesound database <https://freesound.org/docs/api/resources_apiv2.html#response>
+		"""
 		if page_size > 150: # see documentation https://freesound.org/docs/api/resources_apiv2.html#response-sound-list
 			warning(f"Page size {page_size} too big. Setting it to 150")
 		print(f"Searching for {query}")
@@ -128,8 +163,25 @@ class FreeSoundClient:
 		
 		return search_data
 	
-	def get_track_info(self, track_id:Any, track_name:str, fields:str|None=None,descriptors:str|None=None) -> FreeSoundSoundInstance:
-		print(f"Getting {track_name} infos")
+	def get_track_info(self, track_id:int|str, track_name:str|None=None, fields:str|None=None,descriptors:str|None=None) -> FreeSoundSoundInstance:
+		"""a wrapper around the [`get_track_info()`][freesound.freesound_api.get_track_info] function 
+
+		This function queries the database to get the infos of a sound identified by `id`.
+		Check the documentation for more help: <https://freesound.org/docs/api/resources_apiv2.html#sound-instance>
+
+		Args:
+			track_id (Any): the `id` of the sound
+			track_name (str | None, optional): the name of the sound track with the provided `id`
+			fields (str | None, optional): a coma-separated string of valid `fields` (see: [`FreeSoundFields`][freesound.freesound_fields.FreeSoundFields] for help)
+			descriptors (str | None, optional): a coma-separated string of valid `descriptors` (see: [`FreeSoundDescriptors`][freesound.freesound_descriptors.FreeSoundDescriptors] for help). This attribute must be used in combination with the field `analysis`
+
+		Returns:
+			an instance of a sound with default or specified `fields`
+		"""
+		if track_name is not None:
+			print(f"Getting {track_name} infos")
+		else:
+			print(f"Getting track {track_id} infos")
 		try:
 			track_info = freesound_api.get_track_info(str(track_id),self._access_token,fields,descriptors)
 			audio_track = FreeSoundSoundInstance(track_info)
@@ -138,6 +190,18 @@ class FreeSoundClient:
 		return audio_track
 
 	def download_track(self, url:str, filename:str, outfolder:str) -> None:
+		"""a wrapper around the [`download_track()`][freesound.freesound_api.download_track] function 
+
+		Downloads a track for a valid download `url` retrived from the [Freesound Database](https://www.freesound.org)
+		
+		See: <https://freesound.org/docs/api/resources_apiv2.html#download-sound-oauth2-required> for details
+		
+
+		Args:
+			url (str): the download link for a specific sound
+			filename (str): the name of the file to download
+			outfolder (str): the folder where the file should be downloaded
+		"""
 		print(f"Downloading {filename}")
 		try:
 			file_response: Response = freesound_api.download_track(url, self._access_token)
@@ -147,6 +211,14 @@ class FreeSoundClient:
 			self._handle_exception(e)
 
 	def get_next_page(self, url:str) -> dict[str,Any]:
+		"""a wrapper around the [`get_next_page()`][freesound.freesound_api.get_next_page] function 
+
+		Args:
+			url (str): a url retrieved from a previous 'search' request
+
+		Returns:
+			a json object representing the Response from the freesound database <https://freesound.org/docs/api/resources_apiv2.html#response>
+		"""
 		print("Getting next page")
 		separator()
 		try:
@@ -172,30 +244,63 @@ class FreeSoundClient:
 	"""
 	@property # read-only
 	def username(self) -> str:
+		"""read-only
+
+		Returns:
+			the username associated with this `FreeSoundClient` identified by `user_id`
+		"""
 		return self._username
 
 	@property # read-only
 	def page_size(self) -> int:
+		"""read-only
+
+		Returns:
+			the maximum count of items that should be returned by the search result specified in the [`search`][freesound.freesound_client.FreeSoundClient.search] function.
+		"""
 		return self._page_size
 	
 	@property # read-only
 	def result_list(self) -> dict[str,Any]:
+		"""read-only
+
+		Returns:
+			a `json` object containing the response of a [`search`][freesound.freesound_client.FreeSoundClient.search] request.
+		"""
 		return self._result_list
 	
 	@property # read-only
 	def download_count(self) -> int:
+		"""read-only
+
+		Returns:
+			how many files have been downloaded
+		"""
 		return self._download_count
 	
 	@property
-	def download_list(self):
+	def download_list(self) -> dict[str, list[dict[str, Any]]]:
+		"""read-only
+
+		Returns:
+			a detailed list of the downloaded files in `json` format
+		"""
 		return self._download_list
 
 	@property
 	def download_folder(self) -> str|None:
+		"""
+		Returns:
+			the name of the folder where audio files should be downladed
+		"""
 		return self._download_folder
 
 	@download_folder.setter
 	def download_folder(self,path:str) -> None:
+		"""
+		Args:
+		 	path (str): the name of the folder where audio files should be downladed
+		"""
 		self._download_folder = path
 
 	"""
@@ -203,6 +308,14 @@ class FreeSoundClient:
 	---------
 	"""	
 	def download_results(self,output_folder_path:str|None=None,files_count:int|None=None) -> None:
+		"""download `files_count` audio files into `output_folder_path`
+
+		This function takes care of pagination automatically
+
+		Args:
+			output_folder_path (str | None, optional): The name of the output folder.
+			files_count (int | None, optional): how many files should be downloaded. 
+		"""
 		if files_count is None:
 			self._download_count = self._prompt_downloads(self._result_page['count'])
 		else:
@@ -244,12 +357,33 @@ class FreeSoundClient:
 				self._set_next_page()
 
 	def write_download_list(self,filename:str="downloads.json", folder:str|None=None) -> None:
+		"""save a detailed list of the downloaded files in a `json` file
+
+		If `folder` is not provided the client will prompt the user for this information
+
+		Args:
+			filename (str, optional): the name of the file to save
+			folder (str | None, optional): the name of the folder where to save the file
+		"""
 		self._write_json(self._download_list,filename, folder)
 		
 	def write_result_list(self,filename:str='result_list.json', folder:str|None=None) -> None:
+		"""save a detailed list of the [`search`][freesound.freesound_client.FreeSoundClient.search] response in a `json` file
+
+		If `folder` is not provided the client will prompt the user for this information
+
+		Args:
+			filename (str, optional): the file of the files where the list should be saved
+			folder (str | None, optional): the name of the folder where to save the file
+		"""
 		self._write_json(self._result_list,filename, folder)
 
 	def dump_result(self, result:dict[str,Any]):
+		"""pretty print the result of a [`search`][freesound.freesound_client.FreeSoundClient.search]
+
+		Args:
+			result (dict[str,Any]): the result of a [`search`][freesound.freesound_client.FreeSoundClient.search]
+		"""
 		for key, values in result.items():
 			if isinstance(values, list):
 				for value in values: # type:ignore
@@ -362,6 +496,9 @@ class FreeSoundClient:
 				print("Caught a generic Exception. Copy the printed infos and inform the developers")
 				print(traceback.format_exc())
 		self.logout()
+
+	def __repr__(self) -> str:
+		return f"<freesound.freesound_client.FreeSounClient {self._username}>"
 
 	def logout(self) -> NoReturn:
 		"""Closes the program
