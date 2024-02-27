@@ -57,7 +57,7 @@ class FreeSoundSoundInstance(FieldsBase):
 			if field == 'name':
 				value = self._set_file_name(str(value))
 			if field == 'type':
-				value = self._set_file_ext(str(value))
+				self._set_file_ext(str(value))
 			setattr(self,field,value)
 		
 	def ensure_value(self,field:str)-> str:
@@ -83,7 +83,7 @@ class FreeSoundSoundInstance(FieldsBase):
 		"""
 		value = getattr(self,field, None)
 		if  value is None:
-			raise FieldError(f"Attribute '{field}' not found! Please include the '{field}' keyword in your fields' search list and retry")
+			raise FieldError(f"Attribute '{field}' not found! Please include the '{field}' keyword in your 'fields' search list and retry")
 		return value
 	
 	

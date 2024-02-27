@@ -6,7 +6,7 @@ def headline(text: str, centered: bool = False) -> str:
 		return f"{text}\n{'-' * len(text)}"
 	else:
 		print("".center(50,"="))
-		return f" {text} ".center(50, "o")
+		return f"{text} ".center(50, "o")
 	
 def separator(length:int=20)->None:
 	print(f"{'-'*length}")
@@ -32,3 +32,24 @@ def info(text:str)->None:
 
 def log(key:Any,value:Any):
 	print(colors.GREEN + str(key) + colors.END + ":" + str(value))
+
+def reduce_list(array:list[float|int]) -> str:
+	formatted_list = str(array[:3])[:-1] + ', ... ' + str(array[-1:])[1:]
+	return formatted_list
+
+def unpack_features(infos:Any):
+		result = ""
+		if "lowlevel" in infos:
+			for key,value in infos["lowlevel"].items():
+				if isinstance(value,dict):
+					result += f"\n\t{colors.GREEN}{key}{colors.END}:".expandtabs(2)
+					for feat,feat_val in value.items(): # type:ignore
+						if isinstance(feat_val, list):
+							feat_val = reduce_list(feat_val) # type:ignore
+							result += f"\n\t\t{colors.GREEN}{feat}{colors.END}:{feat_val}".expandtabs(2)
+						else:
+							result += f"\n\t\t{colors.GREEN}{feat}{colors.END}:{feat_val}".expandtabs(2)
+				else:
+					result += f"\n\t{colors.GREEN}{key}{colors.END}:{value}".expandtabs(2)
+				
+		return result

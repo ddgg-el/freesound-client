@@ -14,7 +14,7 @@ import freesound.freesound_api as freesound_api
 from .freesound_errors import FieldError, FreesoundError, DataError
 from .freesound_requests import AuthorizationError
 from .freesound_sound import FreeSoundSoundInstance
-from .formatting import headline, separator,ask, warning,error,info,log
+from .formatting import headline, separator,ask, warning,error,info,log,unpack_features
 
 
 class FreeSoundClient:
@@ -45,8 +45,8 @@ class FreeSoundClient:
 
 		self._username = "" # read-only
 		self._page_size = 15 # read-only
-		self._result_page:dict[str,Any] = {} # read-only
-		self._result_list:dict[str,list[dict[str,Any]]] = {'search-results':[]} # read-only
+		self._results_page:dict[str,Any] = {} # read-only
+		self._results_list:dict[str,list[dict[str,Any]]] = {'search-results':[]} # read-only
 
 		self._download_count = 15 # read-only
 		self._download_list:dict[str,list[dict[str,Any]]] = {'downloaded-files':[]} # read-only
@@ -152,7 +152,7 @@ class FreeSoundClient:
 		self._page_size = min(page_size,150)
 		try:
 			search_data = freesound_api.search(query, self._access_token,fields,filters,descriptors,sort_by,self._page_size,normalized)
-			self._result_page = search_data
+			self._results_page = search_data
 			self._update_result_list(search_data)
 			if search_data["count"] == 0:
 				print("No results found")
@@ -223,7 +223,7 @@ class FreeSoundClient:
 		separator()
 		try:
 			page = freesound_api.get_next_page(url, self._access_token)
-			self._result_page = page
+			self._results_page = page
 			self._update_result_list(page)
 		except Exception as e:
 			self._handle_exception(e)
@@ -261,13 +261,13 @@ class FreeSoundClient:
 		return self._page_size
 	
 	@property # read-only
-	def result_list(self) -> dict[str,Any]:
+	def results_list(self) -> dict[str,Any]:
 		"""read-only
 
 		Returns:
 			a `json` object containing the response of a [`search`][freesound.freesound_client.FreeSoundClient.search] request.
 		"""
-		return self._result_list
+		return self._results_list
 	
 	@property # read-only
 	def download_count(self) -> int:
@@ -317,7 +317,7 @@ class FreeSoundClient:
 			files_count (int | None, optional): how many files should be downloaded. 
 		"""
 		if files_count is None:
-			self._download_count = self._prompt_downloads(self._result_page['count'])
+			self._download_count = self._prompt_downloads(self._results_page['count'])
 		else:
 			self._download_count = files_count
 		if output_folder_path is not None:
@@ -326,11 +326,11 @@ class FreeSoundClient:
 			if self._download_folder is None:
 				self._download_folder = self._prompt_output_folder()
 		
-		print(f"Downloading {self._download_count} files of {self._result_page['count']}")
+		print(f"Downloading {self._download_count} files of {self._results_page['count']}")
 		separator()
 		downloaded_count = 0
 		while downloaded_count < self._download_count:
-			for sound in self._result_page['results']:
+			for sound in self._results_page['results']:
 				if downloaded_count < self.download_count:
 					try:
 						parsed_sound = FreeSoundSoundInstance(sound)
@@ -346,7 +346,10 @@ class FreeSoundClient:
 						sleep(0.1) # avoid throttling
 						pass
 					else:
-						self.download_track(parsed_sound.ensure_value('download'),parsed_sound.name, self._download_folder)
+						try:
+							self.download_track(parsed_sound.ensure_value('download'),parsed_sound.name, self._download_folder)
+						except Exception as e:
+							self._handle_exception(e)
 						downloaded_count+=1
 						self._update_download_list(sound)
 						info(f"Downloaded Files: {downloaded_count} of {self._download_count}")
@@ -367,7 +370,7 @@ class FreeSoundClient:
 		"""
 		self._write_json(self._download_list,filename, folder)
 		
-	def write_result_list(self,filename:str='result_list.json', folder:str|None=None) -> None:
+	def write_result_list(self,filename:str='results_list.json', folder:str|None=None) -> None:
 		"""save a detailed list of the [`search`][freesound.freesound_client.FreeSoundClient.search] response in a `json` file
 
 		If `folder` is not provided the client will prompt the user for this information
@@ -376,21 +379,27 @@ class FreeSoundClient:
 			filename (str, optional): the file of the files where the list should be saved
 			folder (str | None, optional): the name of the folder where to save the file
 		"""
-		self._write_json(self._result_list,filename, folder)
-
-	def dump_result(self, result:dict[str,Any]):
+		self._write_json(self._results_list,filename, folder)
+	def dump_results(self, data:dict[str,Any]|None=None):
 		"""pretty print the result of a [`search`][freesound.freesound_client.FreeSoundClient.search]
 
 		Args:
-			result (dict[str,Any]): the result of a [`search`][freesound.freesound_client.FreeSoundClient.search]
+			data (dict[str,Any] | None, optional): a `dict` (for example the result of a [`search`][freesound.freesound_client.FreeSoundClient.search]). By default it will print the result of the last performed search.
 		"""
-		for key, values in result.items():
+		if data is None:
+			data = self._results_list
+		for key, values in data.items():
 			if isinstance(values, list):
 				for value in values: # type:ignore
 					separator()
 					for x,y in value.items(): # type:ignore
-						log(x,y)
-						
+						if isinstance(y,dict):
+						# 	for desc,desc_values in y.items(): # type:ignore
+						# 		log(desc,values)
+						# else:
+							log(x, unpack_features(y))
+						else:
+							log(x, y)
 			else:
 				log(str(key),values)
 			print('')
@@ -419,13 +428,16 @@ class FreeSoundClient:
 	
 	def _prompt_output_folder(self) -> str:
 		output_folder = ask("Please set an output folder: ")
-		if output_folder.endswith("/"):
-			return output_folder
+		if output_folder != "":
+			if output_folder.endswith("/"):
+				return output_folder
+			else:
+				return output_folder+"/"
 		else:
-			return output_folder+"/"
+			return "./"
 
 	def _update_result_list(self, list:dict[str,Any]):
-		self._result_list['search-results'].extend(list['results'])
+		self._results_list['search-results'].extend(list['results'])
 
 	def _update_download_list(self, sound_obj:dict[str,Any]):
 		self._download_list['downloaded-files'].append(sound_obj)
@@ -470,7 +482,7 @@ class FreeSoundClient:
 		info(f"File: {output_path} written!")
 
 	def _set_next_page(self) -> bool:
-		url:str = self._result_page["next"]
+		url:str = self._results_page["next"]
 		if url != 'null':
 			self.get_next_page(url)
 			return True

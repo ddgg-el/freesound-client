@@ -25,8 +25,7 @@ class TypeFilter(TypedDict):
 	num_downloads:NotRequired[int]
 	avg_rating:NotRequired[int|float]
 	num_comments:NotRequired[int]
-
-class TypeACFilter(TypedDict):
+	# Audio Common
 	ac_loudness:NotRequired[int|float]
 	ac_dynamical_range:NotRequired[int|float]
 	ac_temporal_centroid:NotRequired[int|float]
