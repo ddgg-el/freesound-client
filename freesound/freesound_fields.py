@@ -25,61 +25,68 @@ You can build this query taking advange of lintering when writing:
 id,name,filesize
 """
 
-from dataclasses import dataclass
-from typing import Optional, Any
+# from dataclasses import dataclass
+from typing import Any
 
 from .freesound_list_maker import ListMaker
 
-@dataclass
-class FieldsBase():
-	"""The Base class for [`FieldMeta`][freesound.freesound_fields.FieldMeta) and [`FreeSoundSoundInstance`][freesound.freesound_sound.FreeSoundSoundInstance]. Useful for lintering"""
-	id:int
-	name:str
-	url: Optional[str]
-	tags: Optional[str|list[str]] = None
-	description: Optional[str] = None
-	geotag: Optional[str] = None
-	created: Optional[str] = None
-	license: Optional[str] = None
-	type: Optional[str] = None
-	channels: Optional[int] = None
-	filesize: Optional[int] = None
-	bitrate: Optional[int] = None
-	bitdepth: Optional[int] = None
-	duration: Optional[float] = None
-	samplerate: Optional[int] = None
-	username: Optional[str] = None
-	pack: Optional[str] = None
-	download: Optional[str] = None
-	bookmarks: Optional[str] = None
-	previews: Optional[dict[str,Any]] = None
-	images: Optional[dict[str,Any]] = None
-	num_downloads: Optional[int] = None
-	avg_rating: Optional[float] = None
-	num_ratings: Optional[int] = None
-	rate: Optional[int] = None
-	comments: Optional[int] = None
-	num_comments: Optional[int] = None
-	comment: Optional[str] = None
-	similar_sounds: Optional[str] = None
-	analysis: Optional[dict[str,Any]] = None
-	analysis_stats: Optional[str] = None
-	analysis_frames: Optional[str] = None
-	ac_analysis: Optional[dict[str,Any]] = None
-	
+class Field():
+	"""Field is a class that provides hints for valid `fields` to query the [`freesound.org`](https://www.freesound.org) database"""
+	id = "id"
+	name = "name"
+	url = "url"
+	tags = "tags"
+	description = "description"
+	geotag = "geotag"
+	created = "created"
+	license = "license"
+	type = "type"
+	channels = "channels"
+	filesize = "filesize"
+	bitrate = "bitrate"
+	bitdepth = "bitdepth"
+	duration = "duration"
+	samplerate = "samplerate"
+	username = "username"
+	pack = "pack"
+	download = "download"
+	bookmarks = "bookmarks"
+	previews = "previews"
+	images = "images"
+	num_downloads = "num_downloads"
+	avg_rating = "avg_rating"
+	num_ratings = "num_ratings"
+	rate = "rate"
+	comments = "comments"
+	num_comments = "num_comments"
+	comment = "comment"
+	similar_sounds = "similar_sounds"
+	analysis = "analysis"
+	analysis_stats = "analysis_stats"
+	analysis_frames = "analysis_frames"
+	ac_analysis = "ac_analysis"
+
 	def _set_file_name(self,name:str) :
 		file_name = name.strip().replace(" ","-")
 		return file_name
+	
+	@classmethod
+	def all(cls):# -> list[Any]:
+		fields:list[str] = []
+		for attr_name, attr_value in cls.__dict__.items():
+			if not isinstance(attr_value, classmethod) and not attr_name.startswith("__") and not callable(attr_value):
+				fields.append(attr_value)
+		return fields 
 
 	
-class FieldMeta(FieldsBase):
-	"""A class whose attributes are valid `fields` to query the [`freesound.org`](https://www.freesound.org) database"""
-	def __init__(self) -> None:
-		for attribute,_ in self.__annotations__.items():
-			setattr(self,attribute,str(attribute))
+# class Field(FieldsBase):
+# 	"""A class whose attributes are valid `fields` to query the [`freesound.org`](https://www.freesound.org) database"""
+# 	def __init__(self) -> None:
+# 		for attribute,_ in self.__annotations__.items():
+# 			setattr(self,attribute,str(attribute))
 
-Field = FieldMeta()
-"""Field is an instance of `FieldsMeta` and provides lintering for valid `fields` to query the [`freesound.org`](https://www.freesound.org) database"""
+# Field = FieldMeta()
+
 
 # Coma separated values
 class FreeSoundFields(ListMaker):

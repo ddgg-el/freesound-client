@@ -22,9 +22,9 @@ id,name,filesize
 from typing import Any
 
 from .freesound_errors import DataError, FieldError
-from .freesound_fields import FieldsBase
+from .freesound_fields import Field
 
-class FreeSoundSoundInstance(FieldsBase):
+class FreeSoundSoundInstance(Field):
 	"""A Utility class the stores the details of a SoundInstance request from the [`freesound.org`](https://www.freesound.org) database. 
 		Notice that the name of the input SoundInstance will be manipulated automatically by calling `self._set_file_name`. A name such as `Piano12 B Flat`
 		will be automatically transformed in `Piano12-B-Flat.mp3`
@@ -45,12 +45,11 @@ class FreeSoundSoundInstance(FieldsBase):
 			Piano12.mp3
 			```
 	"""
-	# FIXME not setting filename!
 	def __init__(self, track_data:dict[str,Any]) -> None:
-		valid_attributes = [member for member in FieldsBase.__annotations__]
+		valid_attributes = Field.all()
 		if 'id' not in track_data or 'name' not in track_data:
 			raise AttributeError("No 'id' or 'name' provided")
-		
+		count = 0
 		for field,value in track_data.items():
 			if field not in valid_attributes:
 				raise DataError(f"Could not create a FreeSoundTrack {field} is not a valid field")
@@ -59,6 +58,14 @@ class FreeSoundSoundInstance(FieldsBase):
 			if field == 'type':
 				self._set_file_ext(str(value))
 			setattr(self,field,value)
+			valid_attributes.remove(field)
+			count += 1
+
+		# set everything else to None
+		for attribute in valid_attributes:
+			setattr(self,attribute,None)
+		
+		self._track_data = track_data
 		
 	def ensure_value(self,field:str)-> str:
 		"""a utility function which ensure the presence of a field inside the input dictionary
@@ -86,11 +93,11 @@ class FreeSoundSoundInstance(FieldsBase):
 			raise FieldError(f"Attribute '{field}' not found! Please include the '{field}' keyword in your 'fields' search list and retry")
 		return value
 	
-	
-		# return file_name
+	@property
+	def track_data(self) -> dict[str, Any]:
+		return self._track_data
 	
 	def _set_file_ext(self,ext:str) -> None:
-		print("setting file ext")
 		if ext not in self.name:
 			self.name += "."+ext
 		# self.name = file_name

@@ -23,13 +23,11 @@ You can build this query taking advange of type hints writing:
 lowlevel.spectral_complexity,lowlevel.average_loudness
 """
 
-from enum import Enum
 from typing import Any
 
 from .freesound_list_maker import ListMaker
 
-
-class Descriptor(Enum):
+class Descriptor():
 	"""A list of valid descriptors for FreeSound Analysis
 	
 	This should not be used outside a [`FreeSoundDescriptors`][freesound.freesound_descriptors.FreeSoundDescriptors]

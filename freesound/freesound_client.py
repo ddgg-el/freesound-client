@@ -1,6 +1,7 @@
 """
 The module contains the definition of the FreeSoundClient, the core of the library	
 """
+from datetime import datetime
 from time import sleep
 import traceback
 from typing import Any, NoReturn
@@ -11,7 +12,7 @@ import sys
 from requests import ReadTimeout, Response # type: ignore
 
 import freesound.freesound_api as freesound_api
-from .freesound_errors import FieldError, FreesoundError, DataError
+from .freesound_errors import FieldError, FreesoundError
 from .freesound_requests import AuthorizationError
 from .freesound_sound import FreeSoundSoundInstance
 from .formatting import headline, separator,ask, warning,error,info,log,unpack_features
@@ -46,10 +47,10 @@ class FreeSoundClient:
 		self._username = "" # read-only
 		self._page_size = 15 # read-only
 		self._results_page:dict[str,Any] = {} # read-only
-		self._results_list:dict[str,list[dict[str,Any]]] = {'search-results':[]} # read-only
+		self._results_list:dict[str,Any] = {'results':[], 'timestamp':datetime.now().isoformat(), 'count':0} # read-only
 
 		self._download_count = 15 # read-only
-		self._download_list:dict[str,list[dict[str,Any]]] = {'downloaded-files':[]} # read-only
+		self._download_list:dict[str,Any] = {'downloaded-files':[], 'timestamp':datetime.now().isoformat(), 'count':0} # read-only
 		self._download_folder = download_folder # read-write
 
 		try:
@@ -307,6 +308,17 @@ class FreeSoundClient:
 	UTILITIES
 	---------
 	"""	
+	def _set_download_count(self,count:int|None):
+		max_value = self._results_page['count']
+		if count is None:
+			self._download_count = self._prompt_downloads(max_value)
+		else:
+			if count <= max_value:
+				self._download_count = count
+			else:
+				warning(f"You want to download {count} files, but only {max_value} were found")
+				self._download_count = max_value
+
 	def download_results(self,output_folder_path:str|None=None,files_count:int|None=None) -> None:
 		"""download `files_count` audio files into `output_folder_path`
 
@@ -316,10 +328,7 @@ class FreeSoundClient:
 			output_folder_path (str | None, optional): The name of the output folder.
 			files_count (int | None, optional): how many files should be downloaded. 
 		"""
-		if files_count is None:
-			self._download_count = self._prompt_downloads(self._results_page['count'])
-		else:
-			self._download_count = files_count
+		self._set_download_count(files_count)
 		if output_folder_path is not None:
 			self._download_folder = output_folder_path
 		else:
@@ -331,7 +340,7 @@ class FreeSoundClient:
 		downloaded_count = 0
 		while downloaded_count < self._download_count:
 			for sound in self._results_page['results']:
-				if downloaded_count < self.download_count:
+				if downloaded_count < self._download_count:
 					try:
 						parsed_sound = FreeSoundSoundInstance(sound)
 					except Exception as e:
@@ -351,13 +360,15 @@ class FreeSoundClient:
 						except Exception as e:
 							self._handle_exception(e)
 						downloaded_count+=1
-						self._update_download_list(sound)
+						self._update_download_list(sound, downloaded_count)
 						info(f"Downloaded Files: {downloaded_count} of {self._download_count}")
 						separator()
 				else:
 					break
-			if downloaded_count < self.download_count:
-				self._set_next_page()
+			if downloaded_count < self._download_count:
+				if not self._set_next_page():
+					break
+		info("Done Downloading")
 
 	def write_download_list(self,filename:str="downloads.json", folder:str|None=None) -> None:
 		"""save a detailed list of the downloaded files in a `json` file
@@ -437,9 +448,13 @@ class FreeSoundClient:
 			return "./"
 
 	def _update_result_list(self, list:dict[str,Any]):
-		self._results_list['search-results'].extend(list['results'])
+		self._results_list['count'] += list['count']
+		self._results_list['timestamp'] = datetime.now().isoformat()
+		self._results_list['results'].extend(list['results'])
 
-	def _update_download_list(self, sound_obj:dict[str,Any]):
+	def _update_download_list(self, sound_obj:dict[str,Any], count:int):
+		self._download_list['count'] = count
+		self._download_list['timestamp'] = datetime.now().isoformat()
 		self._download_list['downloaded-files'].append(sound_obj)
 
 	def _check_for_path(self,filename:str, folder:str|None) -> str:
@@ -482,12 +497,12 @@ class FreeSoundClient:
 		info(f"File: {output_path} written!")
 
 	def _set_next_page(self) -> bool:
-		url:str = self._results_page["next"]
-		if url != 'null':
+		if self._results_page["next"] is not None:
+			url:str = self._results_page["next"]
 			self.get_next_page(url)
 			return True
 		else:
-			raise DataError("The field 'next' in the search result is empty")
+			return False
 
 	def _parse_user_info(self,data:dict[str,Any]):
 		# we could set more user's information in this function
