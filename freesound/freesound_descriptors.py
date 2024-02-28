@@ -152,8 +152,8 @@ class FreeSoundDescriptors(ListMaker):
 		```
 	"""
 	def __init__(self, fields:list[Any]):
-		param_array = [field.value for field in fields]
-		super().__init__(param_array)
+		# param_array = [field.value for field in fields]
+		super().__init__(fields)
 		
 	@property
 	def aslist(self) -> str:
