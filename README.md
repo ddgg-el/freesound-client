@@ -44,11 +44,13 @@ c = FreeSoundClient(USER_ID,API_KEY) # The API Client
 ```
 Now you are ready to make requests to the **freesound.org Database**!
 
-Please follow the [Tutorial](tutorial.md) or the [How To](how-to-guide.md) sections in the Documentation to learn how to get started with the **Freesound Client** Library
+<!-- TODO: fix paths -->
+Please follow the [Tutorial](tutorials/tutorial.md) or the [How To](how-to-guide.md) sections in the Documentation to learn how to get started with the **Freesound Client** Library
 
 ### Documentation
 
-### Contributors
+### A special thanks to
 Davide Bardi
 Francesca Seggioli
 Alessandro Cagiano
+Marco Rotondella

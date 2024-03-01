@@ -25,7 +25,7 @@ class FreeSoundClient:
 	It facilitates the formulation of queries to make requests to the [Freesound Database](https://www.freesound.org).
 	It handles bulk files download and can write `json` files from the queries.
 
-	Check the [Tutorial](../tutorial.md) and [How-To](../how-to-guide.md) sections of this documentation for a detailed explanation of its usage.
+	Check the [Tutorial](../tutorials/tutorial-basics.md) and [How-To](../how-to-guide.md) sections of this documentation for a detailed explanation of its usage.
 
 	Args:
 		user_id (str): the User id
@@ -130,14 +130,14 @@ class FreeSoundClient:
 	API
 	---
 	"""	
-	def search(self, query:str,filters:str='',fields:str='',descriptors:str='',sort_by:str='score',page_size:int=15, normalized:int=0) -> dict[str,Any]:
+	def search(self, query:str,filter:str='',fields:str='',descriptors:str='',sort_by:str='score',page_size:int=15, normalized:int=0) -> dict[str,Any]:
 		"""wrapper around the [`search()`][freesound.freesound_api.search] function 
 
 		see: <https://freesound.org/docs/api/resources_apiv2.html#search-resources> for details
 
 		Args:
 			query (str): a string of space-separated word to search into the [Freesound Database](https://www.freesound.org)
-			filters (str, optional): a string of valid filter:value string (see: [`FreeSoundFilters`][freesound.freesound_filters.FreeSoundFilters] for help)
+			filter (str, optional): a string of valid filter:value string (see: [`FreeSoundFilters`][freesound.freesound_filters.FreeSoundFilters] for help)
 			fields (str, optional): a coma-separated string of valid `fields` (see: [`FreeSoundFields`][freesound.freesound_fields.FreeSoundFields] for help)
 			descriptors (str, optional): a coma-separated string of valid `descriptors` (see: [`FreeSoundDescriptors`][freesound.freesound_descriptors.FreeSoundDescriptors] for help). This attribute must be used in combination with the field `analysis`
 			sort_by (str, optional): a string defining how the search results should be organised (see: [`FreeSoundFilters`][freesound.freesound_filters.FreeSoundSort] for help)
@@ -152,7 +152,7 @@ class FreeSoundClient:
 		print(f"Searching for {query}")
 		self._page_size = min(page_size,150)
 		try:
-			search_data = freesound_api.search(query, self._access_token,fields,filters,descriptors,sort_by,self._page_size,normalized)
+			search_data = freesound_api.search(query, self._access_token,fields,filter,descriptors,sort_by,self._page_size,normalized)
 			self._results_page = search_data
 			self._update_result_list(search_data)
 			if search_data["count"] == 0:

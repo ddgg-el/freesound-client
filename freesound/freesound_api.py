@@ -96,7 +96,7 @@ def get_my_infos(token:str) -> dict[str,Any]:
 	user_info = _parse_response(user_response)
 	return user_info
 
-def search(query:str, token:str,fields:str|None=None,filters:str|None=None,descriptors:str|None=None,sort_by:str='score',page_size:int=15,normalized:int=0) -> dict[str,Any]:
+def search(query:str, token:str,fields:str|None=None,filter:str|None=None,descriptors:str|None=None,sort_by:str='score',page_size:int=15,normalized:int=0) -> dict[str,Any]:
 	"""Search in the FreeSound Database
 
 	For a full documentation see: <https://freesound.org/docs/api/resources_apiv2.html#search-resources>
@@ -105,7 +105,7 @@ def search(query:str, token:str,fields:str|None=None,filters:str|None=None,descr
 		query (str): a space-separatad string of words to search in the FreeSound Database
 		token (str): a valid OAuth2 access token
 		fields (str | None, optional): a coma-separated string of fields of a SoundInstance
-		filters (str | None, optional): a space-separated string of valid filter:value
+		filter (str | None, optional): a space-separated string of valid filter:value
 		descriptors (str | None, optional): a coma-separated string of valid sound analysis descriptors
 		sort_by (str, optional): a valid sort paramter
 		page_size (int, optional): the max number of items inside the result array of the response
@@ -121,8 +121,8 @@ def search(query:str, token:str,fields:str|None=None,filters:str|None=None,descr
 
 	params: dict[str, str] = {"query":query,"fields":fields_list,"page_size":str(page_size), "sort":sort_by, "normalized":str(normalized)}
 	
-	if filters is not None and filters != '':
-		params['filter'] = filters
+	if filter is not None and filter != '':
+		params['filter'] = filter
 	
 	if descriptors is not None and descriptors != '':
 		params['descriptors'] = descriptors

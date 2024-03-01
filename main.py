@@ -16,13 +16,12 @@ else:
 if API_KEY is None or USER_ID is None:
 	sys.exit(0)
 
-
 c = FreeSoundClient(USER_ID,API_KEY)
 result = c.search(query="piano detuned")
 try:
 # handwritten
-	# result = c.search("piano detuned",fields="download",filters="type:wav",sort_by='score',page_size=3)
-	# result = c.search("piano detuned",fields="download,type,tags,analysis",filters="type:mp3",descriptors="lowlevel.spectral_complexity,lowlevel.spectral_entropy",sort_by='score',page_size=3)
+	# result = c.search("piano detuned",fields="download",filter="type:wav",sort_by='score',page_size=3)
+	# result = c.search("piano detuned",fields="download,type,tags,analysis",filter="type:mp3",descriptors="lowlevel.spectral_complexity,lowlevel.spectral_entropy",sort_by='score',page_size=3)
 	# print(result)
 	# c.download_results("",files_count=2)
 	# c.write_download_list()
@@ -33,7 +32,7 @@ try:
 	filters:str = FreeSoundFilters(type="mp3").aslist
 	sort_by:str = FreeSoundSort.score
 	descriptors = FreeSoundDescriptors([Descriptor.lowlevel_spectral_complexity,Descriptor.lowlevel_spectral_entropy]).aslist
-# 	second_result = c.search("piano detuned",fields=field,filters=filters,sort_by=sort_by,page_size=3)
+# 	second_result = c.search("piano detuned",fields=field,filter=filters,sort_by=sort_by,page_size=3)
 # 	c.dump_result(second_result)
 	
 except KeyboardInterrupt:
