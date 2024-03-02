@@ -15,7 +15,7 @@ import freesound.freesound_api as freesound_api
 from .freesound_errors import FieldError, FreesoundError
 from .freesound_requests import AuthorizationError
 from .freesound_sound import FreeSoundSoundInstance
-from .formatting import headline, separator,ask, warning,error,info,log,unpack_features
+from .formatting import headline, separator,ask, separator_red, warning,error,info,log,unpack_features
 
 
 class FreeSoundClient:
@@ -51,7 +51,7 @@ class FreeSoundClient:
 
 		self._download_count = 15 # read-only
 		self._download_list:dict[str,Any] = {'downloaded-files':[], 'timestamp':datetime.now().isoformat(), 'count':0} # read-only
-		self._download_folder = download_folder # read-write
+		self._download_folder = download_folder if download_folder else "./" # read-write
 
 		try:
 			token_data = self._load_token_from_file()
@@ -190,26 +190,38 @@ class FreeSoundClient:
 			self._handle_exception(e)
 		return audio_track
 
-	def download_track(self, url:str, filename:str, outfolder:str) -> None:
+	def download_track(self, url:str, filename:str, outfolder:str|None=None, skip:bool=False) -> bool:
 		"""a wrapper around the [`download_track()`][freesound.freesound_api.download_track] function 
 
-		Downloads a track for a valid download `url` retrived from the [Freesound Database](https://www.freesound.org)
+		Downloads a track given a valid download `url` retrieved from the [Freesound Database](https://www.freesound.org)
 		
 		See: <https://freesound.org/docs/api/resources_apiv2.html#download-sound-oauth2-required> for details
 		
-
 		Args:
 			url (str): the download link for a specific sound
 			filename (str): the name of the file to download
 			outfolder (str): the folder where the file should be downloaded
+			skip (bool, optional): deafult value to skip a file if it already exists.
+		
+		Returns:
+			bool: `True` if the file has been downloaded, `False` otherwise 
 		"""
 		print(f"Downloading {filename}")
-		try:
-			file_response: Response = freesound_api.download_track(url, self._access_token)
-			binary_data = BytesIO(file_response.content)
-			self._write_audio_file(binary_data, filename, outfolder)
-		except Exception as e:
-			self._handle_exception(e)
+		if outfolder is not None:
+			self._download_folder = self._set_folder(outfolder)
+		
+		out_file = self._check_for_path(filename,self._download_folder,skip)
+		if  out_file is None:
+			sleep(0.1) # avoid throttling
+			return False
+		else:
+			try:
+				file_response: Response = freesound_api.download_track(url, self._access_token)
+				binary_data = BytesIO(file_response.content)
+				self._write_audio_file(binary_data, out_file)
+				return True
+			except Exception as e:
+				self._handle_exception(e)
 
 	def get_next_page(self, url:str) -> dict[str,Any]:
 		"""a wrapper around the [`get_next_page()`][freesound.freesound_api.get_next_page] function 
@@ -302,73 +314,56 @@ class FreeSoundClient:
 		Args:
 		 	path (str): the name of the folder where audio files should be downladed
 		"""
+		if path == "":
+			path = "./"
+		if not path.endswith("/"):
+			path += "/"
 		self._download_folder = path
 
 	"""
 	UTILITIES
 	---------
 	"""	
-	def _set_download_count(self,count:int|None):
-		max_value = self._results_page['count']
-		if count is None:
-			self._download_count = self._prompt_downloads(max_value)
-		else:
-			if count <= max_value:
-				self._download_count = count
-			else:
-				warning(f"You want to download {count} files, but only {max_value} were found")
-				self._download_count = max_value
 
-	def download_results(self,output_folder_path:str|None=None,files_count:int|None=None) -> None:
+	def download_results(self,output_folder:str|None=None,files_count:int|None=None) -> None:
 		"""download `files_count` audio files into `output_folder_path`
 
 		This function takes care of pagination automatically
 
 		Args:
-			output_folder_path (str | None, optional): The name of the output folder.
+			output_folder (str | None, optional): The name of the output folder.
 			files_count (int | None, optional): how many files should be downloaded. 
 		"""
 		self._set_download_count(files_count)
-		if output_folder_path is not None:
-			self._download_folder = output_folder_path
-		else:
-			if self._download_folder is None:
-				self._download_folder = self._prompt_output_folder()
-		
-		print(f"Downloading {self._download_count} files of {self._results_page['count']}")
-		separator()
-		downloaded_count = 0
-		while downloaded_count < self._download_count:
-			for sound in self._results_page['results']:
-				if downloaded_count < self._download_count:
-					try:
-						parsed_sound = FreeSoundSoundInstance(sound)
-					except Exception as e:
-						self._handle_exception(e)
-					
-					print(parsed_sound.name)
-					filepath = os.path.join(self._download_folder,parsed_sound.name)
-					
-					if os.path.exists(filepath):
-						warning(f"The file {parsed_sound.name} has already been downloaded...Skipping")
-						separator()
-						sleep(0.1) # avoid throttling
-						pass
-					else:
+		if self._download_count == 0:
+			print("Nothing to Download")
+		else:			
+			print(f"Downloading {self._download_count} files of {self._results_page['count']}")
+			separator()
+			downloaded_count = 0
+			while downloaded_count < self._download_count:
+				for sound in self._results_page['results']:
+					if downloaded_count < self._download_count:
 						try:
-							self.download_track(parsed_sound.ensure_value('download'),parsed_sound.name, self._download_folder)
+							parsed_sound = FreeSoundSoundInstance(sound)
 						except Exception as e:
 							self._handle_exception(e)
-						downloaded_count+=1
-						self._update_download_list(sound, downloaded_count)
-						info(f"Downloaded Files: {downloaded_count} of {self._download_count}")
-						separator()
-				else:
-					break
-			if downloaded_count < self._download_count:
-				if not self._set_next_page():
-					break
-		info("Done Downloading")
+						try:
+							if self.download_track(parsed_sound.ensure_value('download'),parsed_sound.name,output_folder,skip=True):
+								downloaded_count+=1
+								self._update_download_list(sound, downloaded_count)
+								info(f"Downloaded Files: {downloaded_count} of {self._download_count}")
+								separator()
+							else:
+								pass
+						except Exception as e:
+							self._handle_exception(e)
+					else:
+						break
+				if downloaded_count < self._download_count:
+					if not self._set_next_page():
+						break
+			info("Done Downloading")
 
 	def write_download_list(self,filename:str="downloads.json", folder:str|None=None) -> None:
 		"""save a detailed list of the downloaded files in a `json` file
@@ -379,10 +374,13 @@ class FreeSoundClient:
 			filename (str, optional): the name of the file to save
 			folder (str | None, optional): the name of the folder where to save the file
 		"""
-		self._write_json(self._download_list,filename, folder)
+		if self._download_count == 0:
+			warning("There are no download records to write because nothing has been downloaded")
+		else:
+			self._write_json(self._download_list,filename, folder)
 		
-	def write_result_list(self,filename:str='results_list.json', folder:str|None=None) -> None:
-		"""save a detailed list of the [`search`][freesound.freesound_client.FreeSoundClient.search] response in a `json` file
+	def write_results_list(self,filename:str='results_list.json', folder:str|None=None) -> None:
+		"""save a simplified list of the [`search`][freesound.freesound_client.FreeSoundClient.search] response in a `json` file
 
 		If `folder` is not provided the client will prompt the user for this information
 
@@ -391,6 +389,31 @@ class FreeSoundClient:
 			folder (str | None, optional): the name of the folder where to save the file
 		"""
 		self._write_json(self._results_list,filename, folder)
+
+	def load_results_list(self, json_file:str):
+		"""load a json file produced from [`write_results_list`][freesound.freesound_client.FreeSoundClient.write_results_list]
+
+		Args:
+			json_file (str): a relative or an absolute path to a json file
+		"""
+		if os.path.exists(json_file):
+			with open(json_file) as data_file:
+				try:
+					data = json.load(data_file)
+					self._validate_data(data)
+				except Exception as e:
+					self._handle_exception(e)
+		else:
+			error(f"File {json_file} not found")
+			self.logout()
+
+	def _validate_data(self,data:dict[str,Any]):
+		if 'results' not in data or 'count' not in data or 'timestamp' not in data:
+			error(f"The json file you are trying to load is corrupted")
+			self.logout()
+		else:
+			self._results_list = data
+
 	def dump_results(self, data:dict[str,Any]|None=None):
 		"""pretty print the result of a [`search`][freesound.freesound_client.FreeSoundClient.search]
 
@@ -405,9 +428,6 @@ class FreeSoundClient:
 					separator()
 					for x,y in value.items(): # type:ignore
 						if isinstance(y,dict):
-						# 	for desc,desc_values in y.items(): # type:ignore
-						# 		log(desc,values)
-						# else:
 							log(x, unpack_features(y))
 						else:
 							log(x, y)
@@ -448,7 +468,7 @@ class FreeSoundClient:
 			return "./"
 
 	def _update_result_list(self, list:dict[str,Any]):
-		self._results_list['count'] += list['count']
+		self._results_list['count'] += len(list['results'])
 		self._results_list['timestamp'] = datetime.now().isoformat()
 		self._results_list['results'].extend(list['results'])
 
@@ -457,44 +477,64 @@ class FreeSoundClient:
 		self._download_list['timestamp'] = datetime.now().isoformat()
 		self._download_list['downloaded-files'].append(sound_obj)
 
-	def _check_for_path(self,filename:str, folder:str|None) -> str:
-		if folder is None:
-			if self._download_folder is None:
-				out_folder = self._prompt_output_folder()
+	def _set_download_count(self,count:int|None):
+		max_value = self._results_page['count']
+		if count is None:
+			self._download_count = self._prompt_downloads(max_value)
+		else:
+			if count <= max_value:
+				self._download_count = count
 			else:
-				out_folder = self._download_folder
+				warning(f"You want to download {count} files, but only {max_value} were found")
+				self._download_count = max_value
+
+	def _set_folder(self,folder:str|None) -> str:
+		if folder is None:
+			out_folder = self._prompt_output_folder()
 		else:
 			if folder == "":
 				out_folder = "."
 			else:
 				out_folder=folder
-			self._download_folder = folder
-
-		if not os.path.exists(out_folder):
-			os.mkdir(out_folder)
-		output_path = os.path.join(out_folder,filename)
+		return out_folder
+		
+	def _check_for_path(self,filename:str,folder:str,skip:bool) -> str|None:
+		output_path = os.path.join(folder,filename)
 		while os.path.exists(output_path):
-			warning(f"The File {output_path} already exists")
-			new_filename = ask("Press Enter to overwrite or set a new filename: ")
-			if new_filename.strip() == "":
-				info(f"Overwriting {filename}")
-				break
+			warning(f"The File {output_path} already exists...")
+			if  skip:
+				warning("Skipping")
+				separator()
+				return None
 			else:
-				output_path = os.path.join(out_folder,new_filename)
+				new_filename = ask("Press Enter to overwrite or set a new filename: ")
+				if new_filename.strip() == "":
+					info(f"Overwriting {filename}")
+					break
+				else:
+					output_path = os.path.join(folder,new_filename)
+		if not os.path.exists(folder):
+			os.mkdir(folder)
 		return output_path
 
-	def _write_audio_file(self, data:BytesIO, file_name:str, folder:str) -> None:
-		output_path = self._check_for_path(file_name,folder)
+	def _write_audio_file(self, data:BytesIO, output_path:str) -> None:
 		with open(output_path,"wb") as file:
 			file.write(data.read())
 
 	def _write_json(self,data:dict[Any,Any], filename:str, folder:str|None):
-		output_path = self._check_for_path(filename,folder)
-		if ".json" not in output_path:
-			filename += ".json"
-		with open(output_path, "w") as outfile:
-			json.dump(data, outfile, indent=4)
-		info(f"File: {output_path} written!")
+		timestamp = datetime.fromisoformat(self._results_list['timestamp']).strftime("%y%m%dT%H%M")
+		filename = timestamp+"_"+filename
+		folder = self._set_folder(folder)
+
+		output_path = self._check_for_path(filename,folder,False)
+		if output_path is not None:
+			if ".json" not in output_path:
+				filename += ".json"
+			with open(output_path, "w") as outfile:
+				json.dump(data, outfile, indent=4)
+			info(f"File: {output_path} written!")
+		else:
+			print("No file written")
 
 	def _set_next_page(self) -> bool:
 		if self._results_page["next"] is not None:
@@ -520,8 +560,10 @@ class FreeSoundClient:
 			if isinstance(e, ReadTimeout):
 				error("Connection Timeout!")
 			else:
-				print("Caught a generic Exception. Copy the printed infos and inform the developers")
-				print(traceback.format_exc())
+				separator_red()
+				warning(traceback.format_exc())
+				separator_red()
+				error("Caught a generic Exception. Copy the above printed trace and inform the developers")
 		self.logout()
 
 	def __repr__(self) -> str:

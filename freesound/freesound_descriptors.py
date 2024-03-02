@@ -33,7 +33,7 @@ class Descriptor():
 	This should not be used outside a [`FreeSoundDescriptors`][freesound.freesound_descriptors.FreeSoundDescriptors]
 	
 	Usage: 
-		```
+		```py
 		>>> FreeSoundDescriptors([Descriptor.lowlevel.spectral_complexity])
 		```
 	"""
@@ -146,7 +146,7 @@ class FreeSoundDescriptors(ListMaker):
 		fields (list[Any]): a `list` of [`Descriptor`][freesound.freesound_descriptors.Descriptor]
 
 	Usage:
-		```
+		```py
 		>>> print(FreeSoundDescriptors([Descriptor.low_level_average_loudness,Descriptor.low_level_mfcc]).aslist)
 		lowlevel.average_loudness,lowlevel.mfcc
 		```

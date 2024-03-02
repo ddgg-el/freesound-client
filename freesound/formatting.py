@@ -18,6 +18,9 @@ class colors:
     BLUE = '\033[94m'
     END = '\033[0m'
 
+def separator_red(length:int=20)->None:
+	print(f"{colors.RED}{'-'*length}{colors.END}")
+
 def warning(text:str)->None:
 	print(colors.YELLOW + text + colors.END)
 

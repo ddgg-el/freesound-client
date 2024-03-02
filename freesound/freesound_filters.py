@@ -68,7 +68,7 @@ class FreeSoundFilters(ListMaker):
 	Check the audio common project at: <http://www.audiocommons.org/>
 
 	Usage:
-		```
+		```py
 		>>> print(FreeSoundFilters(tag=['fret','plucked'], type="wav", samplerate=44100).aslist)
 		tag:fret tag:plucked type:wav samplerate:44100
 		```
@@ -109,7 +109,7 @@ class FreeSoundSort():
 	Useful for linting
 
 	Usage:
-		```
+		```py
 		>>> print(FreeSoundSort.DURATION_DESC)
 		duration_desc
 		```

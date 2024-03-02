@@ -1,6 +1,6 @@
 __pycache__
 .mypy_cache
-sound_lib/*
+**/sound_lib/*
 venv/
 tests/
 access_token.json
@@ -15,5 +15,5 @@ test.py
 .env
 docs/
 *.yml
-tutorials/
+record
 site/

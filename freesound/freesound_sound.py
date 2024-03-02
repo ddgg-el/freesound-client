@@ -39,20 +39,20 @@ class FreeSoundSoundInstance(Field):
 			DataError: if the passed dictonary does not contain a valid `field` it raises an error
 
 		Usage:
-			```
+			```py
 			>>> t = FreeSoundSoundInstance({'id': 524545, 'name': 'Piano12', 'tags': ['note', 'synthesizer', 'Piano'], 'type': 'mp3', 'download': 'https://freesound.org/apiv2/sounds/524545/download/'})
 			>>> print(t.name)
 			Piano12.mp3
 			```
 	"""
 	def __init__(self, track_data:dict[str,Any]) -> None:
-		valid_attributes = Field.all()
+		valid_attributes = Field.all().split(",")
 		if 'id' not in track_data or 'name' not in track_data:
 			raise AttributeError("No 'id' or 'name' provided")
 		count = 0
 		for field,value in track_data.items():
 			if field not in valid_attributes:
-				raise DataError(f"Could not create a FreeSoundTrack {field} is not a valid field")
+				raise DataError(f"Could not create a FreeSoundTrack '{field}' is not a valid field")
 			if field == 'name':
 				value = self._set_file_name(str(value))
 			if field == 'type':
@@ -80,7 +80,7 @@ class FreeSoundSoundInstance(Field):
 			str: the value of the `field`
 		
 		Usage:
-			```
+			```py
 			>>> t = FreeSoundSoundInstance({'id': 524545, 'name': 'Piano12', 'type': 'mp3'})
 			>>> t.ensure_value('download')
 			FieldError
@@ -101,6 +101,20 @@ class FreeSoundSoundInstance(Field):
 		if ext not in self.name:
 			self.name += "."+ext
 		# self.name = file_name
+			
+	def as_dict(self) -> dict[str, Any]:
+		"""a function to generate a dictionary out of `self`
+
+		Returns:
+			dict[str, Any]: the same `dict` that you would get from one element of `FreeSoundClient.results_list['results']`
+		"""
+		attr_list:dict[str,Any] = {}
+		attributes = Field.all().split(',')
+		for key in attributes:
+			value = getattr(self,key)
+			if value is not None:
+				attr_list[key] = value
+		return attr_list
 		
 	def __repr__(self) -> str:
 		return f"<freesound.freesound_track.FreeSoundTrack {self.name}>"

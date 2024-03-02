@@ -51,6 +51,7 @@ class Field():
 	pack = "pack"
 	download = "download"
 	bookmarks = "bookmarks"
+	bookmark = "bookmark"
 	previews = "previews"
 	images = "images"
 	num_downloads = "num_downloads"
@@ -64,19 +65,21 @@ class Field():
 	analysis = "analysis"
 	analysis_stats = "analysis_stats"
 	analysis_frames = "analysis_frames"
+	pack_name = "pack_name"
 	ac_analysis = "ac_analysis"
+	is_explicit = "is_explicit"
 
 	def _set_file_name(self,name:str) :
 		file_name = name.strip().replace(" ","-")
 		return file_name
 	
 	@classmethod
-	def all(cls):# -> list[Any]:
+	def all(cls) -> str:
 		fields:list[str] = []
 		for attr_name, attr_value in cls.__dict__.items():
 			if not isinstance(attr_value, classmethod) and not attr_name.startswith("__") and not callable(attr_value):
 				fields.append(attr_value)
-		return fields 
+		return ','.join(fields)
 
 	
 # class Field(FieldsBase):
@@ -97,7 +100,7 @@ class FreeSoundFields(ListMaker):
 	For more information visit: <https://freesound.org/docs/api/resources_apiv2.html#response-sound-instance>
 
 	Usage: 
-		```
+		```py
 		>>> print(FreeSoundFields([Field.id,Field.filesize]).aslist)
 		id,filesize
 		```
