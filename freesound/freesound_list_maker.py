@@ -9,7 +9,3 @@ class ListMaker:
 
 	def _make_list(self) -> str:
 		return " ".join(self._param_array)
-	
-if __name__ == "__main__":
-	lm = ListMaker(["ciao","papà","ciao","mamma"])
-	print(lm)

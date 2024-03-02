@@ -27,7 +27,7 @@ def handle_response(res:Response) -> None:
 			elif err_code == 429:
 				raise FreesoundError("Too many requests. Read https://freesound.org/docs/api/overview.html#throttling for more information")
 			else:
-				raise FreesoundError(f"Server error: contact the Freesound mailing list")
+				raise FreesoundError("Server error: contact the Freesound mailing list")
 
 def make_get_request(url:str, header:Dict[str,str] = {},params:Dict[str,str]={}) -> Response:
 	try:
@@ -36,6 +36,9 @@ def make_get_request(url:str, header:Dict[str,str] = {},params:Dict[str,str]={})
 		return response
 	except exceptions.ConnectionError:
 		print("There are problems connecting to freesound.org")
+		exit(0)
+	except exceptions.ReadTimeout:
+		print("Connection to Freesound.org timed out after 5 seconds")
 		exit(0)
 
 def make_post_request(url:str, data:Dict[str,str]) -> Response:
