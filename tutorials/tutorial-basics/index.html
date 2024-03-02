@@ -1,0 +1,1323 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://example.com/tutorials/tutorial-basics/">
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../tutorial-freesound/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.10">
+    
+    
+      
+        <title>Getting started - FreeSound Client Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#before-you-start" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FreeSound Client Docs" class="md-header__button md-logo" aria-label="FreeSound Client Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FreeSound Client Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Getting started
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9h-1.9M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69m-9.15 3.96h2.3L12 9l-1.15 3.65Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ddgg-el/freesound-client" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FreeSound Client Docs" class="md-nav__button md-logo" aria-label="FreeSound Client Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    FreeSound Client Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ddgg-el/freesound-client" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tutorials
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#before-you-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      Before you start
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get started
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#your-first-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      Your first access
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#your-first-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      Your first search
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#printing-data-from-the-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Printing data from the result
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download-your-search-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Download your search results
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusions
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial-freesound/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How does the Freesound API works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How To
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/api-reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/api-client/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FreeSoundClient
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/api-utilities/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Utilities
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/api-fs-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    freesound-api
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../motivation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Motivation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Appendix
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Appendix
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../appendix/missing-features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Missing Features
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../appendix/query-examples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Search Examples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Lists
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Lists
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../appendix/fields-list/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fields
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../appendix/descriptors-list/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Descriptors
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../appendix/filters-list/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Filters
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#before-you-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      Before you start
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get started
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#your-first-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      Your first access
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#your-first-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      Your first search
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#printing-data-from-the-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Printing data from the result
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download-your-search-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Download your search results
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusions
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>Getting started</h1>
+
+<p>Welcome to the <strong>FreeSoundClient Tutorial</strong>!
+This part of the documentation follows a <strong>step-by-step</strong> approach to help you get started with the basic functionalities of the <code>FreeSoundClient</code>.</p>
+<blockquote>
+<p><strong>INFO</strong> you can find the source code of the final version of this tutorial on <a href="https://github.com/ddgg-el/freesound-client/tree/main/tutorials">GitHub</a></p>
+</blockquote>
+<h4 id="before-you-start">Before you start</h4>
+<p>In order to use this software you need an account on <a href="https://freesound.org">freesound.org</a> and apply for an API key following this link <a href="https://freesound.org/apiv2/apply/">https://freesound.org/apiv2/apply/</a>. The form is quite straight forward: in the <strong>Create new API credentials</strong> you must give a <strong>name</strong> and a <strong>description</strong> to your <em>key</em>, accept the <a href="https://freesound.org/help/tos_api/">terms of use</a> and click on <strong>Request new access credentials</strong></p>
+<blockquote>
+<p>Please save your credentials in you project folder (either in a <code>.env</code> file or a <code>credentials.txt</code> file)</p>
+</blockquote>
+<hr />
+<h3 id="get-started">Get started</h3>
+<p>After downloading the repository, create a project folder and copy the <code>freesound</code> folder into it and create a new empty file called <code>main.py</code>. Your project directory should look like this:
+<div class="no-copy highlight"><pre><span></span><code>.
+├── freesound
+│   ├── __init__.py
+│   ├── filter_types.py
+│   ├── formatting.py
+│   ├── freesound_api.py
+│   ├── freesound_client.py
+│   ├── freesound_descriptors.py
+│   ├── freesound_errors.py
+│   ├── freesound_fields.py
+│   ├── freesound_filters.py
+│   ├── freesound_list_maker.py
+│   ├── freesound_requests.py
+│   └── freesound_sound.py
+└──  main.py
+</code></pre></div>
+Now open <code>main.py</code> and import the <code>freesound</code> library 
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">freesound</span> <span class="kn">import</span> <span class="o">*</span>
+</code></pre></div>
+Then create two global variables to store your <a href="#before-you-start">API Credentials</a>
+<div class="highlight"><pre><span></span><code>API_KEY=&lt;your-api-key&gt;
+USER_ID=&lt;your-user-id&gt;
+</code></pre></div>
+and create an instance of the <code>FreeSoundClient</code>
+<div class="highlight"><pre><span></span><code><span class="n">c</span> <span class="o">=</span> <span class="n">FreeSoundClient</span><span class="p">(</span><span class="n">USER_ID</span><span class="p">,</span><span class="n">API_KEY</span><span class="p">)</span>
+</code></pre></div></p>
+<hr />
+<h3 id="your-first-access">Your first access</h3>
+<p>Now run your program:
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>main.py
+</code></pre></div>
+If this is your first time that you use the <code>freesound-client</code> library when you run this program you will get the following output:</p>
+<details class="abstract" open="open">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>No access token file found. Authorizing...
+==================================================
+Visit this page to authorize your user: https://freesound.org/apiv2/oauth2/authorize/?client_id=&lt;your-client-id&gt;&amp;response_type=code&amp;state=xyz 
+Enter the authorization code from the redirect URL: 
+</code></pre></div>
+</details>
+<p>All the requests made by the <code>FreeSoundClient</code> use the <a href="https://freesound.org/docs/api/authentication.html#oauth2-authentication">OAuth2 authentication</a> protocol, so the application needs an access token from the API to get access to the database.</p>
+<p>If you follow the link posted in your terminal a browser page will display the following information:</p>
+<figure>
+    <a class="glightbox" href="../../img/access_granted.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Access Granted" src="../../img/access_granted.png" width="300" /></a>
+      <figcaption>click to enlarge</figcaption>
+</figure>
+<p>Where <strong>app-name</strong> will be the name of the <strong>name</strong> value that you provided when applying for the <strong>API credentials</strong>. Copy <code>&lt;the-authorization-code-to-copy&gt;</code> (an alphanumeric string) and paste it into the terminal:</p>
+<details class="abstract" open="open">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>Enter the authorization code from the redirect URL: &lt;the-authorization-code-to-copy&gt;
+https://freesound.org/apiv2/oauth2/access_token/
+Authorization succeded!
+Getting Client Info
+https://freesound.org/apiv2/me/
+FreeSound Client &lt;your-username&gt; Initialized
+</code></pre></div>
+</details>
+<p>You are now granted to access the Freesound database.</p>
+<p>This process will create a file called <code>access_token.json</code> where your access token's data will be stored. 
+<div class="no-copy highlight"><pre><span></span><code>├── access_token.json
+├── freesound
+└── main.py
+</code></pre></div></p>
+<blockquote>
+<p><strong>Note:</strong> If you delete this file the <code>FreeSoundClient</code> will simply repeat this authorization process and create a new <code>access_token.json</code> file for you</p>
+</blockquote>
+<hr />
+<h3 id="your-first-search">Your first <code>search</code></h3>
+<p>Now that your client is authorized to query the Freesound Database let's make a simple research:
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">freesound</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s2">&quot;&lt;your-api-key&gt;&quot;</span>
+<span class="n">USER_ID</span> <span class="o">=</span> <span class="s2">&quot;&lt;your-user-id&gt;&quot;</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">FreeSoundClient</span><span class="p">(</span><span class="n">USER_ID</span><span class="p">,</span><span class="n">API_KEY</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;piano detuned&quot;</span><span class="p">)</span>
+</code></pre></div>
+The <code>query</code> attribute needs a space-separated string of words that you want to search into the Freesound Database. Running this program will produce the following output:</p>
+<details class="abstract" open="open">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>Loading token from file
+________________
+Getting Client Info
+https://freesound.org/apiv2/me/
+FreeSound Client &lt;your-username&gt; Initialized
+________________
+Searching for piano detuned
+https://freesound.org/apiv2/search/text/?query=piano+detuned&amp;fields=id%2Cname%2C&amp;page_size=15&amp;sort=score&amp;normalized=0
+Found 469 results
+</code></pre></div>
+</details>
+<p>Because you already have an <code>access_token.json</code> the client will inform you that it is <code>Loading token from file</code> and then will perform the <code>search</code>.</p>
+<p>With this research you got <code>469 results</code> which are stored into the memory of the <code>FreeSoundClient</code>.</p>
+<p>The client will also print the url generated by the <code>search</code> request. If you copy this url and paste it into a browser you should see the actual result of your reasearch (you must be logged in to see this result otherwise you will get an <code>HTTP 401 Unauthorized</code> response).</p>
+<blockquote>
+<p>NOTICE: if you visit the url you will see a list of only 15 of the 469 results. You will understand why in the next paragraph.</p>
+</blockquote>
+<hr />
+<h3 id="printing-data-from-the-result">Printing data from the <code>result</code></h3>
+<p>By default, when performing a <code>search</code> the <code>FreeSoundClient</code> will get a <code>dictionary</code> that contains a parsed response from the server. Let's print it using the <a href="../../api/api-client/#freesound.freesound_api.FreeSoundClient.results_list">FreeSoundClient.results_list</a> attribute:
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">results_list</span><span class="p">)</span>
+</code></pre></div></p>
+<details class="abstract">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>{
+&quot;results&quot;: [
+    {
+    &quot;id&quot;: 30274,
+    &quot;name&quot;: &quot;piano_impression1.aif&quot;
+    },
+    {
+    &quot;id&quot;: 382508,
+    &quot;name&quot;: &quot;Piano 16 F4.wav&quot;
+    },
+    {
+    &quot;id&quot;: 382532,
+    &quot;name&quot;: &quot;Piano 45 G#5.wav&quot;
+    },
+    {
+    &quot;id&quot;: 382541,
+    &quot;name&quot;: &quot;Piano 57 G#6.wav&quot;
+    },
+    {
+    &quot;id&quot;: 382539,
+    &quot;name&quot;: &quot;Piano 59 A6.wav&quot;
+    },
+    {
+    &quot;id&quot;: 382533,
+    &quot;name&quot;: &quot;Piano 46 A5.wav&quot;
+    },
+    {
+    &quot;id&quot;: 382510,
+    &quot;name&quot;: &quot;Piano 20 G4.wav&quot;
+    },
+    {
+    &quot;id&quot;: 382546,
+    &quot;name&quot;: &quot;Piano 52 C#6.wav&quot;
+    },
+    {
+    &quot;id&quot;: 382484,
+    &quot;name&quot;: &quot;Piano 23 A4.wav&quot;
+    },
+    {
+    &quot;id&quot;: 382504,
+    &quot;name&quot;: &quot;Piano 12 D#4.wav&quot;
+    },
+    {
+    &quot;id&quot;: 382505,
+    &quot;name&quot;: &quot;Piano 11 D#4.wav&quot;
+    },
+    {
+    &quot;id&quot;: 382511,
+    &quot;name&quot;: &quot;Piano 19 G4.wav&quot;
+    },
+    {
+    &quot;id&quot;: 382502,
+    &quot;name&quot;: &quot;Piano 14 E4.wav&quot;
+    },
+    {
+    &quot;id&quot;: 382531,
+    &quot;name&quot;: &quot;Piano 44 G5.wav&quot;
+    },
+    {
+    &quot;id&quot;: 382486,
+    &quot;name&quot;: &quot;Piano 21 G4.wav&quot;
+    }
+],
+&quot;timestamp&quot;: &quot;2024-03-01T12:30:02.984110&quot;,
+&quot;count&quot;: 469
+}
+</code></pre></div>
+</details>
+<p>The response from the server is <em>paginated</em> which means that even if the client found 469 sound files that match your query (<code>"piano detuned"</code>) you will only see a list of 15 files.</p>
+<p>In this <code>dictionary</code> there are 3 keys:</p>
+<ul>
+<li><code>search-results</code>: a <code>list</code> containing data about the first 15 sound files matching the query.</li>
+<li><code>timestamp</code>: when the request has been submitted</li>
+<li><code>count</code> the total number of sound files found</li>
+</ul>
+<p>Another way to print the result of a <code>search</code> request is to use the <a href="../../api/api-client/#freesound.freesound_api.FreeSoundClient.dump_results"><code>FreeSound.dump_results()</code></a> method, a utility function that will just print a more human-readable version of <code>c.results_list</code>. Adding: 
+<div class="highlight"><pre><span></span><code><span class="n">c</span><span class="o">.</span><span class="n">dump_results</span><span class="p">()</span>
+</code></pre></div>
+to your <code>main.py</code> will produce the following output</p>
+<details class="abstract" open="open">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>Found 469 results
+________________
+id:30274
+name:piano_impression1.aif
+________________
+id:382530
+name:Piano 43 F#5.wav
+________________
+...
+</code></pre></div>
+</details>
+<blockquote>
+<p>Notice that in both cases the only information about the sound files that you collected from the database are <code>id</code> and <code>name</code></p>
+</blockquote>
+<hr />
+<h3 id="download-your-search-results">Download your <code>search</code> results</h3>
+<p>Downloading files from a <code>search</code> result it is pretty straight forward using the method <a href="../../api/api-client/#freesound.freesound_api.FreeSoundClient.download_results"><code>FreeSoundClient.download_results()</code></a>. Add:
+<div class="highlight"><pre><span></span><code><span class="n">c</span><span class="o">.</span><span class="n">download_results</span><span class="p">()</span>
+</code></pre></div>
+to your <code>main.py</code></p>
+<p>At this point you will be prompted with a few questions:
+<div class="no-copy highlight"><pre><span></span><code>How many files do you want to download? [a number | all] 
+</code></pre></div>
+Let's set this value to <code>3</code>. Then you need to specify the folder where the sound files will be downloaded:
+<div class="no-copy highlight"><pre><span></span><code>Please set an output folder: 
+</code></pre></div>
+Press enter to download the files in your project directory</p>
+<details class="abstract" open="open">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>Attribute &#39;download&#39; not found! Please include the &#39;download&#39; keyword in your fields&#39; search list and retry
+Logging out
+</code></pre></div>
+</details>
+<p>There is an <code>Exception</code>! The reason is simple: when querying the database the <code>FreeSoundClient</code> did not retrieve the <code>download</code> link associated with the sound files but only their <code>id</code>s and <code>name</code>s. You need to modify your search parameters. Go back to the line where you call the <code>c.search()</code> and modify it as follows:
+<div class="highlight"><pre><span></span><code>c.search(query=&quot;piano detuned&quot;,fields=&quot;download&quot;)
+</code></pre></div>
+The attribute <code>fields</code> is a feature that allows you to specify which attribute associate with a sound file should be included in the search results. In this case adding the keyword <code>download</code> will include the download link from which the <code>FreeSoundClient</code> will be then able to find and download the actual sound files. The url resulting of this query is now:
+<div class="no-copy highlight"><pre><span></span><code>https://freesound.org/apiv2/search/text/?query=piano+detuned&amp;fields=id%2Cname%2Cdownload&amp;page_size=15&amp;sort=score&amp;normalized=0
+</code></pre></div></p>
+<blockquote>
+<p>Notice how the url generated by the search request now includes the <code>download</code> keyword in the 'fields' parameter</p>
+</blockquote>
+<p>and <code>c.dump_results()</code> will produce</p>
+<details class="abstract" open="open">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>________________
+id:30274
+name:piano_impression1.aif
+download:https://freesound.org/apiv2/sounds/30274/download/
+________________
+id:382530
+name:Piano 43 F#5.wav
+download:https://freesound.org/apiv2/sounds/382530/download/
+________________
+id:382535
+...
+</code></pre></div>
+</details>
+<p>The download link is now available and <code>c.download_results()</code>should work as expected</p>
+<details class="abstract">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>How many files do you want to download? [a number | all] 3
+Please set an output folder:  
+Downloading 3 files of 469
+________________
+piano_impression1.aif
+Downloading piano_impression1.aif
+https://freesound.org/apiv2/sounds/30274/download/
+Downloaded Files: 1 of 3
+________________
+Piano-43-F#5.wav
+Downloading Piano-43-F#5.wav
+https://freesound.org/apiv2/sounds/382530/download/
+Downloaded Files: 2 of 3
+________________
+...
+</code></pre></div>
+</details>
+<p>You can now find these files in your project folder. When prompted, feel free to specify another <code>folder</code> either using an absolute or a relative path. You can avoid being prompted by adding the <code>output_folder_path</code> and the <code>files_count</code> arguments to <code>c.download_results()</code>:
+<div class="highlight"><pre><span></span><code>c.download_results(&quot;sounds&quot;, 3)
+</code></pre></div>
+This instruction will create the folder <code>sounds</code> inside your project folder and download 3 files from the <code>search</code> result into it.</p>
+<hr />
+<h3 id="conclusions">Conclusions</h3>
+<p>This tutorial allowed you to learn how to set up a simple project using the <code>freesound-client</code> library. </p>
+<p>In the next section you will learn the basics of the <a href="../tutorial-freesound/">Freesound API</a> and how to take full advantage of this library. </p>
+<hr />
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../.." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Home
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../tutorial-freesound/" class="md-footer__link md-footer__link--next" aria-label="Next: How does the Freesound API works">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                How does the Freesound API works
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "navigation.footer", "content.code.copy", "content.code.select"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.8fd75fb4.min.js"></script>
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>

@@ -1,0 +1,1343 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://example.com/how-to-guide/">
+      
+      
+        <link rel="prev" href="../tutorials/tutorial-freesound/">
+      
+      
+        <link rel="next" href="../api/api-reference/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.10">
+    
+    
+      
+        <title>How To - FreeSound Client Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e359304.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#filter-by-audio-feature" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="FreeSound Client Docs" class="md-header__button md-logo" aria-label="FreeSound Client Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FreeSound Client Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              How To
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9h-1.9M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69m-9.15 3.96h2.3L12 9l-1.15 3.65Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ddgg-el/freesound-client" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="FreeSound Client Docs" class="md-nav__button md-logo" aria-label="FreeSound Client Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    FreeSound Client Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ddgg-el/freesound-client" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tutorials
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/tutorial-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/tutorial-freesound/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How does the Freesound API works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    How To
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    How To
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#filter-by-audio-feature" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filter by Audio Feature
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sorting-freesoundsort" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sorting (FreeSoundSort)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download-a-lot-of-files-at-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      Download a lot of files at once
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#access-the-search-results-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Access the search results data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#handle-pagination-manually" class="md-nav__link">
+    <span class="md-ellipsis">
+      Handle pagination manually
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-a-result-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load a result list
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-specific-sound-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      Working with specific sound instances
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download-one-sound" class="md-nav__link">
+    <span class="md-ellipsis">
+      Download one sound
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/api-reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/api-client/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FreeSoundClient
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/api-utilities/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Utilities
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/api-fs-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    freesound-api
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../motivation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Motivation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Appendix
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Appendix
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/missing-features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Missing Features
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/query-examples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Search Examples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Lists
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Lists
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/fields-list/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fields
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/descriptors-list/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Descriptors
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/filters-list/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Filters
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#filter-by-audio-feature" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filter by Audio Feature
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sorting-freesoundsort" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sorting (FreeSoundSort)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download-a-lot-of-files-at-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      Download a lot of files at once
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#access-the-search-results-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Access the search results data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#handle-pagination-manually" class="md-nav__link">
+    <span class="md-ellipsis">
+      Handle pagination manually
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-a-result-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load a result list
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-specific-sound-instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      Working with specific sound instances
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download-one-sound" class="md-nav__link">
+    <span class="md-ellipsis">
+      Download one sound
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>How To</h1>
+
+<p>This section provides you with the tools that will help you take full advantage of this library</p>
+<p>All the examples presented in this page can be copied and tested in a file (or in a Jupyter Notebook) containing the following basic instructions:</p>
+<details class="example" open="open">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">freesound</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s2">&quot;&lt;your-api-key&gt;&quot;</span>
+<span class="n">USER_ID</span> <span class="o">=</span> <span class="s2">&quot;&lt;your-user-id&gt;&quot;</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">FreeSoundClient</span><span class="p">(</span><span class="n">USER_ID</span><span class="p">,</span><span class="n">API_KEY</span><span class="p">)</span>
+</code></pre></div>
+</details>
+<blockquote>
+<p><strong>INFO</strong> you can find the source code of the code showed in these guides on <a href="https://github.com/ddgg-el/freesound-client/tree/main/tutorials">GitHub</a></p>
+</blockquote>
+<h3 id="filter-by-audio-feature">Filter by Audio Feature</h3>
+<p>The <code>filters</code> parameter of the <code>FreeSoundClient.search()</code> method allows you to request information about sound files that only holds certain values for specific <code>fields</code>, i.e. it allows you to filter out those files which do not comply with specific attributes.</p>
+<p>The Freesound API includes <code>filters</code> based on the [Audio Commons Initiative][<a href="http://www.audiocommons.org/">http://www.audiocommons.org/</a>] project, which aimed at promoting the use of open audio content and at developing technologies with which to support an envisioned ecosystem of content repositories, production tools and users.</p>
+<blockquote>
+<p>A list of all the Audio Common filters can be found in the <a href="../appendix/filters-list/">Appendix Lists</a> of this Documentation
+These filters are all prefixed with the label <code>ac_</code> and can be used as regular filters, i.e. by specifying them in the search's <code>filter</code> attribute either with a string or with the <code>FreeSoundFilter</code> utility.</p>
+</blockquote>
+<h3 id="sorting-freesoundsort">Sorting (<code>FreeSoundSort</code>)</h3>
+<p>Another utility that can help you formulate your queries is the <a href="../api/api-utilities/#sort"><code>FreeSoundSort</code></a> class.
+The <code>sort</code> attribute of the <code>FreeSoundClient.search()</code> method aspects 9 possible values:</p>
+<ul>
+<li>score</li>
+<li>duration_desc</li>
+<li>duration_asc</li>
+<li>created_desc</li>
+<li>created_asc</li>
+<li>downloads_desc</li>
+<li>downloads_asc</li>
+<li>rating_desc</li>
+<li>rating_asc</li>
+</ul>
+<p>if you do forget these values you can always start typing <code>FreeSoundSort.</code> and your IDE will suggest you possible <em>valid</em> values that you can use in your queries:</p>
+<figure>
+    <a class="glightbox" href="../img/sort.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="filters hints" src="../img/sort.png" width="300" /></a>
+      <figcaption>click to enlarge</figcaption>
+</figure>
+<p>This example shows how to use it in context:</p>
+<details class="example" open="open">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;piano&quot;</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="n">FreeSoundSort</span><span class="o">.</span><span class="n">created_asc</span><span class="p">)</span>
+</code></pre></div>
+</details>
+<h2 id="download-a-lot-of-files-at-once">Download a lot of files at once</h2>
+<p>Another important parameter of the <a href="../api/api-client/#freesound.freesound_api.FreeSoundClient.search"><code>FreesuondClient.search()</code></a> method is <code>page_size</code> which by default is set to 15 and states the max number of items that will be downloaded in one <code>page</code> of the response. When you need to gather a lot of data from the Freesound Database you can hence reduce the number of requests by using a higher <code>page_size</code> value (up to 150).</p>
+<p>This parameter works well in coordination with <a href="../api/api-client/#freesound.freesound_api.FreeSoundClient.download_results"><code>FreeSoundClient.download_results()</code></a> a method that you might have already seen in the <a href="../tutorials/tutorial-basics/#download-your-search-results"><code>Tutorial</code></a>. This method allows you to download sound files from a query response and deals with pagination automatically.</p>
+<p>It accepts 2 parameters: </p>
+<ul>
+<li><code>output_folder_path</code>, which defines the folder in which the files will be downloaded </li>
+<li><code>files_count</code> the number of files that you want to download</li>
+</ul>
+<details class="example">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="n">c</span><span class="o">.</span><span class="n">download_results</span><span class="p">(</span><span class="n">output_folder_path</span><span class="o">=</span><span class="s2">&quot;sound_lib&quot;</span><span class="p">,</span> <span class="n">files_count</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</code></pre></div>
+</details>
+<p>So if you want to download 100 files from the Freesound Database the best approach would be to set both <code>search(...,page_size=100)</code> and <code>download_results(files_count=100)</code>:</p>
+<details class="example" open="open">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="n">filters</span> <span class="o">=</span> <span class="n">FreeSoundFilters</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;wav&quot;</span><span class="p">,</span> <span class="n">samplerate</span><span class="o">=</span><span class="mi">48000</span><span class="p">)</span><span class="o">.</span><span class="n">aslist</span>
+<span class="hll"><span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;piano&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">Field</span><span class="o">.</span><span class="n">download</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">filters</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</span><span class="hll"><span class="n">c</span><span class="o">.</span><span class="n">download_results</span><span class="p">(</span><span class="n">output_folder</span><span class="o">=</span><span class="s2">&quot;tutorials/sound_lib&quot;</span><span class="p">,</span><span class="n">files_count</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+<p>With this approach you will limit the requests to the minimum because the search results are not paginated and <code>download_results</code> will find all the download links in one page</p>
+<blockquote>
+<p><strong>NOTE</strong>: Remember that if you want to download files from the Freesound Database, you MUST include the field <code>download</code> in the <code>search</code> request</p>
+</blockquote>
+<p>There are different scenarios that we would like to summarize:</p>
+<ul>
+<li><code>download_results</code> will never overwrite an existing sound file. If the sound file already exists in the destination download folder the client will just skip it, i.e. it will not make a request to the server</li>
+<li>if <code>page_size</code> is smaller than <code>files_count</code> the client will take care of pagination for you</li>
+<li>if <code>files_count</code> is bigger than the actual length of resulting the sound list, i.e. fewer files than <code>files_count</code> are found in the Database with your query, this value will be set to the length of the response list.</li>
+</ul>
+<h2 id="access-the-search-results-data">Access the search results data</h2>
+<p>The <code>search</code> method actually <strong>returns</strong> the results list, which means that you can assign the response from the Database to a variable and manipulate the resulting <code>dictionary</code> as you need. The following is a simple demonstration of this feature:</p>
+<details class="example" open="open">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="n">result</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;piano&quot;</span><span class="p">,</span><span class="n">page_size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div>
+</details>
+<details class="abstract">
+<summary>Output</summary>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">148471</span><span class="p">,</span>
+<span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PIANO_LOUD_AB6.wav&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+</details>
+<p>This response is a <code>dictionary</code> containing the following keys:</p>
+<ul>
+<li><code>count</code>: the total count of the files found</li>
+<li><code>previous</code>: the url of the previous page (for pagination)</li>
+<li><code>next</code>: the url of the next page (for pagination)</li>
+<li><code>results</code>: a <code>list</code> of sounds and their features matching the <code>search</code> request</li>
+</ul>
+<p>You can use the variable <code>result</code> as you would do with a regular <code>dict</code>, for example <code>result['results'][0]</code> will return the data about the first sound instance in the list. Another example could be:</p>
+<details class="example" open="open">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="c1"># store the id of only those sounds that have a `pitch_centroid` lower than 0.4</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;piano detuned&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">Field</span><span class="o">.</span><span class="n">analysis</span><span class="p">,</span> <span class="n">descriptors</span><span class="o">=</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">sfx_pitch_centroid</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">results_list</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]</span>
+
+<span class="n">ids</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">snd</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results_list</span><span class="p">):</span>
+    <span class="n">centroid</span> <span class="o">=</span> <span class="n">snd</span><span class="p">[</span><span class="s1">&#39;analysis&#39;</span><span class="p">][</span><span class="s1">&#39;sfx&#39;</span><span class="p">][</span><span class="s1">&#39;pitch_centroid&#39;</span><span class="p">]</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">centroid</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">mean</span> <span class="o">&lt;=</span> <span class="mf">0.4</span><span class="p">:</span>
+        <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">snd</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+</code></pre></div>
+</details>
+<h2 id="handle-pagination-manually">Handle pagination manually</h2>
+<p>There are no limitation about the number of <code>search</code> calls that you can perform in your program, and even though it is always better to optimize your searches via the <code>fields</code> and <code>filter</code> attributes, there might be scenarios in which you need to perform multiple searches.</p>
+<p>Let's consider this possible scenario: you are looking for as many uncompressed recordings as possible of a single notes played by a prepared piano sampled at 44100, files that you might eventually want to download. You then want to retrieve the loudness of each sound sample and store all this data in a <code>json</code> file.</p>
+<p>You could formulate your requests as follows:</p>
+<details class="example" open="open">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="n">fields</span> <span class="o">=</span> <span class="n">FreeSoundFields</span><span class="p">([</span><span class="n">Field</span><span class="o">.</span><span class="n">download</span><span class="p">,</span> <span class="n">Field</span><span class="o">.</span><span class="n">analysis</span><span class="p">])</span><span class="o">.</span><span class="n">aslist</span>
+<span class="n">filters</span> <span class="o">=</span> <span class="n">FreeSoundFilters</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;wav&quot;</span><span class="p">,</span> <span class="n">samplerate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;prepared&quot;</span><span class="p">],</span> <span class="n">ac_single_event</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">aslist</span>
+<span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;piano&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">filters</span><span class="p">,</span> <span class="n">descriptors</span><span class="o">=</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">lowlevel_average_loudness</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+</code></pre></div>
+</details>
+<p>By the time of writing this tutorial this search produces 151 results. </p>
+<p>In the <a href="../tutorials/tutorial-freesound/">FreeSound API Tutorial</a> we describe how to save the analysis data in a <code>json</code> file using the <a href="../api/api-client/#freesound.freesound_api.FreeSoundClient.write_results_list"><code>FreeSoundClient.write_results_list</code></a> method.</p>
+<p>Behind the scenes this method save sound data from the client's attribute <code>results_list</code>, which keeps track each <code>search</code> performed by the client. However, this attribute does not deal with pagination, i.e. if your page size is set to <code>15</code>, <code>results_list</code> will store only the first <code>15</code> results.</p>
+<p>So the first thing would be to increment the <code>page_size</code> to the highest possible value which is <code>150</code>. How do you handle the 151th file? You need to access the <code>next</code> page.</p>
+<p><code>results_list</code> does not store information about pagination, but the return value of <code>search</code> does. You can update your script as follows:</p>
+<details class="example" open="open">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="n">fields</span> <span class="o">=</span> <span class="n">FreeSoundFields</span><span class="p">([</span><span class="n">Field</span><span class="o">.</span><span class="n">download</span><span class="p">,</span> <span class="n">Field</span><span class="o">.</span><span class="n">analysis</span><span class="p">])</span><span class="o">.</span><span class="n">aslist</span>
+<span class="n">filters</span> <span class="o">=</span> <span class="n">FreeSoundFilters</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;wav&quot;</span><span class="p">,</span> <span class="n">samplerate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;prepared&quot;</span><span class="p">],</span> <span class="n">ac_single_event</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">aslist</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;piano&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">filters</span><span class="p">,</span> <span class="n">descriptors</span><span class="o">=</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">lowlevel_average_loudness</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+</code></pre></div>
+</details>
+<p>From <code>result</code> you can access the <code>next</code> keyword and get the url of the second page of your query. <code>print(result['next'])</code> will output:</p>
+<details class="abstract" open="open">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>https://freesound.org/apiv2/search/text/?&amp;query=piano&amp;filter=type:wav%20samplerate:44100%20tag:prepared%20ac_single_event:True&amp;weights=&amp;page=2&amp;page_size=150&amp;fields=id,name,download,analysis&amp;descriptors=lowlevel.average_loudness
+</code></pre></div>
+</details>
+<p>Once you have this value, you can call the <a href="../api/api-client/#freesound.freesound_api.FreeSoundClient.get_next_page"><code>FreeSoundClient.get_next_page()</code></a> method passing the url to it, which will update the client <code>results_list</code> with the results from the second page.</p>
+<p>At this point you can store all your data in a <code>json</code> file at once calling <code>write_results_list</code>.</p>
+<details class="example">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="n">c</span> <span class="o">=</span> <span class="n">FreeSoundClient</span><span class="p">(</span><span class="n">USER_ID</span><span class="p">,</span><span class="n">API_KEY</span><span class="p">)</span>
+
+<span class="n">fields</span> <span class="o">=</span> <span class="n">FreeSoundFields</span><span class="p">([</span><span class="n">Field</span><span class="o">.</span><span class="n">download</span><span class="p">,</span> <span class="n">Field</span><span class="o">.</span><span class="n">analysis</span><span class="p">])</span><span class="o">.</span><span class="n">aslist</span>
+<span class="n">filters</span> <span class="o">=</span> <span class="n">FreeSoundFilters</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;wav&quot;</span><span class="p">,</span> <span class="n">samplerate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;prepared&quot;</span><span class="p">],</span> <span class="n">ac_single_event</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">aslist</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;piano&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">filters</span><span class="p">,</span> <span class="n">descriptors</span><span class="o">=</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">lowlevel_average_loudness</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">results_list</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">])</span> <span class="c1"># 150</span>
+
+<span class="n">c</span><span class="o">.</span><span class="n">get_next_page</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;next&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">results_list</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">])</span> <span class="c1"># 151</span>
+</code></pre></div>
+</details>
+<blockquote>
+<p>NOTICE: If you just only wanted to download the 151 files you could have call <code>c.download_list()</code> directly as this method handles pagination automatically</p>
+</blockquote>
+<h2 id="load-a-result-list">Load a result list</h2>
+<p>If you want to recover your data from a previous session or import it in another script, you can use the <a href="../api/api-client/#freesound.freesound_api.FreeSoundClient.load_results_list"><code>FreeSoundClient.load_results_list()</code></a> method that load a <code>json</code> file saved by <code>write_results_list</code>. It usage is pretty straight forward:</p>
+<details class="example">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="n">c</span> <span class="o">=</span> <span class="n">FreeSoundClient</span><span class="p">(</span><span class="n">USER_ID</span><span class="p">,</span><span class="n">API_KEY</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">load_results_list</span><span class="p">(</span><span class="s2">&quot;tutorials/records/240301T2042_results_list.json&quot;</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">dump_results</span><span class="p">()</span>
+</code></pre></div>
+</details>
+<p>this method checks that the file is properly formatted, i.e. it can find the <code>results</code>, the <code>timestamp</code> and the <code>count</code> keywords. It is not advice to write such file by hand.</p>
+<h2 id="working-with-specific-sound-instances">Working with specific sound instances</h2>
+<p>Another useful public method of the <code>FreeSoundClient</code> is <a href="../api/api-client/#freesound.freesound_api.FreeSoundClient.get_track_info"><code>get_track_info</code></a> which is allows you to retrieve information about a sound given its <code>id</code>.</p>
+<blockquote>
+<p>This function implements <a href="https://freesound.org/docs/api/resources_apiv2.html#sound-instance">this request</a> of the Freesound API. </p>
+</blockquote>
+<details class="example" open="open">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="n">result</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">get_track_info</span><span class="p">(</span><span class="mi">382353</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>
+</details>
+<details class="abstract">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>&lt;freesound.freesound_track.FreeSoundTrack Cymbale-longue-02.wav&gt;
+</code></pre></div>
+</details>
+<p>The result of this call is a <a href="../api/api-utilities/#freesound.freesound_sound.FreeSoundSoundInstance"><code>FreeSoundSoundInstance</code></a> another utility class which basically represent a <em>Sound Instance</em> as described <a href="https://freesound.org/docs/api/resources_apiv2.html#sound-instance">here</a>. You can access all its fields as attributes, i.e. <code>result.download</code> will return its download url (or None), or you can create a <code>dictionary</code> out of it with the method <a href="../api/api-utilities/#freesound.freesound_sound.FreeSoundSoundInstance.as_dict"><code>as_dict()</code></a></p>
+<details class="example" open="open">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">as_dict</span><span class="p">())</span>
+</code></pre></div>
+</details>
+<details class="abstract">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>{
+&quot;id&quot;: 382353,
+&quot;name&quot;: &quot;Cymbale-longue-02.wav&quot;,
+&quot;url&quot;: &quot;https://freesound.org/people/lomographicmusic/sounds/382353/&quot;,
+&quot;tags&quot;: [
+    &quot;prepared&quot;,
+    &quot;detuned&quot;,
+    &quot;piano&quot;
+],
+&quot;description&quot;: &quot;A cymbal flippantly thrown into the piano, recorded with Tascam DP008. \r\n\r\nUne cymbale jet\u00e9e n\u00e9gligemment dans le piano, frapp\u00e9e par les marteaux et capt\u00e9e par le brave Tascam DP008 !&quot;,
+&quot;created&quot;: &quot;2017-02-28T20:16:07&quot;,
+&quot;license&quot;: &quot;https://creativecommons.org/licenses/by/4.0/&quot;,
+&quot;type&quot;: &quot;wav&quot;,
+&quot;channels&quot;: 2,
+&quot;filesize&quot;: 493772,
+&quot;bitrate&quot;: 0,
+&quot;bitdepth&quot;: 16,
+&quot;duration&quot;: 2.79891,
+&quot;samplerate&quot;: 44100.0,
+&quot;username&quot;: &quot;lomographicmusic&quot;,
+&quot;pack&quot;: &quot;https://freesound.org/apiv2/packs/21508/&quot;,
+&quot;download&quot;: &quot;https://freesound.org/apiv2/sounds/382353/download/&quot;,
+&quot;bookmark&quot;: &quot;https://freesound.org/apiv2/sounds/382353/bookmark/&quot;,
+&quot;previews&quot;: {
+    &quot;preview-hq-mp3&quot;: &quot;https://cdn.freesound.org/previews/382/382353_7119516-hq.mp3&quot;,
+    &quot;preview-hq-ogg&quot;: &quot;https://cdn.freesound.org/previews/382/382353_7119516-hq.ogg&quot;,
+    &quot;preview-lq-mp3&quot;: &quot;https://cdn.freesound.org/previews/382/382353_7119516-lq.mp3&quot;,
+    &quot;preview-lq-ogg&quot;: &quot;https://cdn.freesound.org/previews/382/382353_7119516-lq.ogg&quot;
+},
+&quot;images&quot;: {
+    &quot;waveform_m&quot;: &quot;https://cdn.freesound.org/displays/382/382353_7119516_wave_M.png&quot;,
+    &quot;waveform_l&quot;: &quot;https://cdn.freesound.org/displays/382/382353_7119516_wave_L.png&quot;,
+    &quot;spectral_m&quot;: &quot;https://cdn.freesound.org/displays/382/382353_7119516_spec_M.jpg&quot;,
+    &quot;spectral_l&quot;: &quot;https://cdn.freesound.org/displays/382/382353_7119516_spec_L.jpg&quot;,
+    &quot;waveform_bw_m&quot;: &quot;https://cdn.freesound.org/displays/382/382353_7119516_wave_bw_M.png&quot;,
+    &quot;waveform_bw_l&quot;: &quot;https://cdn.freesound.org/displays/382/382353_7119516_wave_bw_L.png&quot;,
+    &quot;spectral_bw_m&quot;: &quot;https://cdn.freesound.org/displays/382/382353_7119516_spec_bw_M.jpg&quot;,
+    &quot;spectral_bw_l&quot;: &quot;https://cdn.freesound.org/displays/382/382353_7119516_spec_bw_L.jpg&quot;
+},
+&quot;num_downloads&quot;: 31,
+&quot;avg_rating&quot;: 3.0,
+&quot;num_ratings&quot;: 1,
+&quot;rate&quot;: &quot;https://freesound.org/apiv2/sounds/382353/rate/&quot;,
+&quot;comments&quot;: &quot;https://freesound.org/apiv2/sounds/382353/comments/&quot;,
+&quot;num_comments&quot;: 0,
+&quot;comment&quot;: &quot;https://freesound.org/apiv2/sounds/382353/comment/&quot;,
+&quot;similar_sounds&quot;: &quot;https://freesound.org/apiv2/sounds/382353/similar/&quot;,
+&quot;analysis&quot;: &quot;No descriptors specified. You should indicate which descriptors you want with the &#39;descriptors&#39; request parameter.&quot;,
+&quot;analysis_stats&quot;: &quot;https://freesound.org/apiv2/sounds/382353/analysis/&quot;,
+&quot;analysis_frames&quot;: &quot;https://freesound.org/data/analysis/382/382353-fs-essentia-extractor_legacy_frames.json&quot;,
+&quot;is_explicit&quot;: false
+}
+</code></pre></div>
+</details>
+<p>You can create a <code>dict</code> from a <code>FreeSoundSoundInstance</code>, and you can also create a <code>FreeSoundSoundInstance</code> from a <code>dict</code>. This MUST contain at least the fields <code>id</code> and <code>name</code>. If it contains non-valid fields, the program will raise a <code>DataError</code> exception.</p>
+<details class="example">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="c1"># notice &#39;tegs&#39; instead of &#39;tags&#39;</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">FreeSoundSoundInstance</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">524545</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Piano12 B Flat&#39;</span><span class="p">,</span> <span class="s1">&#39;tegs&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;note&#39;</span><span class="p">,</span> <span class="s1">&#39;synthesizer&#39;</span><span class="p">,</span> <span class="s1">&#39;Piano&#39;</span><span class="p">],</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;mp3&#39;</span><span class="p">,</span> <span class="s1">&#39;download&#39;</span><span class="p">:</span> <span class="s1">&#39;https://freesound.org/apiv2/sounds/524545/download/&#39;</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div>
+</details>
+<details class="abstract">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>freesound.freesound_errors.DataError: Could not create a FreeSoundTrack &#39;tegs&#39; is not a valid field
+</code></pre></div>
+</details>
+<p>One important thing to notice is that the <code>name</code> attribute in a <code>FreeSoundSoundInstance</code> is manipulated. Spaces will be replaced by <code>-</code> and the extension will be added to it. The original name of the last examples is <code>'Piano12 B Flat'</code>, but <code>t.name</code> will become</p>
+<details class="abstract" open="open">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>Piano12-B-Flat.mp3
+</code></pre></div>
+</details>
+<h2 id="download-one-sound">Download one sound</h2>
+<p>There are simple scenarios in which you might already have a <code>FreeSoundSoundInstance</code> or a valid download link. In these cases you might find the <a href="../api/api-client/#freesound.freesound_api.FreeSoundClient.download_track"><code>FreeSoundClient.download_track()</code></a> method more suitable (or just simpler) than <code>download_list</code>. Given a download url and a file name, this function will just download that file locally. For example:</p>
+<details class="example" open="open">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="n">result</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">get_track_info</span><span class="p">(</span><span class="mi">382353</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">download_track</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">download</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div>
+</details>
+<p>You can specify an output folder using the <code>outfolder</code> parameter, but if you don't the program will prompt you to specify one. If the file already exists you will be prompted to choose how to handle the situation. Setting the <code>skip</code> attribute to <code>True</code> defaults to not downloading the file if it already exists.</p>
+<details class="example" open="open">
+<summary>Code</summary>
+</details>
+<div class="highlight"><pre><span></span><code><span class="n">result</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">get_track_info</span><span class="p">(</span><span class="mi">382353</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">download_track</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">download</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">outfolder</span><span class="o">=</span><span class="s1">&#39;tutorials/sound_lib&#39;</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p><br></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../tutorials/tutorial-freesound/" class="md-footer__link md-footer__link--prev" aria-label="Previous: How does the Freesound API works">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                How does the Freesound API works
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../api/api-reference/" class="md-footer__link md-footer__link--next" aria-label="Next: Overview">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Overview
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["search.suggest", "navigation.footer", "content.code.copy", "content.code.select"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.8fd75fb4.min.js"></script>
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>

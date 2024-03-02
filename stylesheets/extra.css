@@ -1,0 +1,29 @@
+html {
+	font-size: 125%;
+}
+
+details .highlight{
+	font-size: 1.3em;
+}
+
+.md-grid {
+	max-width: 80rem;
+}
+
+.md-typeset figure {
+	margin: 30px auto;
+	/* box-shadow: 0px 15px 35px 0px rgba(0,0,0,0.32); */
+}
+
+.md-typeset figcaption {
+	margin: 0 auto;
+	font-size: 12px;
+}
+
+.abstract code {
+	font-size: 12px;	
+}
+
+.example code {
+	font-size: 12px;	
+}

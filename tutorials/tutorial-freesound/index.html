@@ -1,0 +1,1332 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://example.com/tutorials/tutorial-freesound/">
+      
+      
+        <link rel="prev" href="../tutorial-basics/">
+      
+      
+        <link rel="next" href="../../how-to-guide/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.10">
+    
+    
+      
+        <title>How does the Freesound API works - FreeSound Client Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-search-attributes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FreeSound Client Docs" class="md-header__button md-logo" aria-label="FreeSound Client Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FreeSound Client Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              How does the Freesound API works
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9h-1.9M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69m-9.15 3.96h2.3L12 9l-1.15 3.65Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ddgg-el/freesound-client" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FreeSound Client Docs" class="md-nav__button md-logo" aria-label="FreeSound Client Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    FreeSound Client Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ddgg-el/freesound-client" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Tutorials
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    How does the Freesound API works
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    How does the Freesound API works
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-search-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      The search attributes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filter-your-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filter your search
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-analysis-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting analysis data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requesting-multiple-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Requesting multiple fields
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saving-the-analysis-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Saving the analysis data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-possible-methodologies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other possible methodologies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How To
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/api-reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/api-client/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FreeSoundClient
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/api-utilities/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Utilities
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/api-fs-api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    freesound-api
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../motivation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Motivation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Appendix
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Appendix
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../appendix/missing-features/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Missing Features
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../appendix/query-examples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Search Examples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Lists
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Lists
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../appendix/fields-list/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Fields
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../appendix/descriptors-list/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Descriptors
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../appendix/filters-list/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Filters
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-search-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      The search attributes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filter-your-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filter your search
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-analysis-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting analysis data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requesting-multiple-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Requesting multiple fields
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saving-the-analysis-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Saving the analysis data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-possible-methodologies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other possible methodologies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>How does the Freesound API works</h1>
+
+<p>Now that you know how to set up a basic script to work with the <code>FreeSoundClient</code> let's focus on how to take full advantage of the Freesound API.</p>
+<blockquote>
+<p><strong>NOTICE</strong>: The Freesound API is very well documented. Please don't forget that you can always rely on the <a href="https://freesound.org/docs/api/">Official Freesound API Documentation</a></p>
+<p><strong>INFO</strong> you can find the source code of the final version of this tutorial on <a href="https://github.com/ddgg-el/freesound-client/tree/main/tutorials">GitHub</a></p>
+</blockquote>
+<hr />
+<h3 id="the-search-attributes">The search attributes</h3>
+<p>Querying the Freesound Database is the most important task of this library and understand how to build the right queries for your needs is in turn the most important thing to learn.</p>
+<p>Let's review our first query:
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">freesound</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">USER_ID</span> <span class="o">=</span> <span class="s2">&quot;&lt;your-user-id&gt;&quot;</span>
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s2">&quot;&lt;your-api-key&gt;&quot;</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">FreeSoundClient</span><span class="p">(</span><span class="n">USER_ID</span><span class="p">,</span><span class="n">API_KEY</span><span class="p">)</span>
+<span class="hll"><span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;piano detuned&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+Behind the scene <code>search</code> performs a <code>GET</code> request at the following url:
+<div class="highlight"><pre><span></span><code>https://freesound.org/apiv2/search/text/?query=piano+detuned&amp;fields=id%2Cname%2C&amp;page_size=15&amp;sort=score&amp;normalized=0
+</code></pre></div>
+There are many things specified in this url so let's break it down:
+<div class="no-copy highlight"><pre><span></span><code>https://freesound.org/apiv2/search/text/
+</code></pre></div>
+is the actual address that you want to reach, and it is the one that users use to perform text-based researches.</p>
+<p>Starting from <code>?</code> there is a list of url parameters that you pass to the request:</p>
+<ul>
+<li><code>query=piano+detuned</code> </li>
+<li><code>fields=id%2Cname%2C</code> </li>
+<li><code>page_size=15</code></li>
+<li><code>sort=score</code></li>
+<li><code>normalized=0</code></li>
+</ul>
+<p>The parameter <code>query</code> stores the text that you want to search in the database. You can use as many search keywords as you want. Just separate them with a space, and they will be automatically encoded with a <code>+</code> sign.</p>
+<p><code>fields</code> is the parameter which allows you to specify which information you want to retrieve from the database about a sound file. By default, the <code>FreeSoundClient</code> will always ask for the <code>id</code> and the <code>name</code>, but as you saw in the last tutorial, you can request other fields, such as <code>download</code>. There are many <code>fields</code> available for each sound instance, and you will see how to take advantage of this parameter in the next paragraphs.</p>
+<p><code>page_size</code> allows you to define how many results should be included in one request page (which is 15 by default). If you are planning to work with a higher number of sound files you should use a higher value for this parameter (max 150).</p>
+<p>The parameter <code>sort</code>, by definition, will tell the database how the results should be sorted.</p>
+<p><code>normalization</code> is a feature that only applies when you include audio <code>descriptors</code> in your request. More about this in the next paragraphs.</p>
+<h3 id="filter-your-search">Filter your <code>search</code></h3>
+<p>One of the most important feature when performing a <code>search</code> request is the ability to filter out results that do not comply with your needs. </p>
+<p>Let's make an example: for a specific project you need to collect only <code>wav</code> files with a 16bit resolution and sampled at 48000. To achieve this you can use another object provided by this library: the <a href="../../api/api-utilities/#freesound.freesound_filters.FreeSoundFilters"><code>FreeSoundFilters</code></a>, a utility class that helps you to format a list of filters for a <em>valid</em> request.
+<div class="highlight"><pre><span></span><code><span class="n">filters</span> <span class="o">=</span> <span class="n">FreeSoundFilters</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;wav&#39;</span><span class="p">,</span><span class="n">samplerate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span><span class="n">bitdepth</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;piano detuned&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">filters</span><span class="o">.</span><span class="n">aslist</span><span class="p">)</span>
+</code></pre></div>
+This call will produce the following output:</p>
+<details class="abstract" open="open">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>Searching for piano detuned
+https://freesound.org/apiv2/search/text/?query=piano+detuned&amp;fields=id%2Cname%2C&amp;page_size=15&amp;sort=score&amp;normalized=0&amp;filter=type%3Awav+samplerate%3A44100+bitdepth%3A16
+Found 256 results
+</code></pre></div>
+</details>
+<p>With the same search keywords your query found <code>256 results</code> instead of 469.</p>
+<p>The resulting url changed, and it now includes the <code>filter</code> parameter:
+<div class="no-copy highlight"><pre><span></span><code>filter=type%3Awav+samplerate%3A44100+bitdepth%3A16
+</code></pre></div>
+Which decoded becomes:
+<div class="no-copy highlight"><pre><span></span><code>filter=type:wav samplerate:44100 bitdepth:16
+</code></pre></div>
+And this is exactly what the <code>FreeSoundFilters</code> does. Other than provide hints for <em>valid</em> filters, </p>
+<figure>
+    <a class="glightbox" href="../../img/filters.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="filters hints" src="../../img/filters.png" width="300" /></a>
+      <figcaption>click to enlarge</figcaption>
+</figure>
+<p>this class and its method <code>aslist</code>, will format this list for you:
+<div class="highlight"><pre><span></span><code><span class="n">filters</span> <span class="o">=</span> <span class="n">FreeSoundFilters</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;wav&#39;</span><span class="p">,</span><span class="n">samplerate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span><span class="n">bitdepth</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">filters</span><span class="o">.</span><span class="n">aslist</span><span class="p">)</span>
+</code></pre></div></p>
+<details class="abstract" open="open">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>type:wav samplerate:44100 bitdepth:16
+</code></pre></div>
+</details>
+<p>Sound files can also be filtered by one or multiple attributes, such as <code>tag</code>, and you might want to add a filter to get only sounds with specific tags.
+In such a scenario, instead of specifying a string as a value for <code>tag</code>, you can use a <code>list</code> like follows:
+<div class="highlight"><pre><span></span><code><span class="n">filters</span> <span class="o">=</span> <span class="n">FreeSoundFilters</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;wav&#39;</span><span class="p">,</span><span class="n">samplerate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span><span class="n">bitdepth</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;detuned&#39;</span><span class="p">,</span><span class="s1">&#39;prepared&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">filters</span><span class="o">.</span><span class="n">aslist</span><span class="p">)</span>
+</code></pre></div>
+The list will be expanded as follows</p>
+<details class="abstract" open="open">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>type:wav samplerate:44100 bitdepth:16 tag:detuned tag:prepared
+</code></pre></div>
+</details>
+<p>a valid string for your query. With the additional <code>tag</code> filter your search result will contain 233 sounds</p>
+<details class="abstract">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>Searching for piano detuned
+https://freesound.org/apiv2/search/text/?query=piano+detuned&amp;fields=id%2Cname%2Ctags&amp;page_size=15&amp;sort=score&amp;normalized=0&amp;filter=type%3Awav+samplerate%3A44100+bitdepth%3A16+tag%3Aprepared+tag%3Adetuned
+Found 233 results
+</code></pre></div>
+</details>
+<h3 id="getting-analysis-data">Getting analysis data</h3>
+<p>One of the most powerful feature of the Freesound API is the possibility to retrieve low level analysis data of each sound.
+There are two steps to achieve this: first you should add the <code>analysis</code> field to your <code>fields</code> parameter:
+<div class="highlight"><pre><span></span><code><span class="n">filters</span> <span class="o">=</span> <span class="n">FreeSoundFilters</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;wav&#39;</span><span class="p">,</span><span class="n">samplerate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span><span class="n">bitdepth</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span><span class="n">tag</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;prepared&#39;</span><span class="p">,</span><span class="s1">&#39;detuned&#39;</span><span class="p">])</span>
+<span class="hll"><span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;piano detuned&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="s2">&quot;analysis&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">filters</span><span class="o">.</span><span class="n">aslist</span><span class="p">)</span>
+</span></code></pre></div>
+and then use the <code>descriptors</code> parameter to define which features should be retrieved from the server
+<div class="highlight"><pre><span></span><code><span class="n">filters</span> <span class="o">=</span> <span class="n">FreeSoundFilters</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;wav&#39;</span><span class="p">,</span><span class="n">samplerate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span><span class="n">bitdepth</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span><span class="n">tag</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;prepared&#39;</span><span class="p">,</span><span class="s1">&#39;detuned&#39;</span><span class="p">])</span>
+<span class="hll"><span class="n">desc</span> <span class="o">=</span> <span class="n">FreeSoundDescriptors</span><span class="p">([</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">lowlevel_average_loudness</span><span class="p">,</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">lowlevel_dissonance</span><span class="p">])</span>
+</span><span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;piano detuned&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="s2">&quot;analysis&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">filters</span><span class="o">.</span><span class="n">aslist</span><span class="p">,</span> <span class="n">descriptors</span><span class="o">=</span><span class="n">desc</span><span class="o">.</span><span class="n">aslist</span><span class="p">)</span>
+</code></pre></div>
+As for the filters, here you are using the <a href="../../api/api-utilities/#freesound.freesound_descriptors.FreeSoundDescriptors"><code>FreeSoundDescriptors</code></a> a utility class that from a <code>list</code> of <a href="../../api/api-utilities/#freesound.freesound_descriptors.Descriptor"><code>Descriptor</code></a> will help you to format a <em>valid</em> list of descriptors to query the database.</p>
+<p>This request will be forwarded to the following url:
+<div class="no-copy highlight"><pre><span></span><code>https://freesound.org/apiv2/search/text/?query=piano+detuned&amp;fields=id%2Cname%2Canalysis&amp;page_size=15&amp;sort=score&amp;normalized=0&amp;filter=type%3Awav+samplerate%3A44100+bitdepth%3A16+tag%3Aprepared+tag%3Adetuned&amp;descriptors=lowlevel.average_loudness%2Clowlevel.dissonance
+</code></pre></div>
+which includes the <code>descriptors</code> parameter:
+<div class="no-copy highlight"><pre><span></span><code>descriptors=lowlevel.average_loudness%2Clowlevel.dissonance
+</code></pre></div>
+which decoded results in:
+<div class="no-copy highlight"><pre><span></span><code>descriptors=lowlevel.average_loudness,lowlevel.dissonance
+</code></pre></div>
+which is exactly what the <code>FreeSoundDescriptors.aslist</code> method does:
+<div class="highlight"><pre><span></span><code><span class="n">desc</span> <span class="o">=</span> <span class="n">FreeSoundDescriptors</span><span class="p">([</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">lowlevel_average_loudness</span><span class="p">,</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">lowlevel_dissonance</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">desc</span><span class="o">.</span><span class="n">aslist</span><span class="p">)</span>
+</code></pre></div></p>
+<details class="abstract" open="open">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>lowlevel.average_loudness,lowlevel.dissonance
+</code></pre></div>
+</details>
+<p>The class <code>Descriptor</code> will provide you with hints to select a valid Freesound descriptor</p>
+<figure>
+    <a class="glightbox" href="../../img/descriptors.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="filters hints" src="../../img/descriptors.png" width="300" /></a>
+      <figcaption>click to enlarge</figcaption>
+</figure>
+<p>Now print the full response of your <code>search</code> request. Add <code>c.dump_results()</code> at the end of your script:
+<div class="highlight"><pre><span></span><code><span class="n">c</span><span class="o">.</span><span class="n">dump_results</span><span class="p">()</span>
+</code></pre></div></p>
+<details class="abstract">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>Found 233 results
+--------------------
+id:382539
+name:Piano 59 A6.wav
+analysis:
+  average_loudness:0.0001156733164443101
+  dissonance:
+    min:0.41471666016070136
+    max:0.49807483306121003
+    dvar2:0.0003639381383530018
+    dmean2:0.01738614605182347
+    dmean:0.01092408269803247
+    var:0.00020994146275491086
+    dvar:0.0001980157397133761
+    mean:0.48211296868812625
+--------------------
+id:382533
+name:Piano 46 A5.wav
+analysis:
+  average_loudness:2.3593042398314997e-07
+  dissonance:
+    min:0.0
+    max:0.4992182563553003
+    dvar2:0.0072741507223403855
+    dmean2:0.09399208175807922
+    dmean:0.0588165176322519
+    var:0.005893807680049213
+    dvar:0.003078075759614881
+    mean:0.38633684975614424
+--------------------
+id:382510
+name:Piano 20 G4.wav
+analysis:
+  average_loudness:0.00035443490551525787
+  dissonance:
+    min:0.09704220532826434
+    max:0.4688467280334164
+    dvar2:0.004038197436062609
+    dmean2:0.06455182028183501
+    dmean:0.03937605841764635
+    var:0.007301079374823115
+    dvar:0.001507330795200205
+    mean:0.2609139747182671
+--------------------
+12 RESULTS OMITTED
+--------------------
+timestamp:2024-03-01T17:49:18.541707
+
+count:233
+</code></pre></div>
+</details>
+<p>While the resulting <code>avarage_loudness</code> of each file is one value the <code>dissonance</code> is presented as a <code>dict</code> of values containing statics of the <code>dissonance</code> which is performed frame by frame.</p>
+<blockquote>
+<p>NOTICE: The official <a href="https://freesound.org/docs/api/analysis_docs.html">Freesound Analysis Documentation</a> states: the analysis sample rate is 44100Hz and the audio file’s channels are mixed down to mono. For the lowlevel namespace the frame size is 2048 samples with a hop size of 1024, while for the tonal namespace the frame size is 4096 and the hop size 2048.</p>
+</blockquote>
+<h3 id="requesting-multiple-fields">Requesting multiple fields</h3>
+<p>If you know want to download the resulting sound, but you still want to get the analysis data of your sounds, you know that you should add the <code>download</code> keyword to the <code>fields</code> search parameter. The url parameter <code>fields</code> that you encoded in your last query is:
+<div class="no-copy highlight"><pre><span></span><code>fields=id%2Cname%2Canalysis
+</code></pre></div>
+which decoded is:
+<div class="no-copy highlight"><pre><span></span><code>fields=id,name,analysis
+</code></pre></div>
+a coma-separated string of values. Since <code>id</code> and <code>name</code> are always included in the <code>fields</code> of each <code>FreeSoundClient.search()</code> request, you just needed to add the <code>analysis</code> field to retrieve the low level descriptors from the database. To add the <code>download</code> field and retrieve the sound file download url from the server, you can reformulate the <code>search</code> request as follows:
+<div class="highlight"><pre><span></span><code><span class="n">filters</span> <span class="o">=</span> <span class="n">FreeSoundFilters</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;wav&#39;</span><span class="p">,</span><span class="n">samplerate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span><span class="n">bitdepth</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;prepared&#39;</span><span class="p">,</span><span class="s1">&#39;detuned&#39;</span><span class="p">])</span>
+<span class="n">desc</span> <span class="o">=</span> <span class="n">FreeSoundDescriptors</span><span class="p">([</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">lowlevel_average_loudness</span><span class="p">,</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">lowlevel_dissonance</span><span class="p">])</span>
+<span class="hll"><span class="n">fields</span> <span class="o">=</span> <span class="n">FreeSoundFields</span><span class="p">([</span><span class="n">Field</span><span class="o">.</span><span class="n">analysis</span><span class="p">,</span> <span class="n">Field</span><span class="o">.</span><span class="n">download</span><span class="p">])</span>
+</span><span class="hll"><span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;piano detuned&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">aslist</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">filters</span><span class="o">.</span><span class="n">aslist</span><span class="p">,</span> <span class="n">descriptors</span><span class="o">=</span><span class="n">desc</span><span class="o">.</span><span class="n">aslist</span><span class="p">)</span>
+</span></code></pre></div>
+As for the <code>descriptors</code> the <a href="../../api/api-utilities/#freesound.freesound_fields.FreeSoundFields"><code>FreeSoundFields</code></a> utility class will assist you to formulate a <em>valid</em> coma-separated string of fields to be included in your search result.
+<div class="highlight"><pre><span></span><code><span class="n">fields</span> <span class="o">=</span> <span class="n">FreeSoundFields</span><span class="p">([</span><span class="n">Field</span><span class="o">.</span><span class="n">analysis</span><span class="p">,</span> <span class="n">Field</span><span class="o">.</span><span class="n">download</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fields</span><span class="o">.</span><span class="n">aslist</span><span class="p">)</span>
+</code></pre></div>
+will result in</p>
+<details class="abstract" open="open">
+<summary>Output</summary>
+<div class="highlight"><pre><span></span><code>analysis,download
+</code></pre></div>
+</details>
+<p>which are the fields that will be appended to <code>id,name</code>. Like the class <code>Descriptor</code>, <code>Field</code> will provide you with hints to choose valid fields for you requests</p>
+<figure>
+    <a class="glightbox" href="../../img/fields.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="filters hints" src="../../img/fields.png" width="300" /></a>
+      <figcaption>click to enlarge</figcaption>
+</figure>
+<p>If you find yourself in the need of retrieve as much information as possible from a search query, <code>Field</code> has a special method called <code>all()</code>, which, by definition, will allow you to query <em>all</em> the fields of a sound in one search result.
+<div class="highlight"><pre><span></span><code><span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;piano detuned&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">Field</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="nb">filter</span><span class="o">=</span><span class="n">filters</span><span class="o">.</span><span class="n">aslist</span><span class="p">,</span> <span class="n">descriptors</span><span class="o">=</span><span class="n">desc</span><span class="o">.</span><span class="n">aslist</span><span class="p">)</span>
+</code></pre></div></p>
+<details class="abstract">
+<summary>Output</summary>
+<div class="no-copy highlight"><pre><span></span><code>Found 233 results
+--------------------
+id:382539
+url:https://freesound.org/people/lomographicmusic/sounds/382539/
+name:Piano 59 A6.wav
+tags:[&#39;piano&#39;, &#39;detuned&#39;, &#39;prepared&#39;]
+description:Simple detuned piano sound recorded with Tascam DP008. 
+
+Son de piano détuné capté au fantastique Tascam DP008.
+geotag:None
+created:2017-03-01T00:35:20
+license:https://creativecommons.org/licenses/by/4.0/
+type:wav
+channels:2
+filesize:321032
+bitrate:0
+bitdepth:16
+duration:1.81966
+samplerate:44100.0
+username:lomographicmusic
+pack:https://freesound.org/apiv2/packs/21508/
+download:https://freesound.org/apiv2/sounds/382539/download/
+previews:
+images:
+num_downloads:43
+avg_rating:0.0
+num_ratings:0
+rate:https://freesound.org/apiv2/sounds/382539/rate/
+comments:https://freesound.org/apiv2/sounds/382539/comments/
+num_comments:0
+comment:https://freesound.org/apiv2/sounds/382539/comment/
+similar_sounds:https://freesound.org/apiv2/sounds/382539/similar/
+analysis:
+  average_loudness:0.0001156733164443101
+  dissonance:
+    min:0.41471666016070136
+    max:0.49807483306121003
+    dvar2:0.0003639381383530018
+    dmean2:0.01738614605182347
+    dmean:0.01092408269803247
+    var:0.00020994146275491086
+    dvar:0.0001980157397133761
+    mean:0.48211296868812625
+analysis_frames:https://freesound.org/data/analysis/382/382539-fs-essentia-extractor_legacy_frames.json
+analysis_stats:https://freesound.org/apiv2/sounds/382539/analysis/
+ac_analysis:
+--------------------
+14 RESULTS OMITTED
+--------------------
+timestamp:2024-03-01T17:52:42.207937
+
+count:233
+</code></pre></div>
+</details>
+<h3 id="saving-the-analysis-data">Saving the analysis data</h3>
+<p>You already know how to <a href="../tutorial-basics/#download-your-search-results">download audio files</a> from the Freesound Database, but the <code>FreeSoundClient</code> allows you to store also the analysis results of your searches thanks to the method <a href="../../api/api-client/#freesound.freesound_api.FreeSoundClient.write_results_list"><code>FreeSoundClient.write_results_list</code></a>. 
+Calling
+<div class="highlight"><pre><span></span><code><span class="n">c</span><span class="o">.</span><span class="n">write_results_list</span><span class="p">()</span>
+</code></pre></div>
+The program will prompt to choose an output folder. Pressing the return key will create a file called <code>results_list.json</code> prefixed with a timestamp in the same folder as your script. Feel free to specify another <code>folder</code> either using an absolute or a relative path, and a <code>filename</code> (a time stamp will always be included). </p>
+<h3 id="other-possible-methodologies">Other possible methodologies</h3>
+<p>All the utility classes presented in this tutorial have been developed to provide a user-friendly interface and help the users to focus on their goal without the need of visiting the official Documentation to formulate <em>valid</em> queries. But the <code>search</code> method does actually work without them. Nothing prevents the user to formulate this request using <code>strings</code>. Your last call to <code>search</code>:
+<div class="highlight"><pre><span></span><code><span class="n">filters</span> <span class="o">=</span> <span class="n">FreeSoundFilters</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;wav&#39;</span><span class="p">,</span><span class="n">samplerate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span><span class="n">bitdepth</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span><span class="n">tag</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;prepared&#39;</span><span class="p">,</span><span class="s1">&#39;detuned&#39;</span><span class="p">])</span>
+<span class="n">desc</span> <span class="o">=</span> <span class="n">FreeSoundDescriptors</span><span class="p">([</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">lowlevel_average_loudness</span><span class="p">,</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">lowlevel_dissonance</span><span class="p">])</span>
+<span class="n">fields</span> <span class="o">=</span> <span class="n">FreeSoundFields</span><span class="p">([</span><span class="n">Field</span><span class="o">.</span><span class="n">analysis</span><span class="p">,</span> <span class="n">Field</span><span class="o">.</span><span class="n">download</span><span class="p">])</span>
+<span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;piano detuned&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">aslist</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">filters</span><span class="o">.</span><span class="n">aslist</span><span class="p">,</span> <span class="n">descriptors</span><span class="o">=</span><span class="n">desc</span><span class="o">.</span><span class="n">aslist</span><span class="p">)</span>
+</code></pre></div>
+can be in fact reformulated as follows:
+<div class="highlight"><pre><span></span><code><span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;piano detuned&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="s2">&quot;analysis,download&quot;</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="s2">&quot;type:wav samplerate:44100 bitdepth:16 tag:prepared tag:detuned&quot;</span><span class="p">,</span> <span class="n">descriptors</span><span class="o">=</span><span class="s2">&quot;lowlevel.average_loudness,lowlevel.dissonance&quot;</span><span class="p">)</span>
+</code></pre></div>
+or even combining the 2 methodologies.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>You should now know have a good overview of all the basic features of the <code>freesound-client</code> library. In the Appendix section of this Documentation you can find the lists of all the valid parameters that can be used in search queries. Remember that the official <a href="https://freesound.org/docs/api/">Freesound API Documentation</a> should be the most important resource to dive deeper in what the Freesound Database has to offer.</p>
+<p>Feel free to visit the <a href="../../how-to-guide/">How To</a> page for a more problem oriented guide and for more advanced topic on how to use the <code>freesound-client</code> library.</p>
+<p><br></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../tutorial-basics/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Getting started">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Getting started
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../how-to-guide/" class="md-footer__link md-footer__link--next" aria-label="Next: How To">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                How To
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "navigation.footer", "content.code.copy", "content.code.select"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.8fd75fb4.min.js"></script>
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>
