@@ -9,6 +9,15 @@ The official python library is the [freesound-python](https://github.com/MTG/fre
 
 The [Freesound API](https://freesound.org/docs/api/index.html) is very well documented, and it is a useful resource to make the best use out of this library.
 
+#### Python Versions
+This project has different branches for the following Python versions:
+
+- main (3.11)
+- 3.10
+- 3.8
+
+for full annotation and hints support download and use  `main`
+
 ### Before you start
 #### Dependencies
 This software depends on the `requests` library which can be installed globally or locally (in a virtual environment) via `pip`
@@ -30,6 +39,11 @@ You can find tutorials and the full documentation of this library at the followi
 
 ### A special thanks to
 Davide Bardi
+
 Francesca Seggioli
+
 Alessandro Cagiano
+
 Marco Rotondella
+
+for their collaboration in developing this library
