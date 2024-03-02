@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, List, Union
 
 
 def headline(text: str, centered: bool = False) -> str:
@@ -36,7 +36,7 @@ def info(text:str)->None:
 def log(key:Any,value:Any):
 	print(colors.GREEN + str(key) + colors.END + ":" + str(value))
 
-def reduce_list(array:list[float|int]) -> str:
+def reduce_list(array:List[Union[float,int]]) -> str:
 	formatted_list = str(array[:3])[:-1] + ', ... ' + str(array[-1:])[1:]
 	return formatted_list
 

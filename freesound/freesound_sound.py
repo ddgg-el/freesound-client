@@ -19,7 +19,7 @@ You can build this query taking advange of lintering when writing:
 >>> print(FreeSoundFields([Field.id,Field.name,Field.filesize]).aslist)
 id,name,filesize
 """
-from typing import Any
+from typing import Any, Dict
 
 from .freesound_errors import DataError, FieldError
 from .freesound_fields import Field
@@ -45,7 +45,7 @@ class FreeSoundSoundInstance(Field):
 			Piano12.mp3
 			```
 	"""
-	def __init__(self, track_data:dict[str,Any]) -> None:
+	def __init__(self, track_data:Dict[str,Any]) -> None:
 		valid_attributes = Field.all().split(",")
 		if 'id' not in track_data or 'name' not in track_data:
 			raise AttributeError("No 'id' or 'name' provided")
@@ -94,7 +94,7 @@ class FreeSoundSoundInstance(Field):
 		return value
 	
 	@property
-	def track_data(self) -> dict[str, Any]:
+	def track_data(self) -> Dict[str, Any]:
 		return self._track_data
 	
 	def _set_file_ext(self,ext:str) -> None:
@@ -102,7 +102,7 @@ class FreeSoundSoundInstance(Field):
 			self.name += "."+ext
 		# self.name = file_name
 			
-	def as_dict(self) -> dict[str, Any]:
+	def as_dict(self) -> Dict[str, Any]:
 		"""a function to generate a dictionary out of `self`
 
 		Returns:

@@ -23,7 +23,7 @@ You can build this query taking advange of type hints writing:
 lowlevel.spectral_complexity,lowlevel.average_loudness
 """
 
-from typing import Any
+from typing import Any, List
 
 from .freesound_list_maker import ListMaker
 
@@ -151,7 +151,7 @@ class FreeSoundDescriptors(ListMaker):
 		lowlevel.average_loudness,lowlevel.mfcc
 		```
 	"""
-	def __init__(self, fields:list[Any]):
+	def __init__(self, fields:List[Any]):
 		# param_array = [field.value for field in fields]
 		super().__init__(fields)
 		

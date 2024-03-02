@@ -50,11 +50,10 @@ filter=description:(piano AND note)
 # TODO geotagging
 # TODO conditional queries
 
-from typing import Unpack
+from typing import List, Any
 
 from .freesound_list_maker import ListMaker
 
-from .filter_types import TypeFilter
 from .freesound_errors import DataError
 
 #"filter": "tag:plucked tag:fret type:wav"
@@ -73,9 +72,9 @@ class FreeSoundFilters(ListMaker):
 		tag:fret tag:plucked type:wav samplerate:44100
 		```
 	'''
-	def __init__(self, **kwargs:Unpack[TypeFilter]) -> None:
+	def __init__(self, **kwargs:Any) -> None:
 		self._filters:list[str] = []
-		for key,values in kwargs.items():
+		for key,values in kwargs.items(): # type:ignore
 			if key in kwargs:
 				if isinstance(values,list):
 					for value in values: # type: ignore

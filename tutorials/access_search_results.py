@@ -14,7 +14,7 @@ c = FreeSoundClient(USER_ID,API_KEY)
 result = c.search(query="piano detuned", fields=Field.analysis, descriptors=Descriptor.sfx_pitch_centroid, page_size=100)
 results_list = result['results']
 
-ids:list[int] = []
+ids:List[int] = []
 
 for i,snd in enumerate(results_list):
 	centroid = snd['analysis']['sfx']['pitch_centroid']

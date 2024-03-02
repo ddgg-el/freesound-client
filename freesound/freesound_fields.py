@@ -26,7 +26,7 @@ id,name,filesize
 """
 
 # from dataclasses import dataclass
-from typing import Any
+from typing import Any, List
 
 from .freesound_list_maker import ListMaker
 
@@ -105,7 +105,7 @@ class FreeSoundFields(ListMaker):
 		id,filesize
 		```
 	"""
-	def __init__(self, fields:list[Any]) -> None:
+	def __init__(self, fields:List[Any]) -> None:
 		super().__init__(fields)
 
 	@property

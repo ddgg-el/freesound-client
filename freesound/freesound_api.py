@@ -24,12 +24,12 @@ from requests import Response
 
 from freesound.freesound_requests import make_get_request, make_post_request
 from freesound.freesound_errors import DataError
-from typing import Any
+from typing import Any, Dict, Union
 from urllib.parse import urlparse, parse_qsl
 import json
 
 
-def get_access_token(user_id:str, api_key:str, authorization_code:str) -> dict[str,Any]:
+def get_access_token(user_id:str, api_key:str, authorization_code:str) -> Dict[str,Any]:
 	"""A utlity function which covers Step 3 of the OAuth2 Authentication process 
 		see: <https://freesound.org/docs/api/authentication.html#step-3>
 
@@ -46,7 +46,7 @@ def get_access_token(user_id:str, api_key:str, authorization_code:str) -> dict[s
 		a `dict` containing the following keys: `"access_token"`, `"expires_in"`, `"token_type"`, `"scope"`, `"refresh_token"`
 	"""
 	token_url = "https://freesound.org/apiv2/oauth2/access_token/"
-	token_params: Dict[str, str] = {
+	token_params: dict[str, str] = {
 		"client_id": user_id,
 		"client_secret": api_key,
 		"code": authorization_code,
@@ -56,7 +56,7 @@ def get_access_token(user_id:str, api_key:str, authorization_code:str) -> dict[s
 	token = _parse_response(token_resp)
 	return token
 
-def refresh_access_token(user_id:str, api_key:str, refresh_token:str) -> dict[str,Any]:
+def refresh_access_token(user_id:str, api_key:str, refresh_token:str) -> Dict[str,Any]:
 	"""Refresh the User "access token" when expired
 
 	see: <https://freesound.org/docs/api/authentication.html#once-you-have-your-access-token>
@@ -80,7 +80,7 @@ def refresh_access_token(user_id:str, api_key:str, refresh_token:str) -> dict[st
 	token = _parse_response(token_resp)
 	return token
 
-def get_my_infos(token:str) -> dict[str,Any]:
+def get_my_infos(token:str) -> Dict[str,Any]:
 	"""get the info about the User identified by `token`
 
 	Args:
@@ -96,7 +96,7 @@ def get_my_infos(token:str) -> dict[str,Any]:
 	user_info = _parse_response(user_response)
 	return user_info
 
-def search(query:str, token:str,fields:str|None=None,filter:str|None=None,descriptors:str|None=None,sort_by:str='score',page_size:int=15,normalized:int=0) -> dict[str,Any]:
+def search(query:str, token:str,fields:Union[str,None]=None,filter:Union[str,None]=None,descriptors:Union[str,None]=None,sort_by:str='score',page_size:int=15,normalized:int=0) -> Dict[str,Any]:
 	"""Search in the FreeSound Database
 
 	For a full documentation see: <https://freesound.org/docs/api/resources_apiv2.html#search-resources>
@@ -119,7 +119,7 @@ def search(query:str, token:str,fields:str|None=None,filter:str|None=None,descri
 	if fields is not None:
 		fields_list += ',' + fields
 
-	params: Dict[str, str] = {"query":query,"fields":fields_list,"page_size":str(page_size), "sort":sort_by, "normalized":str(normalized)}
+	params: dict[str, str] = {"query":query,"fields":fields_list,"page_size":str(page_size), "sort":sort_by, "normalized":str(normalized)}
 	
 	if filter is not None and filter != '':
 		params['filter'] = filter
@@ -132,7 +132,7 @@ def search(query:str, token:str,fields:str|None=None,filter:str|None=None,descri
 	search = _parse_response(search_response)
 	return search
 
-def get_track_info(track_id:str,token:str,fields:str|None=None,descriptors:str|None=None) -> dict[str,Any]:
+def get_track_info(track_id:str,token:str,fields:Union[str,None]=None,descriptors:Union[str,None]=None) -> Dict[str,Any]:
 	"""Requests infos of a SoundInstance
 
 	see: <https://freesound.org/docs/api/resources_apiv2.html#sound-instance>
@@ -160,7 +160,7 @@ def get_track_info(track_id:str,token:str,fields:str|None=None,descriptors:str|N
 	file_type = _parse_response(file_type_response)
 	return file_type
 	
-def get_next_page(url:str, token:str) -> dict[str,Any]:
+def get_next_page(url:str, token:str) -> Dict[str,Any]:
 	"""A utility function to handle pagination in sound results
 
 	It performs a search form the a url parsed from the `'next'` field of a search result
@@ -196,7 +196,7 @@ def download_track(track_url:str, token:str) -> Response:
 	else:
 		raise DataError(f"Could not Download File. Broken Data")
 
-def _parse_response(response:Response) -> dict[str,Any]:
+def _parse_response(response:Response) -> Dict[str,Any]:
 	result:dict[str,Any] = {}
 	try:
 		result = response.json()
