@@ -1,19 +1,8 @@
 from freesound import *
 
 # You need to set these only before the file access_token.json is created
-# API_KEY = "<your-api-key>"
-# USER_ID = "<your-user-id>"
-
-from dotenv import load_dotenv
-
-if load_dotenv():
-	API_KEY=os.getenv("API_KEY")
-	USER_ID=os.getenv("USER_ID")
-else:
-	sys.exit(0)
-
-if API_KEY is None or USER_ID is None:
-	sys.exit(0)
+API_KEY = "<your-api-key>"
+USER_ID = "<your-user-id>"
 
 c = FreeSoundClient(USER_ID,API_KEY)
 result = c.search(query="piano detuned")
