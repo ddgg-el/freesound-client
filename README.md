@@ -16,7 +16,7 @@ This project has different branches for the following Python versions:
 - 3.10
 - 3.8
 
-for full annotation and hints support download and use  `main`
+for full annotation and hints support download and use `main`
 
 ### Before you start
 #### Dependencies

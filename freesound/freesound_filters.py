@@ -47,8 +47,8 @@ filter=type:(wav OR aiff)
 filter=description:(piano AND note)
 """
 
-# TODO geotagging
-# TODO conditional queries
+# TODO geotagging https://solr.apache.org/guide/6_6/spatial-search.html
+
 
 from typing import Unpack
 
@@ -75,12 +75,17 @@ class FreeSoundFilters(ListMaker):
 	'''
 	def __init__(self, **kwargs:Unpack[TypeFilter]) -> None:
 		self._filters:list[str] = []
-		for key,values in kwargs.items():
+		for key,values in kwargs.items(): # type:ignore
 			if key in kwargs:
 				if isinstance(values,list):
 					for value in values: # type: ignore
 						self._filters.append(f"{key}:{value}")
+				elif isinstance(values, bool) or isinstance(values, (int,float)):
+					self._filters.append(f"{key}:{values}")
 				else:
+					if len(values.split()) > 1 and "^" not in values: # type:ignore
+						values = ("\"" + values + "\"") # type:ignore
+					values = values.replace("^","") # type:ignore
 					self._filters.append(f"{key}:{values}")
 			else:
 				raise DataError(f"'{key}' is not a valid filter. See the list of available filter at: https://freesound.org/docs/api/resources_apiv2.html#text-search")
