@@ -1,5 +1,5 @@
 from typing import Dict
-from requests import Response, get, post, exceptions # type:ignore
+from requests import Response, get, post, exceptions, JSONDecodeError # type:ignore
 from .freesound_errors import AuthorizationError, FreesoundError
 
 def handle_response(res:Response) -> None:
