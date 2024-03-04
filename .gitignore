@@ -17,3 +17,4 @@ docs/
 *.yml
 record
 site/
+main.py

@@ -1,4 +1,4 @@
-from requests import Response, get, post, exceptions # type:ignore
+from requests import JSONDecodeError, Response, get, post, exceptions # type:ignore
 from .freesound_errors import AuthorizationError, FreesoundError
 
 def handle_response(res:Response) -> None:
@@ -11,7 +11,12 @@ def handle_response(res:Response) -> None:
 			url = res.url
 			if err_code == 400:
 				# TODO write tests for error 400
-				raise FreesoundError(f"The request at {url} is either missing parameters or there is an error with the API")
+				try:
+					details = res.json()['detail']
+					raise FreesoundError(f"There was an error with your request. Read the details carefully\n{details}")
+				except JSONDecodeError:
+					raise FreesoundError(f"The request at {url} is either missing parameters or there is an error with the API")
+					# raise FreesoundError(e)
 			elif err_code == 401:
 				raise AuthorizationError("The crediantials you provided are invalid.")
 			elif err_code == 403:

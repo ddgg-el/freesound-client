@@ -5,3 +5,4 @@ from .freesound_client import *
 from .freesound_filters import *
 from .freesound_fields import *
 from .freesound_descriptors import *
+from .filter_types import *
