@@ -433,6 +433,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ranges-and-conditions-in-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ranges and Conditions in Filters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#sorting-freesoundsort" class="md-nav__link">
     <span class="md-ellipsis">
       Sorting (FreeSoundSort)
@@ -873,6 +882,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ranges-and-conditions-in-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ranges and Conditions in Filters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#sorting-freesoundsort" class="md-nav__link">
     <span class="md-ellipsis">
       Sorting (FreeSoundSort)
@@ -977,6 +995,55 @@
 <p>A list of all the Audio Common filters can be found in the <a href="../appendix/filters-list/">Appendix Lists</a> of this Documentation
 These filters are all prefixed with the label <code>ac_</code> and can be used as regular filters, i.e. by specifying them in the search's <code>filter</code> attribute either with a string or with the <code>FreeSoundFilter</code> utility.</p>
 </blockquote>
+<h3 id="ranges-and-conditions-in-filters">Ranges and Conditions in Filters</h3>
+<p>Filters can be a double-edge sword when you want to narrow down your searches. Let's consider a simple scenario:</p>
+<details class="example" open="open">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="n">filters</span> <span class="o">=</span> <span class="n">FreeSoundFilters</span><span class="p">(</span><span class="n">duration</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">aslist</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;piano&quot;</span><span class="p">,</span><span class="n">fields</span><span class="o">=</span><span class="n">Field</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span><span class="nb">filter</span><span class="o">=</span><span class="n">filters</span><span class="p">)</span>
+</code></pre></div>
+</details>
+<p>This query will filter out those sound whose duration is 1 second, or rather EXACTLY 1 second, no more, no less. </p>
+<blockquote>
+<p>Still, by the time of writing this article, this query will produce 51 results.</p>
+</blockquote>
+<p>Because of this the Freesound API allows filtering by range, a feature that this library implements with the <a href="../api/api-utilities/#freesound.filter_types.Filter"><code>Filter</code></a> class and its 3 <code>classmethods</code>:</p>
+<ul>
+<li><code>Filter.RANGE(minimum,maximum)</code> to add filters in a range between 2 values ()</li>
+<li><code>Filter.AT_LEAST(minimum)</code> to specify only a minimum limit and can be interpreted as <code>greater than</code></li>
+<li><code>Filter.UP_TO(maximum)</code> to specify only a maximum limit and can be interpreted as <code>lower than</code></li>
+</ul>
+<p>Substituting a range to the previous example means:</p>
+<details class="example" open="open">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="n">filters</span> <span class="o">=</span> <span class="n">FreeSoundFilters</span><span class="p">(</span><span class="n">duration</span><span class="o">=</span><span class="n">Filter</span><span class="o">.</span><span class="n">RANGE</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">))</span><span class="o">.</span><span class="n">aslist</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;piano&quot;</span><span class="p">,</span><span class="n">fields</span><span class="o">=</span><span class="n">Field</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span><span class="nb">filter</span><span class="o">=</span><span class="n">filters</span><span class="p">)</span>
+</code></pre></div>
+</details>
+<p>Your search will include those files which are <em>approximately</em> 1 second long, giving you a wider choice of sounds.</p>
+<p>For filters such as <code>created</code> it might be especially useful the use of ranges of <em>time frames</em>, and the best way to format a time range is the Python built in's library <code>datetime</code>. The class <code>Filter</code> will automatically understand that you are using a <code>datetime</code> object, and it will automatically format the date in <code>isoformat</code> for you. </p>
+<blockquote>
+<p>If you are not familiar with the <code>datetime</code> library, <a href="https://pymotw.com/2/datetime/">this article</a> might help. </p>
+</blockquote>
+<details class="example" open="open">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="n">filters</span> <span class="o">=</span> <span class="n">FreeSoundFilters</span><span class="p">(</span><span class="n">created</span><span class="o">=</span><span class="n">Filter</span><span class="o">.</span><span class="n">RANGE</span><span class="p">((</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">-</span><span class="n">timedelta</span><span class="p">(</span><span class="n">weeks</span><span class="o">=</span><span class="mi">20</span><span class="p">)),</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()))</span><span class="o">.</span><span class="n">aslist</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;music&quot;</span><span class="p">,</span><span class="n">fields</span><span class="o">=</span><span class="n">Field</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span><span class="nb">filter</span><span class="o">=</span><span class="n">filters</span><span class="p">)</span>
+</code></pre></div>
+</details>
+<p>This query will filter out only those files which are created in the last 20 weeks.</p>
+<p>The <code>Filter</code> class also provides 2 conditionals statements:</p>
+<ul>
+<li><code>Filter.OR</code></li>
+<li><code>Filter.AND</code></li>
+</ul>
+<p>This feature allows you to build queries such as:</p>
+<details class="example" open="open">
+<summary>Code</summary>
+<div class="highlight"><pre><span></span><code><span class="n">filters</span> <span class="o">=</span> <span class="n">FreeSoundFilters</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">Filter</span><span class="o">.</span><span class="n">OR</span><span class="p">(</span><span class="s1">&#39;wav&#39;</span><span class="p">,</span><span class="s1">&#39;aiff&#39;</span><span class="p">),</span> <span class="n">duration</span><span class="o">=</span><span class="n">Filter</span><span class="o">.</span><span class="n">UP_TO</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">created</span><span class="o">=</span><span class="n">Filter</span><span class="o">.</span><span class="n">RANGE</span><span class="p">((</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">-</span><span class="n">timedelta</span><span class="p">(</span><span class="n">weeks</span><span class="o">=</span><span class="mi">20</span><span class="p">)),</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()))</span><span class="o">.</span><span class="n">aslist</span>
+</code></pre></div>
+</details>
+<p>which will exclude <code>mp3</code> files, <code>ogg</code> files etc. for the search results.</p>
 <h3 id="sorting-freesoundsort">Sorting (<code>FreeSoundSort</code>)</h3>
 <p>Another utility that can help you formulate your queries is the <a href="../api/api-utilities/#sort"><code>FreeSoundSort</code></a> class.
 The <code>sort</code> attribute of the <code>FreeSoundClient.search()</code> method aspects 9 possible values:</p>
