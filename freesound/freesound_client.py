@@ -567,7 +567,7 @@ class FreeSoundClient:
 		self.logout()
 
 	def __repr__(self) -> str:
-		return f"<freesound.freesound_client.FreeSounClient {self._username}>"
+		return f"<freesound.freesound.FreeSounClient {self._username}>"
 
 	def logout(self) -> NoReturn:
 		"""Closes the program

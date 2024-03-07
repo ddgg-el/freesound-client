@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "freesound"
+version = "0.1.0"
+description = "yet another library for the freesound.org API"
+authors = ["Davide Gagliardi <info@davidegagliardi.eu>"]
+homepage = "https://github.com/ddgg-el/freesound-client"
+repository = "https://github.com/ddgg-el/freesound-client"
+documentation = "https://ddgg-el.github.io/freesound-client/"
+
+keywords = ["freesound"]
+
+license = "MIT"
+readme = "README.md"
+
+exclude = ["requirements.txt","venv"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.31.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

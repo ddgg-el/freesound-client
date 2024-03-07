@@ -4,7 +4,7 @@ The module contains the definitions of
 - FreeSoundSort
 
 2 utilitity structures which help users to build list of `filters` queries 
-and the `sort` paramete respectevely for the [`FreeSoundClient`][freesound.freesound_client.FreesoundClient] by providing type hints. 
+and the `sort` parameter respectevely for the [`FreeSoundClient`][freesound.freesound_client.FreeSoundClient] by providing type hints. 
 
 Details at:
 -----------
