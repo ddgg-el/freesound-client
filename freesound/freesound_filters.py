@@ -92,6 +92,16 @@ class FreeSoundFilters(ListMaker):
 		
 		super().__init__(self._filters)
 		
+	def add(self,filter:str):
+		"""use this method to add additional filters to an existing [`FreeSoundFilters`][freesound.freesound_filters.FreeSoundFilters] object
+
+		Args:
+			filter (str): a valid filter formatted as "filter:value"
+		"""
+		self._filters.append(filter)
+		self._param_array.append(filter)
+		print(self._param_array)
+
 	@property
 	def aslist(self) -> str:
 		"""use this property to pass the list of filters to a [`FreeSoundClient`][freesound.freesound_client.FreeSoundClient].

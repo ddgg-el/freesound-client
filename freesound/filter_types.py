@@ -152,3 +152,27 @@ class Filter:
 		if isinstance(maximum,datetime):
 			maximum = maximum.isoformat()
 		return f"^[* TO {maximum}]"
+	
+	@classmethod
+	def from_descriptor(cls, field:str, value:str) -> str:
+		"""create a `descriptors_filter` when searching similar tracks 
+
+		visit <https://freesound.org/docs/api/resources_apiv2.html#similar-sounds> for a full explanation\n
+		and read the [`get_similar_track`][freesound.freesound_api.FreeSoundClient.get_similar_track]
+
+		Args:
+			field (str): a decriptor
+			value (str): a value or a range of values TO | OR | AND
+
+		Usage:
+			```py
+			>>> Filter.from_descriptor(Descriptor.rhythm_onset_count, Filter.UP_TO(2))
+			rhythm.onset_count:[* TO 2]
+			```
+
+		Returns:
+			str: a well-formatted string for the descriptors_filter url parameter when searching for *similar* sounds
+		"""
+		value = value.replace("^","")
+		filter = f"{field}:{value}"
+		return filter

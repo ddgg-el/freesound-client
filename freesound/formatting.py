@@ -42,8 +42,9 @@ def reduce_list(array:list[float|int]) -> str:
 
 def unpack_features(infos:Any):
 		result = ""
-		if "lowlevel" in infos:
-			for key,value in infos["lowlevel"].items():
+		desc = _check_descriptor_key(infos)
+		if desc != "":
+			for key,value in infos[desc].items():
 				if isinstance(value,dict):
 					result += f"\n\t{colors.GREEN}{key}{colors.END}:".expandtabs(2)
 					for feat,feat_val in value.items(): # type:ignore
@@ -56,3 +57,15 @@ def unpack_features(infos:Any):
 					result += f"\n\t{colors.GREEN}{key}{colors.END}:{value}".expandtabs(2)
 				
 		return result
+
+def _check_descriptor_key(infos:dict[str,Any])->str:
+	desc = ""
+	if "lowlevel" in infos:
+		desc = "lowlevel"
+	elif "rhythm" in infos: 
+		desc = "rhythm"
+	elif "tonal" in infos:
+		desc = "tonal"
+	elif "sfx" in infos:
+		desc = "sfx"
+	return desc

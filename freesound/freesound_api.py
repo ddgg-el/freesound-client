@@ -30,7 +30,7 @@ import json
 
 
 def get_access_token(user_id:str, api_key:str, authorization_code:str) -> dict[str,Any]:
-	"""A utlity function which covers Step 3 of the OAuth2 Authentication process 
+	"""A utility function which covers Step 3 of the OAuth2 Authentication process 
 		see: <https://freesound.org/docs/api/authentication.html#step-3>
 
 	You can apply for API credentials here: <https://freesound.org/apiv2/apply/>
@@ -115,17 +115,10 @@ def search(query:str, token:str,fields:str|None=None,filter:str|None=None,descri
 		a sound list. See: <https://freesound.org/docs/api/resources_apiv2.html#response-sound-list>
 	"""
 	headers: dict[str, str] = {"Authorization": f"Bearer {token}"}
-	fields_list = 'id,name'
-	if fields is not None:
-		fields_list += ',' + fields
-
+	fields_list = _set_fields_list('id,name',fields)
 	params: dict[str, str] = {"query":query,"fields":fields_list,"page_size":str(page_size), "sort":sort_by, "normalized":str(normalized)}
-	
-	if filter is not None and filter != '':
-		params['filter'] = filter
-	
-	if descriptors is not None and descriptors != '':
-		params['descriptors'] = descriptors
+	_set_filter_list(filter,params)
+	_set_descriptors_list(descriptors,params)
 	
 	search_url = "https://freesound.org/apiv2/search/text/"
 	search_response: Response = make_get_request(search_url, header=headers, params=params)
@@ -179,6 +172,35 @@ def get_next_page(url:str, token:str) -> dict[str,Any]:
 	next_page = _parse_response(next_page_response)
 	return next_page
 	
+def get_similar(track_id:str, token:str,fields:str|None=None,descriptors_filter:str|None=None,descriptors:str|None=None,page_size:int=15,normalized:int=0) -> dict[str,Any]:
+	"""get a list of sounds similar to the one identified by `track_id`
+
+	For a full documentation visit: <https://freesound.org/docs/api/resources_apiv2.html#similar-sounds>
+
+	Args:
+		track_id (str): a valid id of a sound in the freesound database
+		token (str): a valid OAuth2 access token
+		fields (str | None, optional): a coma-separated string of fields of a SoundInstance.
+		descriptors_filter (str | None, optional): a space-separated string of valid descriptor:value
+		descriptors (str | None, optional): a coma-separated string of valid sound analysis descriptors
+		page_size (int, optional): page_size (int, optional): the max number of items inside the result array of the response
+		normalized (int, optional): wheteher the analysis values are normalized or not either 0-1
+
+	Returns:
+		a sound list. See: <https://freesound.org/docs/api/resources_apiv2.html#response-sound-list>
+	"""
+	headers: dict[str, str] = {"Authorization": f"Bearer {token}"}
+
+	fields_list = _set_fields_list('id,name', fields)
+	params: dict[str, str] = {"fields":fields_list,"page_size":str(page_size),"normalized":str(normalized)}
+	_set_descriptors_list(descriptors, params)
+	_set_descriptors_filter(descriptors_filter,params)
+
+	search_url = f"https://freesound.org/apiv2/sounds/{track_id}/similar"
+	search_response: Response = make_get_request(search_url, header=headers, params=params)
+	search = _parse_response(search_response)
+	return search
+
 def download_track(track_url:str, token:str) -> Response:
 	"""Download a track from a url
 
@@ -195,6 +217,39 @@ def download_track(track_url:str, token:str) -> Response:
 		return sound_file_response
 	else:
 		raise DataError(f"Could not Download File. Broken Data")
+
+def download_analysis_data(track_url:str, token:str) -> dict[str,Any]:
+	"""Download an frame-by-frame data analysis file from a url
+
+	Args:
+		track_url (str): a valid download url retrieved from a SoundInstance
+		token (str): a valid OAuth2 access token
+
+	Returns:
+		a json dictionary containing the frame-by-frame data analysis of a sound file
+	"""
+	headers: dict[str, str] = {"Authorization": f"Bearer {token}"}
+	json_response = make_get_request(track_url, header=headers,params={})
+	json_response = _parse_response(json_response)
+	return json_response
+
+def _set_fields_list(defaults:str, fields:str|None) -> str:
+	fields_list = defaults
+	if fields is not None:
+		fields_list += ',' + fields
+	return fields_list
+
+def _set_filter_list(filter:str|None, params_list:dict[str,Any])->None:
+	if filter is not None and filter != '':
+		params_list['filter'] = filter
+
+def _set_descriptors_list(descriptors:str|None,params_list:dict[str,Any]) -> None:
+	if descriptors is not None and descriptors != '':
+		params_list['descriptors'] = descriptors
+
+def _set_descriptors_filter(desc_filt:str|None,params_list:dict[str,Any]) -> None:
+	if desc_filt is not None and desc_filt != '':
+		params_list['descriptors_filter'] = desc_filt
 
 def _parse_response(response:Response) -> dict[str,Any]:
 	result:dict[str,Any] = {}

@@ -68,6 +68,7 @@ class Field():
 	pack_name = "pack_name"
 	ac_analysis = "ac_analysis"
 	is_explicit = "is_explicit"
+	distance_to_target = "distance_to_target"
 
 	def _set_file_name(self,name:str) :
 		file_name = name.strip().replace(" ","-")
@@ -80,16 +81,6 @@ class Field():
 			if not isinstance(attr_value, classmethod) and not attr_name.startswith("__") and not callable(attr_value):
 				fields.append(attr_value)
 		return ','.join(fields)
-
-	
-# class Field(FieldsBase):
-# 	"""A class whose attributes are valid `fields` to query the [`freesound.org`](https://www.freesound.org) database"""
-# 	def __init__(self) -> None:
-# 		for attribute,_ in self.__annotations__.items():
-# 			setattr(self,attribute,str(attribute))
-
-# Field = FieldMeta()
-
 
 # Coma separated values
 class FreeSoundFields(ListMaker):
