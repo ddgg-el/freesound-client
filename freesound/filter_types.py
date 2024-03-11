@@ -152,12 +152,12 @@ class Filter:
 		if isinstance(maximum,datetime):
 			maximum = maximum.isoformat()
 		return f"^[* TO {maximum}]"
-	
+
 	@classmethod
 	def from_descriptor(cls, field:str, value:str) -> str:
 		"""create a `descriptors_filter` when searching similar tracks 
 
-		visit <https://freesound.org/docs/api/resources_apiv2.html#similar-sounds> for a full explanation\n
+		visit <https://freesound.org/docs/api/resources_apiv2.html#similar-sounds> for a full explanation
 		and read the [`get_similar_track`][freesound.freesound_api.FreeSoundClient.get_similar_track]
 
 		Args:

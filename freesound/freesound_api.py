@@ -229,9 +229,9 @@ def download_analysis_data(track_url:str, token:str) -> dict[str,Any]:
 		a json dictionary containing the frame-by-frame data analysis of a sound file
 	"""
 	headers: dict[str, str] = {"Authorization": f"Bearer {token}"}
-	json_response = make_get_request(track_url, header=headers,params={})
-	json_response = _parse_response(json_response)
-	return json_response
+	json_response:Response = make_get_request(track_url, header=headers,params={})
+	parsed_json_response = _parse_response(json_response)
+	return parsed_json_response
 
 def _set_fields_list(defaults:str, fields:str|None) -> str:
 	fields_list = defaults
