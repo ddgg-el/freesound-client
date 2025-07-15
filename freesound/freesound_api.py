@@ -115,7 +115,7 @@ def search(query:str, token:str,fields:str|None=None,filter:str|None=None,descri
 		a sound list. See: <https://freesound.org/docs/api/resources_apiv2.html#response-sound-list>
 	"""
 	headers: dict[str, str] = {"Authorization": f"Bearer {token}"}
-	fields_list = 'id,name'
+	fields_list = 'id,name,type'
 	if fields is not None:
 		fields_list += ',' + fields
 
