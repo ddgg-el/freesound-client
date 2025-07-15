@@ -18,3 +18,5 @@ docs/
 record
 site/
 main.py
+
+dist/

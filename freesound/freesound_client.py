@@ -210,7 +210,7 @@ class FreeSoundClient:
 		if outfolder is not None:
 			self._download_folder = self._set_folder(outfolder)
 		
-		out_file = self._check_for_path(filename,self._download_folder,skip)
+		out_file = self._check_for_path(filename.replace('/', '-'),self._download_folder,skip)
 		if  out_file is None:
 			sleep(0.1) # avoid throttling
 			return False
@@ -556,14 +556,13 @@ class FreeSoundClient:
 			error(e.args[0])
 		elif isinstance(e, FieldError):
 			error(e.args[0])
+		elif isinstance(e, ReadTimeout):
+			error("Connection Timeout!")
 		else:
-			if isinstance(e, ReadTimeout):
-				error("Connection Timeout!")
-			else:
-				separator_red()
-				warning(traceback.format_exc())
-				separator_red()
-				error("Caught a generic Exception. Copy the above printed trace and inform the developers")
+			separator_red()
+			warning(traceback.format_exc())
+			separator_red()
+			error("Caught a generic Exception. Copy the above printed trace and inform the developers")
 		self.logout()
 
 	def __repr__(self) -> str:
